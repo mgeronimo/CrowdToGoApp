@@ -1,0 +1,74 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="#ffffff">
+
+    <LinearLayout
+        android:id="@+id/LoginBox"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:paddingTop="40dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="20dp">
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_ctg_logo"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/txtUser"
+            android:hint="Email Address"
+            android:padding="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edittext_bg"
+            android:gravity="center"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/txtPassword"
+            android:hint="Password"
+            android:padding="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edittext_bg"
+            android:gravity="center"/>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SIGN IN"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/btn_bg"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password?"
+            android:id="@+id/btnForgotPass"
+            android:layout_gravity="center_horizontal"
+            android:textSize="16sp"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="5dp"
+            android:textColor="#656565"/>
+
+        </LinearLayout>
+
+    </ScrollView>

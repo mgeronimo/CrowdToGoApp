@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="MyTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light">
+        <item name="android:background">#191514</item>
+    </style>
+
+    <style name="NoActionBar" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="NoTitle" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+
+</resources>

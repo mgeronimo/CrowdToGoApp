@@ -17,5 +17,7 @@
     <string name="action_example">Example action</string>
     <string name="user_name">Username</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_delivery_request_fragment">DeliveryRequestFragment</string>
+    <string name="title_activity_ongoing_delivery_fragment">OngoingDeliveryFragment</string>
 
 </resources>

@@ -54,7 +54,7 @@ public class LoginActivity extends Activity {
             }
         });
 
-        //forgot password action
+        //forgot password action.
         btnforgotpass.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 Toast.makeText(getApplicationContext(),

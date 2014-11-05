@@ -9,7 +9,7 @@
     tools:context="com.crowdtogo.crowdie.crowdtogo.DeliveryRequestFragment">
 
     <TextView
-        android:text="TAB 1"
+        android:text="Delivery Request"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

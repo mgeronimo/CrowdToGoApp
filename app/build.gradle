@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 20
+    compileSdkVersion 18
     buildToolsVersion "20.0.0"
 
     defaultConfig {
         applicationId "com.crowdtogo.crowdie.crowdtogo"
-        minSdkVersion 16
+        minSdkVersion 14
         targetSdkVersion 18
         versionCode 1
         versionName "1.0"
@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:support-v4:20.0.0'
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:18.0.+'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 }

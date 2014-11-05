@@ -2,17 +2,38 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item  android:state_pressed="true" >
-        <shape  android:shape="rectangle">
-            <solid android:color="#4e8ef9" />
-            <corners android:radius="7dp" />
-        </shape>
+        <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+            <!-- Blue Top color -->
+            <item >
+                <shape  android:shape="rectangle">
+                    <solid android:color="#FF1046E4" />
+                    <corners android:radius="4dp" />
+                </shape>
+            </item>
+
+        </layer-list>
     </item>
 
-    <item android:bottom="3px">
-        <shape  android:shape="rectangle">
-            <solid android:color="#1e6ae4" />
-            <corners android:radius="7dp" />
-        </shape>
+    <item android:bottom="10px">
+        <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+            <!-- Bottom 2dp Shadow -->
+            <item>
+                <shape  android:shape="rectangle">
+                    <solid android:color="#FF1046E4" />
+                    <corners android:radius="4dp" />
+                </shape>
+            </item>
+
+            <!-- Blue Top color -->
+            <item android:bottom="5px">
+                <shape  android:shape="rectangle">
+
+                    <solid android:color="@color/blue" />
+                    <corners android:radius="4dp" />
+                </shape>
+            </item>
+
+        </layer-list>
     </item>
 
 

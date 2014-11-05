@@ -20,4 +20,11 @@
     <string name="title_activity_delivery_request_fragment">DeliveryRequestFragment</string>
     <string name="title_activity_ongoing_delivery_fragment">OngoingDeliveryFragment</string>
 
+    <string-array name="drawer_titles">
+        <item>Tabs</item>
+        <item>WebView</item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>

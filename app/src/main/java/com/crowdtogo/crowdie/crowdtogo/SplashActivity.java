@@ -1,6 +1,7 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -45,24 +46,22 @@ public class SplashActivity extends Activity {
             }catch (Exception e) {
 
             }
-
-            Intent intent= new Intent(SplashActivity.this,LoginActivity.class);
-            SplashActivity.this.startActivity(intent);
+            Intent loginIntent= new Intent(SplashActivity.this,LoginActivity.class);
+            startActivity(loginIntent);
             SplashActivity.this.finish();
-
         }
     }
 
     public void changeFonts(){
-        Typeface gothamBook = Typeface.createFromAsset(getAssets(),
-                "fonts/Gotham-Book.ttf");
+        Typeface LatoRegular = Typeface.createFromAsset(getAssets(),
+                "fonts/Lato-Regular.ttf");
 
-        Typeface gothamBold = Typeface.createFromAsset(getAssets(),
-                "fonts/Gotham-Bold.ttf");
+        Typeface LatoBold = Typeface.createFromAsset(getAssets(),
+                "fonts/Lato-Bold.ttf");
 
         //declared forms
         TextView txtCopy = (TextView) findViewById(R.id.txtCopyright);
-        txtCopy.setTypeface(gothamBold);
+        txtCopy.setTypeface(LatoBold);
     }
 
 }

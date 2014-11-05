@@ -1,5 +1,6 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -88,7 +89,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnClickLis
     }
 
     private void initMenu() {
-
         rlProfile = (RelativeLayout) findViewById(R.id.rlProfile);
         rlHome = (RelativeLayout) findViewById(R.id.rlHome);
         rlMessages = (RelativeLayout) findViewById(R.id.rlMessages);
@@ -106,8 +106,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnClickLis
         rlHelp.setOnClickListener(this);
         rlAbout.setOnClickListener(this);
         rlLogout.setOnClickListener(this);
-
-
     }
 
     @Override
@@ -171,23 +169,28 @@ public class MainActivity extends SherlockFragmentActivity implements OnClickLis
             Toast.makeText(getApplicationContext(),
                     "LOGOUT", Toast.LENGTH_LONG).show();
             setSelected(rlLogout);
+
+            //Back to Login page
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
+
+            //Stay the drawer open
             mDrawerLayout.openDrawer(mDrawerList);
+
+            finish();
         }
 
         if (newContent != null) {
             newContent.setArguments(bundle);
             switchFragment(newContent);
         }
-
     }
 
     // switching fragment
     private void switchFragment(Fragment fragment) {
-
         mDrawerLayout.closeDrawer(mDrawerList);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
     }
 
     @Override
@@ -198,7 +201,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnClickLis
 
     // set the selected option as enabled
     private void setSelected(RelativeLayout rl) {
-
         // reset all selections
         rlProfile.setSelected(false);
         rlHome.setSelected(false);
@@ -210,7 +212,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnClickLis
         rlLogout.setSelected(false);
 
         rl.setSelected(true); // set current selection
-
     }
 
     // When using the ActionBarDrawerToggle, you must call it during onPostCreate() and onConfigurationChanged()

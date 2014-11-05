@@ -26,14 +26,6 @@
             android:name=".MainActivity"
             android:label="@string/app_name" >
         </activity>
-        <activity
-            android:name=".DeliveryRequestFragment"
-            android:label="@string/title_activity_delivery_request_fragment" >
-        </activity>
-        <activity
-            android:name=".OngoingDeliveryFragment"
-            android:label="@string/title_activity_ongoing_delivery_fragment" >
-        </activity>
     </application>
 
 </manifest>

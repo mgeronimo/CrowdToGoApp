@@ -10,6 +10,6 @@
         android:layout_height="match_parent" />
 
     <!-- include sliding menu here -->
-    <include layout="@layout/sliding_menu" />
+    <include layout="@layout/listview_item_menu_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

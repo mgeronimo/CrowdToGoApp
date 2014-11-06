@@ -22,7 +22,7 @@ public class DeliveryRequestFragment extends SherlockFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Get the view from fragmenttab1.xml
+        // Get the view from fragment_delivery_request.xml
         View view = inflater.inflate(R.layout.fragment_delivery_request, container, false);
 
         // Generate sample data
@@ -38,7 +38,7 @@ public class DeliveryRequestFragment extends SherlockFragment {
 
         thumbnail = new int[] { R.drawable.ic_home, R.drawable.ic_home,R.drawable.ic_home};
 
-        // Locate the ListView in fragmenttab2.xml
+        // Locate the ListView in fragment_delivery_request.xml
         list = (ListView) view.findViewById(R.id.listview);
 
         // Pass results to ListViewAdapter Class

@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +17,11 @@ import java.util.regex.Pattern;
 
 public class LoginActivity extends Activity {
 
-    EditText usertxt;
-    EditText passtxt;
-    Button btnlogin;
-    Button btnforgotpass;
+    EditText emailAddress;
+    EditText password;
+    EditText oAuth;
+    Button btnLogin;
+    Button btnForgotPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,37 +30,25 @@ public class LoginActivity extends Activity {
 
         changeFonts();//change ui fonts
 
-        //login button action
-        btnlogin.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
+        emailAddress.addTextChangedListener(textWatcher);
+        password.addTextChangedListener(textWatcher);
+        oAuth.addTextChangedListener(textWatcher);
 
-                final String email = usertxt.getText().toString();
-                final String password = passtxt.getText().toString();
-                //if email is valid
-                if (!isValidEmail(email)) {
-                    usertxt.setError("Invalid Email");
-                    //if email is empty
-                    if(TextUtils.isEmpty(email)){
-                        usertxt.setError("Required");
-                    }
-                    //if password is empty
-                    if(TextUtils.isEmpty(password)){
-                        passtxt.setError("Required");
-                    }
-                }
-                else {
+        //login button action
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
                     // Start NewActivity.class
                     Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(mainIntent);
-                }
             }
         });
 
-        //forgot password action.
-        btnforgotpass.setOnClickListener(new View.OnClickListener() {
+        //forgot password action
+        btnForgotPass.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 Toast.makeText(getApplicationContext(),
-                        "Forgot Password Clicked", Toast.LENGTH_LONG).show();            }
+                        "Forgot Password Clicked", Toast.LENGTH_LONG).show();
+            }
         });
     }
 
@@ -71,27 +61,86 @@ public class LoginActivity extends Activity {
                 "fonts/Lato-Bold.ttf");
 
         //declared forms
-        usertxt = (EditText)findViewById(R.id.txtUser);
-        passtxt = (EditText)findViewById(R.id.txtPassword);
-        btnlogin = (Button) findViewById(R.id.btnLogin);
-        btnforgotpass = (Button) findViewById(R.id.btnForgotPass);
+        emailAddress = (EditText)findViewById(R.id.emailEditText);
+        password = (EditText)findViewById(R.id.passwordEditText);
+        oAuth = (EditText)findViewById(R.id.oauthEditText);
+        btnLogin = (Button) findViewById(R.id.loginButton);
+        btnForgotPass = (Button) findViewById(R.id.forgotPasswordButton);
 
         //set custom font to forms
-        usertxt.setTypeface(LatoRegular);
-        passtxt.setTypeface(LatoRegular);
-        btnlogin.setTypeface(LatoBold);
-        btnforgotpass.setTypeface(LatoRegular);
+        emailAddress.setTypeface(LatoRegular);
+        password.setTypeface(LatoRegular);
+        oAuth.setTypeface(LatoRegular);
+        btnLogin.setTypeface(LatoBold);
+        btnForgotPass.setTypeface(LatoRegular);
+
     }
 
-    // validating Email Address
-    private boolean isValidEmail(String email) {
-        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    //TextWatcher
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3)
+        {
 
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            checkFieldsForEmptyValues();
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+        }
+    };
+
+    private void checkFieldsForEmptyValues(){
+
+            final String emailAdd = emailAddress.getText().toString();
+            final String passWord = password.getText().toString();
+            final String oAuthKey = oAuth.getText().toString();
+
+            //if fields are empty
+            if(emailAdd.equals("") && passWord.equals("") && oAuthKey.equals(""))
+            {
+                btnLogin.setEnabled(false);
+            }
+
+            else if(!emailAdd.equals("") && passWord.equals("") && oAuthKey.equals(""))
+            {
+                btnLogin.setEnabled(false);
+            }
+
+            else if(!passWord.equals("") && oAuthKey.equals("") && emailAdd.equals(""))
+            {
+                btnLogin.setEnabled(false);
+            }
+
+            else if(!oAuthKey.equals("") && emailAdd.equals("") && passWord.equals(""))
+            {
+                btnLogin.setEnabled(false);
+            }
+
+            else if(!emailAdd.equals("") && !passWord.equals("") && oAuthKey.equals(""))
+            {
+                btnLogin.setEnabled(false);
+            }
+
+            else if(!passWord.equals("") && !oAuthKey.equals("") && emailAdd.equals(""))
+            {
+                btnLogin.setEnabled(false);
+            }
+
+            else if(!oAuthKey.equals("") && !emailAdd.equals("") && passWord.equals(""))
+            {
+                btnLogin.setEnabled(false);
+            }
+
+            else
+            {
+                btnLogin.setEnabled(true);
+            }
+        }
 
     //Keypress event to prevent app to back from previous acivity
     @Override

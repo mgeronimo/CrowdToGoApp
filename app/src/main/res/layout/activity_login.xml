@@ -22,47 +22,54 @@
             android:layout_gravity="center"
             android:adjustViewBounds="false" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView" />
-
         <EditText
+            android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:ems="10"
-            android:id="@+id/txtUser"
             android:hint="Email Address"
             android:padding="10dp"
             android:background="@drawable/edittext_bg"/>
 
         <EditText
+            android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
-            android:id="@+id/txtPassword"
             android:hint="Password"
             android:padding="10dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/edittext_bg"/>
 
+        <EditText
+            android:id="@+id/oauthEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Authentication Key"
+            android:padding="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edittext_bg"
+            android:inputType="text" />
+
         <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="SIGN IN"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             android:layout_marginTop="5dp"
-            android:background="@drawable/btn_bg" />
+            android:background="@drawable/btn_bg"
+            android:enabled="false" />
 
         <Button
+            android:id="@+id/forgotPasswordButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Forgot Password?"
-            android:id="@+id/btnForgotPass"
             android:layout_gravity="center_horizontal"
             android:background="@android:color/transparent"
             android:layout_marginTop="5dp"

@@ -9,9 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         app:pstsShouldExpand="true"
-        app:pstsUnderlineColor="@color/sliding_menu_bg"
-        app:pstsIndicatorColor="@color/sliding_menu_bg"
-        android:background="@color/grey"/>
+        app:pstsUnderlineColor="@color/ctg_dark_blue"
+        app:pstsIndicatorColor="@color/ctg_blue"
+        app:pstsDividerColor="@color/white"
+        app:pstsIndicatorHeight="4dp"
+        app:pstsUnderlineHeight="0dp"
+        android:background="@color/white"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"

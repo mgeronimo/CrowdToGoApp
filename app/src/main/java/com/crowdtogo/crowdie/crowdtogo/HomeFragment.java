@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment {
         MyPagerAdapter adapter = new MyPagerAdapter(getChildFragmentManager());
         pager.setAdapter(adapter);
         tabs.setViewPager(pager);
-        tabs.setTextColor(getResources().getColor(R.color.white));
+        tabs.setTextColor(getResources().getColor(R.color.black));
     }
 
     public class MyPagerAdapter extends FragmentPagerAdapter {
@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
             super(fm);
         }
 
-        private final String[] TITLES = { "DELIVERY REQUESTS", "ONGOING DELIVERY"};
+        private final String[] TITLES = { "Delivery Requests", "Ongoing Delivery"};
 
         @Override
         public CharSequence getPageTitle(int position) {

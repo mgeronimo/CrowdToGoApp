@@ -91,8 +91,8 @@
 
                         <ImageView
                             android:id="@+id/imgHome"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_centerVertical="true"
                             android:padding="5dp"
                             android:src="@drawable/ic_home" />
@@ -137,8 +137,8 @@ s
 
                     <ImageView
                         android:id="@+id/imgMessages"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_centerVertical="true"
                         android:padding="5dp"
                         android:src="@drawable/ic_message" />
@@ -194,8 +194,8 @@ s
 
                     <ImageView
                         android:id="@+id/imgNotifs"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_centerVertical="true"
                         android:padding="5dp"
                         android:src="@drawable/ic_notif" />
@@ -250,8 +250,8 @@ s
 
                     <ImageView
                         android:id="@+id/imgSettings"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_centerVertical="true"
                         android:padding="5dp"
                         android:src="@drawable/ic_settings" />
@@ -292,8 +292,8 @@ s
 
                     <ImageView
                         android:id="@+id/imgHelp"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_centerVertical="true"
                         android:padding="5dp"
                         android:src="@drawable/ic_help" />
@@ -334,11 +334,12 @@ s
 
                     <ImageView
                         android:id="@+id/imgAbout"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_centerVertical="true"
                         android:padding="5dp"
-                        android:src="@drawable/ic_about" />
+                        android:src="@drawable/ic_about"
+                        android:layout_alignParentEnd="false" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -376,7 +377,7 @@ s
 
                     <ImageView
                         android:id="@+id/imgLogout"
-                        android:layout_width="35dp"
+                        android:layout_width="30dp"
                         android:layout_height="35dp"
                         android:layout_centerVertical="true"
                         android:padding="5dp"

@@ -1,10 +1,12 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
+import android.content.Intent;
 import android.widget.BaseAdapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,7 +22,7 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter{
     LayoutInflater inflater;
 
     public DeliveryRequestListViewAdapter(Context context, String[] name, String[] date,
-                           String[] pickup, String[] delivery, int[] thumbnail) {
+              String[] pickup, String[] delivery, int[] thumbnail) {
         this.context = context;
         this.name = name;
         this.date = date;
@@ -41,10 +43,10 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter{
         return 0;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         // Declare Variables
-        TextView txtname;
+        final TextView txtname;
         TextView txtdate;
         TextView txtpickup;
         TextView txtdelivery;
@@ -60,8 +62,9 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter{
         txtdate = (TextView) itemView.findViewById(R.id.date);
         txtpickup = (TextView) itemView.findViewById(R.id.pickupLocation);
         txtdelivery = (TextView) itemView.findViewById(R.id.deliveryLocation);
+
         // Locate the ImageView in listview_item.xml
-        imgprofile = (ImageView) itemView.findViewById(R.id.profilePic);
+        //imgprofile = (ImageView) itemView.findViewById(R.id.profilePic);
 
         // Capture position and set to the TextViews
         txtname.setText(name[position]);
@@ -70,9 +73,25 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter{
         txtdelivery.setText(delivery[position]);
 
         // Capture position and set to the ImageView
-        imgprofile.setImageResource(thumbnail[position]);
+        //imgprofile.setImageResource(thumbnail[position]);
 
+        //Onclick event for view details button
+        Button details = (Button)itemView.findViewById(R.id.viewDetails);
+        details.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent detailsIntent = new Intent(context,DeliveryDetailsActivity.class);
+                detailsIntent.putExtra("name",name[position]);
+                detailsIntent.putExtra("date",date[position]);
+                detailsIntent.putExtra("pickup",pickup[position]);
+                detailsIntent.putExtra("delivery",delivery[position]);
+                context.startActivity(detailsIntent);
+            }
+        });
         return itemView;
+    }
+    @Override
+    public boolean isEnabled(int position) {
+        return false;
     }
 }
 

@@ -179,7 +179,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnClickLis
 
             finish();
         }
-
         if (newContent != null) {
             newContent.setArguments(bundle);
             switchFragment(newContent);

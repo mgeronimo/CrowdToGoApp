@@ -1,17 +1,10 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.actionbarsherlock.app.SherlockFragment;
 
 public class DeliveryRequestFragment extends SherlockFragment {
@@ -51,28 +44,7 @@ public class DeliveryRequestFragment extends SherlockFragment {
                 thumbnail);
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
-
-        // Capture clicks on ListView items
-        //list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-           // @Override
-           /// public void onItemClick(AdapterView<?> parent, View view,
-              //                      int position, long id) {
-                // Send single item click data to DeliveryDetails Class
-            //    Intent DeliveryDetailsIntent = new Intent(getActivity(), DeliveryDetailsActivity.class);
-                // Pass all data name
-             //   DeliveryDetailsIntent.putExtra("name",name);
-                // Pass all data date
-             //   DeliveryDetailsIntent.putExtra("date", date);
-                // Pass all data pickup
-            //    DeliveryDetailsIntent.putExtra("pickup", pickup);
-                // Pass all data delivery
-           //     DeliveryDetailsIntent.putExtra("delivery", delivery);
-                // Open DeliveryDetailsActivity.java Activity
-            //    startActivity(DeliveryDetailsIntent);
-           // }
-
-        //});
+        list.setItemsCanFocus(true);
 
         return view;
     }
@@ -82,5 +54,4 @@ public class DeliveryRequestFragment extends SherlockFragment {
         super.onSaveInstanceState(outState);
         setUserVisibleHint(true);
     }
-
 }

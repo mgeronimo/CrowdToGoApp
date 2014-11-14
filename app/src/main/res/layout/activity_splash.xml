@@ -26,7 +26,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="COPYRIGHT © SOLUTIONS RESOURCE INC. \n 2014.ALL RIGHTS RESERVED"
         android:id="@+id/txtCopyright"
-        android:textSize="10sp"
+        android:textSize="9sp"
         android:textColor="@color/copyright"
         android:gravity="center"
         android:layout_alignParentBottom="true"

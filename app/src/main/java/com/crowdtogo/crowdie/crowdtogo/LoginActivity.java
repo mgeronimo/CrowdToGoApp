@@ -14,8 +14,15 @@ import android.widget.Toast;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.crowdtogo.crowdie.model.UsersResponse;
+import com.crowdtogo.crowdie.network.requests.UserRequest;
+import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 
-public class LoginActivity extends Activity {
+
+
+public class LoginActivity extends BaseSpiceActivity {
 
     EditText emailAddress;
     EditText password;
@@ -33,6 +40,10 @@ public class LoginActivity extends Activity {
         emailAddress.addTextChangedListener(textWatcher);
         password.addTextChangedListener(textWatcher);
         oAuth.addTextChangedListener(textWatcher);
+
+
+        //getUsersSpiceManager().execute(new UserRequest(), "UserRequest", DurationInMillis.ALWAYS_EXPIRED, new UsersRequestListener());
+
 
         //login button action
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +166,41 @@ public class LoginActivity extends Activity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getUsersSpiceManager().execute(new UserRequest(), "userRequest", DurationInMillis.ALWAYS_EXPIRED, new UsersRequestListener());
+
+        //getGithubSpiceManager().execute(new GistsRequest(), "gistsRequest", DurationInMillis.ALWAYS_EXPIRED, new GithubRequestListener());
+    }
+
+    private final class UsersRequestListener implements RequestListener<UsersResponse> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            Toast.makeText(LoginActivity.this, "Failure", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onRequestSuccess(UsersResponse result) {
+            //Users u = usersResponse.get(0);
+
+            updateScreen(result);
+        }
+    }
+
+    private void updateScreen(final UsersResponse result){
+        //setContentView(R.layout.main);
+        Toast.makeText(LoginActivity.this, result.getData().get(0).getEmail(), Toast.LENGTH_LONG).show();
+        //((TextView)findViewById(R.id.cityName)).setText(result.getName());
+        //((TextView)findViewById(R.id.longitudeValue)).setText(""+result.getCoord().getLon());
+        //((TextView)findViewById(R.id.latitudeValue)).setText(""+result.getCoord().getLat());
+        //((TextView)findViewById(R.id.temperatureValue)).setText(""+result.getMain().getTemp());
+        //((TextView)findViewById(R.id.pressureValue)).setText(""+result.getMain().getPressure());
+        //((TextView)findViewById(R.id.humidityValue)).setText(""+result.getMain().getHumidity());
+        //((TextView)findViewById(R.id.windValue)).setText(""+result.getWind().getSpeed());
     }
 
 }

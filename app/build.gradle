@@ -32,6 +32,8 @@ dependencies {
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:18.0.+'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'com.squareup.okhttp:okhttp:1.2.+'
     compile 'com.octo.android.robospice:robospice:1.4.12'
     compile 'com.octo.android.robospice:robospice-retrofit:1.4.12'
+
 }

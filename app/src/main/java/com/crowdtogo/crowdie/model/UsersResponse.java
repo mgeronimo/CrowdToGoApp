@@ -1,11 +1,9 @@
 package com.crowdtogo.crowdie.model;
 
-/**
- * Created by User on 11/25/2014.
- */
-import com.google.gson.annotations.Expose;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class UsersResponse {

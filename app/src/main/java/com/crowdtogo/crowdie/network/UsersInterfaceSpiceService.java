@@ -1,6 +1,7 @@
 package com.crowdtogo.crowdie.network;
 
 
+import com.crowdtogo.crowdie.model.AccessTokenResponse;
 import com.crowdtogo.crowdie.model.UsersResponse;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -17,7 +18,8 @@ public class UsersInterfaceSpiceService extends RetrofitGsonSpiceService {
     @Override
     public void onCreate() {
         super.onCreate();
-        addRetrofitInterface(UsersResponse.class);
+       // addRetrofitInterface(UsersResponse.class);
+        addRetrofitInterface(UsersInterface.class);
     }
 
     @Override
@@ -27,7 +29,7 @@ public class UsersInterfaceSpiceService extends RetrofitGsonSpiceService {
                     @Override
                     public void intercept(RequestFacade request) {
                           //access token add to header here
-                          //request.addHeader("Authorization", "access_token " + myaccess token);
+                         // request.addHeader("Authorization", "PiO57dpd0aRTNE3kxCoHvaSwarnT6QKbJroI4tSU");
                     }
                 })
                 .setEndpoint(BASE_URL)

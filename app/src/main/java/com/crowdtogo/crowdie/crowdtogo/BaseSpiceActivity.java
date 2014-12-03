@@ -9,31 +9,23 @@ import com.crowdtogo.crowdie.network.UsersInterfaceSpiceService;
  */
 public abstract class BaseSpiceActivity extends Activity {
 
-    private SpiceManager usersSpiceManager = new SpiceManager(UsersInterfaceSpiceService.class);
-   // private SpiceManager githubSpiceManager = new SpiceManager(GithubSpiceService.class);
+    private SpiceManager accessTokenSpiceManager = new SpiceManager(UsersInterfaceSpiceService.class);
 
     @Override
     protected void onStart() {
-        usersSpiceManager.start(this);
-        //githubSpiceManager.start(this);
+        accessTokenSpiceManager.start(this);
         super.onStart();
     }
 
     @Override
     protected void onStop() {
-        usersSpiceManager.shouldStop();
-       // githubSpiceManager.shouldStop();
+        accessTokenSpiceManager.shouldStop();
         super.onStop();
     }
 
-
-    protected SpiceManager getUsersSpiceManager(){
-        return usersSpiceManager;
+    protected SpiceManager getAccessTokenSpiceManager(){
+        return accessTokenSpiceManager;
     }
-   // protected SpiceManager getusersSpiceManager() {
-   //     return usersSpiceManager;
-   // }
-    //protected SpiceManager getGithubSpiceManager() { return githubSpiceManager; }
 
 
 }

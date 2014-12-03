@@ -8,9 +8,6 @@ import java.util.List;
 
 public class UsersResponse {
 
-    //@SuppressWarnings("serial")
-   // public static class usersList extends ArrayList<Users> {
-    //}
     @Expose
     private List<Data> data;
 

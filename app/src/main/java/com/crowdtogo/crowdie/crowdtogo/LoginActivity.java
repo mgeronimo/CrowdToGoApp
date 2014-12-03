@@ -1,6 +1,7 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -14,12 +15,17 @@ import android.widget.Toast;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.crowdtogo.crowdie.model.AccessTokenResponse;
+import com.crowdtogo.crowdie.model.Token;
+import com.crowdtogo.crowdie.model.UserLoginResponse;
 import com.crowdtogo.crowdie.model.UsersResponse;
+import com.crowdtogo.crowdie.network.requests.AccessTokenRequest;
 import com.crowdtogo.crowdie.network.requests.UserRequest;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
+import static com.crowdtogo.crowdie.model.UserLoginResponse.*;
 
 
 public class LoginActivity extends BaseSpiceActivity {
@@ -29,6 +35,7 @@ public class LoginActivity extends BaseSpiceActivity {
     EditText oAuth;
     Button btnLogin;
     Button btnForgotPass;
+    ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +48,29 @@ public class LoginActivity extends BaseSpiceActivity {
         password.addTextChangedListener(textWatcher);
         oAuth.addTextChangedListener(textWatcher);
 
-
-        //getUsersSpiceManager().execute(new UserRequest(), "UserRequest", DurationInMillis.ALWAYS_EXPIRED, new UsersRequestListener());
-
-
         //login button action
         btnLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                     // Start NewActivity.class
-                    Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(mainIntent);
+
+                Token token = new Token();
+                token.setUsername(emailAddress.getText().toString());
+                token.setPassword(password.getText().toString());
+                token.setClient_secret(oAuth.getText().toString());//"04Ifd"
+                token.setClient_id(emailAddress.getText().toString());
+                token.setGrant_type("password");
+                token.setScope("Crowdie");
+                mProgressDialog = new ProgressDialog(LoginActivity.this);
+                // Set progressdialog title
+                mProgressDialog.setTitle("CrowdToGo");
+                // Set progressdialog message
+                mProgressDialog.setMessage("Loading...");
+                mProgressDialog.setIndeterminate(false);
+                // Show progressdialog
+                mProgressDialog.show();
+                //perform login by providing valid parameters to get access token
+                getAccessTokenSpiceManager().execute(new AccessTokenRequest(token), "getAccessToken", DurationInMillis.ALWAYS_EXPIRED, new AccessRequestListener());
+
             }
         });
 
@@ -150,6 +170,7 @@ public class LoginActivity extends BaseSpiceActivity {
             else
             {
                 btnLogin.setEnabled(true);
+
             }
         }
 
@@ -171,36 +192,26 @@ public class LoginActivity extends BaseSpiceActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        getUsersSpiceManager().execute(new UserRequest(), "userRequest", DurationInMillis.ALWAYS_EXPIRED, new UsersRequestListener());
+}
 
-        //getGithubSpiceManager().execute(new GistsRequest(), "gistsRequest", DurationInMillis.ALWAYS_EXPIRED, new GithubRequestListener());
-    }
-
-    private final class UsersRequestListener implements RequestListener<UsersResponse> {
-
+    //Request listener
+    private class AccessRequestListener implements RequestListener<UserLoginResponse> {
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            Toast.makeText(LoginActivity.this, "Failure", Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this, "Failed:Incorrect username or password "+ spiceException.toString(), Toast.LENGTH_LONG).show();
         }
-
         @Override
-        public void onRequestSuccess(UsersResponse result) {
-            //Users u = usersResponse.get(0);
-
-            updateScreen(result);
+        public void onRequestSuccess(UserLoginResponse userLoginResponse) {
+            updateScreen(userLoginResponse);
         }
     }
 
-    private void updateScreen(final UsersResponse result){
-        //setContentView(R.layout.main);
-        Toast.makeText(LoginActivity.this, result.getData().get(0).getEmail(), Toast.LENGTH_LONG).show();
-        //((TextView)findViewById(R.id.cityName)).setText(result.getName());
-        //((TextView)findViewById(R.id.longitudeValue)).setText(""+result.getCoord().getLon());
-        //((TextView)findViewById(R.id.latitudeValue)).setText(""+result.getCoord().getLat());
-        //((TextView)findViewById(R.id.temperatureValue)).setText(""+result.getMain().getTemp());
-        //((TextView)findViewById(R.id.pressureValue)).setText(""+result.getMain().getPressure());
-        //((TextView)findViewById(R.id.humidityValue)).setText(""+result.getMain().getHumidity());
-        //((TextView)findViewById(R.id.windValue)).setText(""+result.getWind().getSpeed());
-    }
+    private void updateScreen(final UserLoginResponse response){
+        if(response!=null){
+            Toast.makeText(LoginActivity.this, "Access Token: "+ response.getAccess_token(), Toast.LENGTH_LONG).show();
+            Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(mainIntent);
+        }
 
+    }
 }

@@ -22,7 +22,7 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter{
     LayoutInflater inflater;
 
     public DeliveryRequestListViewAdapter(Context context, String[] name, String[] date,
-              String[] pickup, String[] delivery, int[] thumbnail) {
+                                          String[] pickup, String[] delivery, int[] thumbnail) {
         this.context = context;
         this.name = name;
         this.date = date;

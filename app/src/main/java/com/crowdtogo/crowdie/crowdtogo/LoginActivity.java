@@ -25,6 +25,8 @@ import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
+import retrofit.RetrofitError;
+
 import static com.crowdtogo.crowdie.model.UserLoginResponse.*;
 
 
@@ -56,7 +58,7 @@ public class LoginActivity extends BaseSpiceActivity {
                 Token token = new Token();
                 token.setUsername(emailAddress.getText().toString());
                 token.setPassword(password.getText().toString());
-                token.setClient_secret(oAuth.getText().toString());//"04Ifd"
+                token.setClient_secret(oAuth.getText().toString());//"h9Q40"
                 token.setClient_id(emailAddress.getText().toString());
                 token.setGrant_type("password");
                 token.setScope("Crowdie");
@@ -198,19 +200,30 @@ public class LoginActivity extends BaseSpiceActivity {
     private class AccessRequestListener implements RequestListener<UserLoginResponse> {
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            Toast.makeText(LoginActivity.this, "Failed:Incorrect username or password "+ spiceException.toString(), Toast.LENGTH_LONG).show();
+            try {
+                Toast.makeText(LoginActivity.this, "Failed:Incorrect username or password "+ spiceException.getMessage(), Toast.LENGTH_LONG).show();
+                //RetrofitError error = (RetrofitError)RetrofitError.httpError()
+                mProgressDialog.dismiss();
+            } catch (RetrofitError e) {
+               // System.out.println(e.getResponse().getStatus());
+                Toast.makeText(LoginActivity.this, e.getResponse().getStatus(), Toast.LENGTH_LONG).show();
+            }
+
         }
         @Override
         public void onRequestSuccess(UserLoginResponse userLoginResponse) {
             updateScreen(userLoginResponse);
+
         }
-    }
+    };
 
     private void updateScreen(final UserLoginResponse response){
         if(response!=null){
+
             Toast.makeText(LoginActivity.this, "Access Token: "+ response.getAccess_token(), Toast.LENGTH_LONG).show();
             Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(mainIntent);
+            mProgressDialog.dismiss();
         }
 
     }

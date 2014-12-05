@@ -87,11 +87,11 @@ public class LoginActivity extends BaseSpiceActivity {
 
     public void changeFonts(){
 
-        Typeface LatoRegular = Typeface.createFromAsset(getAssets(),
-                "fonts/Lato-Regular.ttf");
+        Typeface GothamMedium = Typeface.createFromAsset(getAssets(),
+                "fonts/Gotham-Medium.ttf");
 
-        Typeface LatoBold = Typeface.createFromAsset(getAssets(),
-                "fonts/Lato-Bold.ttf");
+        Typeface GothamLight = Typeface.createFromAsset(getAssets(),
+                "fonts/Gotham-Light.ttf");
 
         //declared forms
         emailAddress = (EditText)findViewById(R.id.emailEditText);
@@ -101,11 +101,11 @@ public class LoginActivity extends BaseSpiceActivity {
         btnForgotPass = (Button) findViewById(R.id.forgotPasswordButton);
 
         //set custom font to forms
-        emailAddress.setTypeface(LatoRegular);
-        password.setTypeface(LatoRegular);
-        oAuth.setTypeface(LatoRegular);
-        btnLogin.setTypeface(LatoBold);
-        btnForgotPass.setTypeface(LatoRegular);
+        emailAddress.setTypeface(GothamMedium);
+        password.setTypeface(GothamMedium);
+        oAuth.setTypeface(GothamMedium);
+        btnLogin.setTypeface(GothamMedium);
+        btnForgotPass.setTypeface(GothamMedium);
 
     }
 
@@ -215,7 +215,7 @@ public class LoginActivity extends BaseSpiceActivity {
             updateScreen(userLoginResponse);
 
         }
-    };
+    }
 
     private void updateScreen(final UserLoginResponse response){
         if(response!=null){

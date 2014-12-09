@@ -16,6 +16,7 @@
     <color name="blue">#1e6ae4</color>
     <color name="light_blue">#4e8ef9</color>
     <color name="border_color">#c2c3c8</color>
+    <color name="button_blue">#1e94c6</color>
 
     <!--CrowdToGo logo color scheme-->
     <color name="ctg_red">#f63319</color>

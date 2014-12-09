@@ -53,15 +53,12 @@ public class SplashActivity extends Activity {
     }
 
     public void changeFonts(){
-        Typeface LatoRegular = Typeface.createFromAsset(getAssets(),
-                "fonts/Lato-Regular.ttf");
-
-        Typeface LatoBold = Typeface.createFromAsset(getAssets(),
-                "fonts/Lato-Bold.ttf");
+        Typeface GothamMedium = Typeface.createFromAsset(getAssets(),
+                "fonts/Gotham-Medium.ttf");
 
         //declared forms
         TextView txtCopy = (TextView) findViewById(R.id.txtCopyright);
-        txtCopy.setTypeface(LatoBold);
+        txtCopy.setTypeface(GothamMedium);
     }
 
 }

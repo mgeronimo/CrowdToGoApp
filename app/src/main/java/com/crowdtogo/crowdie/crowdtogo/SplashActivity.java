@@ -58,7 +58,7 @@ public class SplashActivity extends Activity {
 
         //declared forms
         TextView txtCopy = (TextView) findViewById(R.id.txtCopyright);
-        txtCopy.setTypeface(GothamMedium);
+        //txtCopy.setTypeface(GothamMedium);
     }
 
 }

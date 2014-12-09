@@ -1,8 +1,11 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,8 +20,17 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.crowdtogo.crowdie.model.AccessTokenError;
+import com.crowdtogo.crowdie.model.OrdersResponse;
+import com.crowdtogo.crowdie.network.requests.OrdersRequest;
+import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
+
+import retrofit.RetrofitError;
 
 public class MainActivity extends SherlockFragmentActivity implements OnClickListener {
+
 
     private DrawerLayout mDrawerLayout;
     private RelativeLayout mDrawerList;
@@ -43,13 +55,17 @@ public class MainActivity extends SherlockFragmentActivity implements OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         setContentView(R.layout.activity_main);
 
+
+        //String accessToken =  getDefaults("access_token", MainActivity.this);
+        //Toast.makeText(MainActivity.this, "MainActivity Access Token: "+ accessToken, Toast.LENGTH_LONG).show();
         initMenu();
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         mDrawerList = (RelativeLayout) findViewById(R.id.left_drawer);
 
         // set a custom shadow that overlays the main content when the drawer opens
@@ -86,6 +102,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnClickLis
             //mDrawerLayout.openDrawer(mDrawerList); // Keep drawer open everytime the application starts
         }
 
+    }
+
+    public static String getDefaults(String accessToken, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(accessToken, null);
     }
 
     private void initMenu() {
@@ -166,10 +187,9 @@ public class MainActivity extends SherlockFragmentActivity implements OnClickLis
         }
         else if (v.getId() == R.id.rlLogout) {
             // LOGOUT
-            Toast.makeText(getApplicationContext(),
-                    "LOGOUT", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "LOGOUT", Toast.LENGTH_LONG).show();
             setSelected(rlLogout);
-
+            resetAccessToken(MainActivity.this);
             //Back to Login page
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(loginIntent);
@@ -183,6 +203,14 @@ public class MainActivity extends SherlockFragmentActivity implements OnClickLis
             newContent.setArguments(bundle);
             switchFragment(newContent);
         }
+    }
+    //Reset Access Token
+    public static void resetAccessToken(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.remove("access_token");
+        editor.commit();
     }
 
     // switching fragment
@@ -242,5 +270,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnClickLis
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
+
 
 }

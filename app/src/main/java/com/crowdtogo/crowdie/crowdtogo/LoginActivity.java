@@ -1,12 +1,17 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -15,11 +20,14 @@ import android.widget.Toast;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.crowdtogo.crowdie.model.AccessTokenError;
 import com.crowdtogo.crowdie.model.AccessTokenResponse;
+import com.crowdtogo.crowdie.model.OrdersResponse;
 import com.crowdtogo.crowdie.model.Token;
 import com.crowdtogo.crowdie.model.UserLoginResponse;
 import com.crowdtogo.crowdie.model.UsersResponse;
 import com.crowdtogo.crowdie.network.requests.AccessTokenRequest;
+import com.crowdtogo.crowdie.network.requests.OrdersRequest;
 import com.crowdtogo.crowdie.network.requests.UserRequest;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -39,6 +47,8 @@ public class LoginActivity extends BaseSpiceActivity {
     Button btnForgotPass;
     ProgressDialog mProgressDialog;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,29 +59,67 @@ public class LoginActivity extends BaseSpiceActivity {
         emailAddress.addTextChangedListener(textWatcher);
         password.addTextChangedListener(textWatcher);
         oAuth.addTextChangedListener(textWatcher);
+        String secret = getSecret("secret",LoginActivity.this);
+
+
+        if(secret != null){
+            oAuth.setText(secret);
+            oAuth.setVisibility(View.GONE);
+        }else{
+            oAuth.setVisibility(View.VISIBLE);
+        }
 
         //login button action
         btnLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                     // Start NewActivity.class
+                if(getSecret("secret",LoginActivity.this) == null){
+                    Token token = new Token();
+                    token.setUsername(emailAddress.getText().toString());
+                    token.setPassword(password.getText().toString());
+                    token.setClient_secret(oAuth.getText().toString());//"h9Q40"
+                    token.setClient_id(emailAddress.getText().toString());
+                    token.setGrant_type("password");
+                    token.setScope("Crowdie");
+                    setSecret("secret",oAuth.getText().toString(),LoginActivity.this);
 
-                Token token = new Token();
-                token.setUsername(emailAddress.getText().toString());
-                token.setPassword(password.getText().toString());
-                token.setClient_secret(oAuth.getText().toString());//"h9Q40"
-                token.setClient_id(emailAddress.getText().toString());
-                token.setGrant_type("password");
-                token.setScope("Crowdie");
-                mProgressDialog = new ProgressDialog(LoginActivity.this);
-                // Set progressdialog title
-                mProgressDialog.setTitle("CrowdToGo");
-                // Set progressdialog message
-                mProgressDialog.setMessage("Loading...");
-                mProgressDialog.setIndeterminate(false);
-                // Show progressdialog
-                mProgressDialog.show();
-                //perform login by providing valid parameters to get access token
-                getAccessTokenSpiceManager().execute(new AccessTokenRequest(token), "getAccessToken", DurationInMillis.ALWAYS_EXPIRED, new AccessRequestListener());
+
+                    mProgressDialog = new ProgressDialog(LoginActivity.this);
+                    // Set progressdialog title
+                    mProgressDialog.setProgressStyle(AlertDialog.THEME_HOLO_DARK);
+                    mProgressDialog.setTitle("CrowdToGo");
+                    // Set progressdialog message
+                    mProgressDialog.setMessage("Loading... \nPlease Wait");
+                    mProgressDialog.setIndeterminate(false);
+                    // Show progressdialog
+                    mProgressDialog.show();
+                    //perform login by providing valid parameters to get access token
+                    getAccessTokenSpiceManager().execute(new AccessTokenRequest(token), "getAccessToken", DurationInMillis.ALWAYS_EXPIRED, new AccessRequestListener());
+
+                }else{
+                    Token token = new Token();
+                    token.setUsername(emailAddress.getText().toString());
+                    token.setPassword(password.getText().toString());
+                    token.setClient_secret(getSecret("secret",LoginActivity.this));//"h9Q40"
+                    token.setClient_id(emailAddress.getText().toString());
+                    token.setGrant_type("password");
+                    token.setScope("Crowdie");
+
+
+                    mProgressDialog = new ProgressDialog(LoginActivity.this);
+                    // Set progressdialog title
+                    mProgressDialog.setProgressStyle(AlertDialog.THEME_HOLO_DARK);
+                    mProgressDialog.setTitle("CrowdToGo");
+                    // Set progressdialog message
+                    mProgressDialog.setMessage("Loading... \nPlease Wait");
+                    mProgressDialog.setIndeterminate(false);
+                    // Show progressdialog
+                    mProgressDialog.show();
+                    //perform login by providing valid parameters to get access token
+                    getAccessTokenSpiceManager().execute(new AccessTokenRequest(token), "getAccessToken", DurationInMillis.ALWAYS_EXPIRED, new AccessRequestListener());
+
+                }
+
 
             }
         });
@@ -81,6 +129,14 @@ public class LoginActivity extends BaseSpiceActivity {
             public void onClick(View arg0) {
                 Toast.makeText(getApplicationContext(),
                         "Forgot Password Clicked", Toast.LENGTH_LONG).show();
+
+
+
+                //temporary function to clear secret from sharedpreferences
+                resetSecret(LoginActivity.this);
+                Intent mainIntent = new Intent(LoginActivity.this, LoginActivity.class);
+                startActivity(mainIntent);
+
             }
         });
     }
@@ -134,45 +190,47 @@ public class LoginActivity extends BaseSpiceActivity {
             final String oAuthKey = oAuth.getText().toString();
 
             //if fields are empty
-            if(emailAdd.equals("") && passWord.equals("") && oAuthKey.equals(""))
+            if(emailAdd.equals("") && passWord.equals("") && oAuthKey.equals("") )//
             {
                 btnLogin.setEnabled(false);
             }
 
-            else if(!emailAdd.equals("") && passWord.equals("") && oAuthKey.equals(""))
+            else if(!emailAdd.equals("") && passWord.equals("") && oAuthKey.equals(""))//
             {
                 btnLogin.setEnabled(false);
             }
 
-            else if(!passWord.equals("") && oAuthKey.equals("") && emailAdd.equals(""))
+            else if(!passWord.equals("") && emailAdd.equals("") && oAuthKey.equals("") )//&&
             {
                 btnLogin.setEnabled(false);
             }
 
-            else if(!oAuthKey.equals("") && emailAdd.equals("") && passWord.equals(""))
+            else if(emailAdd.equals("") && passWord.equals(""))//!oAuthKey.equals("") &&
             {
                 btnLogin.setEnabled(false);
             }
 
-            else if(!emailAdd.equals("") && !passWord.equals("") && oAuthKey.equals(""))
+            else if(!emailAdd.equals("") && !passWord.equals("") && oAuthKey.equals(""))//
             {
                 btnLogin.setEnabled(false);
             }
 
-            else if(!passWord.equals("") && !oAuthKey.equals("") && emailAdd.equals(""))
+            else if(!oAuthKey.equals("") && !passWord.equals("") &&  emailAdd.equals("") )//
             {
                 btnLogin.setEnabled(false);
             }
 
-            else if(!oAuthKey.equals("") && !emailAdd.equals("") && passWord.equals(""))
+            else if(!oAuthKey.equals("") && !emailAdd.equals("") && passWord.equals(""))//
             {
                 btnLogin.setEnabled(false);
             }
-
+            else if(!oAuthKey.equals("") && !emailAdd.equals("") && !passWord.equals("") )// && //&& getSecret("secret",LoginActivity.this)!= null
+            {
+                btnLogin.setEnabled(true);
+            }
             else
             {
                 btnLogin.setEnabled(true);
-
             }
         }
 
@@ -198,33 +256,74 @@ public class LoginActivity extends BaseSpiceActivity {
 
     //Request listener
     private class AccessRequestListener implements RequestListener<UserLoginResponse> {
+
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            try {
-                Toast.makeText(LoginActivity.this, "Failed:Incorrect username or password "+ spiceException.getMessage(), Toast.LENGTH_LONG).show();
-                //RetrofitError error = (RetrofitError)RetrofitError.httpError()
+            if (spiceException.getCause() instanceof RetrofitError) {
+                RetrofitError error = (RetrofitError) spiceException.getCause();
+                AccessTokenError body = (AccessTokenError) error.getBodyAs(AccessTokenError.class);
                 mProgressDialog.dismiss();
-            } catch (RetrofitError e) {
-               // System.out.println(e.getResponse().getStatus());
-                Toast.makeText(LoginActivity.this, e.getResponse().getStatus(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Error: "+body.getError()+ "\n" +"Description: " +body.getError_description() , Toast.LENGTH_LONG).show();
             }
-
         }
+
+        //Success Request
         @Override
         public void onRequestSuccess(UserLoginResponse userLoginResponse) {
-            updateScreen(userLoginResponse);
 
+                updateScreen(userLoginResponse);
         }
+
     };
 
     private void updateScreen(final UserLoginResponse response){
-        if(response!=null){
 
-            Toast.makeText(LoginActivity.this, "Access Token: "+ response.getAccess_token(), Toast.LENGTH_LONG).show();
+        if(response!=null){
+            setDefaults("access_token",response.getAccess_token(),LoginActivity.this);
+            setDefaults("crowdie_id",response.getCrowdie_id(),LoginActivity.this);
+           // Toast.makeText(LoginActivity.this, "Crowdie ID: "+ response.getCrowdie_id(), Toast.LENGTH_LONG).show();
             Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(mainIntent);
             mProgressDialog.dismiss();
         }
 
     }
+
+     //SharedPreferences for access Token
+    public static void setDefaults(String accessToken, String value, Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(accessToken, value);
+        editor.commit();
+    }
+    //get stored access token
+    public static String getDefaults(String accessToken, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(accessToken, null);
+    }
+
+    //SharedPreferences for Secret
+    public static void setSecret(String secret, String value, Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(secret, value);
+        editor.commit();
+    }
+    //get stored access token
+    public static String getSecret(String secret, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(secret, null);
+    }
+    public static void resetSecret(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.remove("secret");
+        editor.commit();
+    }
+
+
+
+
+
 }

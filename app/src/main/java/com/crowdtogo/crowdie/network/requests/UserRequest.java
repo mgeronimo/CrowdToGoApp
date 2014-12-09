@@ -18,7 +18,7 @@ public class UserRequest extends RetrofitSpiceRequest<UsersResponse, UsersInterf
 
     @Override
     public UsersResponse loadDataFromNetwork() throws Exception {
-        return getService().getData();
-   // return null;
+        //return getService().getData();
+    return null;
     }
 }

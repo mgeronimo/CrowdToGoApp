@@ -4,10 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by User on 12/4/2014.
+ * Created by Alj on 12/4/2014.
  */
-public class Error {
-
+public class AccessTokenError
+{
     @Expose
     @SerializedName("error")
     private String error;

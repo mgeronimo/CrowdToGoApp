@@ -20,6 +20,17 @@ public class UserLoginResponse {
     @Expose
     @SerializedName("expires_in")
     private String expires_in;
+    @Expose
+    @SerializedName("crowdie_id")
+    private String crowdie_id;
+
+    public String getCrowdie_id() {
+        return crowdie_id;
+    }
+
+    public void setCrowdie_id(String crowdie_id) {
+        this.crowdie_id = crowdie_id;
+    }
 
     public String getAccess_token() {
         return access_token;

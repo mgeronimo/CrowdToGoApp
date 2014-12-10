@@ -23,6 +23,7 @@ public class DeliveryRequestFragment extends SherlockFragment {
         // Get the view from fragment_delivery_request.xml
         View view = inflater.inflate(R.layout.fragment_delivery_request, container, false);
 
+
         // Generate sample data
         name = new String[] { "The Kingfish Cafe", "The Home Depot", "Walgreens" };
 

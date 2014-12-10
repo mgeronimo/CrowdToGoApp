@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/CrowdToGo.iml" filepath="$PROJECT_DIR$/CrowdToGo.iml" />
       <module fileurl="file://$PROJECT_DIR$/CrowdToGo-master.iml" filepath="$PROJECT_DIR$/CrowdToGo-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/CrowdToGo-master1.iml" filepath="$PROJECT_DIR$/CrowdToGo-master1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CrowdToGoApplication.iml" filepath="$PROJECT_DIR$/CrowdToGoApplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

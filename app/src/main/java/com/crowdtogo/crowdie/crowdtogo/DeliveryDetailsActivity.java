@@ -1,30 +1,20 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
-import android.content.Intent;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crowdtogo.crowdie.model.AccessTokenError;
 import com.crowdtogo.crowdie.model.OrdersResponse;
-import com.crowdtogo.crowdie.model.UserLoginResponse;
-import com.crowdtogo.crowdie.network.UsersInterface;
-import com.crowdtogo.crowdie.network.requests.AccessTokenRequest;
 import com.crowdtogo.crowdie.network.requests.OrdersRequest;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit.RetrofitError;
 
@@ -40,7 +30,8 @@ public class DeliveryDetailsActivity extends OrdersSpiceActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_delivery_details);
 
-        getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", DeliveryDetailsActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
+        //getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", DeliveryDetailsActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
+        getOrdersSpiceManager().execute(new OrdersRequest(), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
 
 
         Intent i = getIntent();

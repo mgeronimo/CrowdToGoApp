@@ -1,6 +1,5 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -12,22 +11,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.crowdtogo.crowdie.model.AccessTokenResponse;
 import com.crowdtogo.crowdie.model.Token;
 import com.crowdtogo.crowdie.model.UserLoginResponse;
-import com.crowdtogo.crowdie.model.UsersResponse;
 import com.crowdtogo.crowdie.network.requests.AccessTokenRequest;
-import com.crowdtogo.crowdie.network.requests.UserRequest;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import retrofit.RetrofitError;
-
-import static com.crowdtogo.crowdie.model.UserLoginResponse.*;
 
 
 public class LoginActivity extends BaseSpiceActivity {
@@ -213,7 +205,6 @@ public class LoginActivity extends BaseSpiceActivity {
         @Override
         public void onRequestSuccess(UserLoginResponse userLoginResponse) {
             updateScreen(userLoginResponse);
-
         }
     }
 

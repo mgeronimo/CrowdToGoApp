@@ -1361,7 +1361,8 @@ containing a value of this type.
         public static final int powered_by_google_light=0x7f0200ac;
         public static final int shattered=0x7f0200ad;
         public static final int splash_bg=0x7f0200ae;
-        public static final int splash_logo=0x7f0200af;
+        public static final int splash_bg_landscape=0x7f0200af;
+        public static final int splash_logo=0x7f0200b0;
     }
     public static final class id {
         public static final int LoginBox=0x7f080052;

@@ -17,17 +17,8 @@ import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.crowdtogo.crowdie.model.AccessTokenError;
-import com.crowdtogo.crowdie.model.OrdersResponse;
-import com.crowdtogo.crowdie.network.requests.OrdersRequest;
-import com.octo.android.robospice.persistence.DurationInMillis;
-import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.request.listener.RequestListener;
-
-import retrofit.RetrofitError;
 
 public class MainActivity extends SherlockFragmentActivity implements OnClickListener {
 

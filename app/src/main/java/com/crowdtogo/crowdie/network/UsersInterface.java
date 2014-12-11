@@ -30,8 +30,9 @@ public interface UsersInterface {
 
 
     //@Multipart
-    @GET("/api/v1/orders/crowdie/{crowdie}")
-    OrdersResponse getOrder(@Path("crowdie") String crowdieId);
+    @GET("/api/v1/orders/crowdie/1")
+    //OrdersResponse getOrder(@Path("crowdie") String crowdieId);
+    OrdersResponse getOrder();
 
 
     @FormUrlEncoded

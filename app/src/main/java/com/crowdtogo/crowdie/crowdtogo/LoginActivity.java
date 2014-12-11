@@ -205,6 +205,7 @@ public class LoginActivity extends BaseSpiceActivity {
         @Override
         public void onRequestSuccess(UserLoginResponse userLoginResponse) {
             updateScreen(userLoginResponse);
+
         }
     }
 

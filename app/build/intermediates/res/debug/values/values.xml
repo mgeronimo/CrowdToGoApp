@@ -58,7 +58,7 @@
     <!-- From: file:/D:/AndroidStudioProjects/CrowdToGoApplication/app/src/main/res/values/colors.xml -->
     <eat-comment />
 
-    <color name="copyright">#191514</color>
+    <color name="copyright">#64ffffff</color>
     <color name="counter_item_bg">#6E6E6E</color>
     <color name="counter_text_bg">#0ca0dd</color>
     <color name="ctg_blue">#0ca0dd</color>
@@ -830,7 +830,7 @@
     </style>
 
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">#0ca0dd</item>
+        <item name="android:background">#1e94c6</item>
     </style>
 
     <style name="MyTheme" parent="@android:style/Theme.Holo.Light">

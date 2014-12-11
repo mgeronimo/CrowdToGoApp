@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context=".MainActivity"
-    android:background="@drawable/splash_bg">
+    android:background="@drawable/splash_bg"
+    android:windowSoftInputMode="stateVisible|adjustPan">
 
     <RelativeLayout
         android:id="@+id/LoginBox"
@@ -40,7 +41,8 @@
             android:inputType="textEmailAddress"
             android:ems="10"
             android:hint="Email Address"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:textSize="15sp"/>
 
         <EditText
             android:id="@+id/passwordEditText"
@@ -50,7 +52,8 @@
             android:ems="10"
             android:hint="Password"
             android:padding="10dp"
-            android:layout_marginTop="185dp"/>
+            android:layout_marginTop="185dp"
+            android:textSize="15sp"/>
 
         <EditText
             android:id="@+id/oauthEditText"
@@ -60,7 +63,8 @@
             android:hint="Authentication Key"
             android:padding="10dp"
             android:layout_marginTop="235dp"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textSize="15sp"/>
 
         <Button
             android:id="@+id/loginButton"
@@ -91,7 +95,7 @@
                 android:background="@android:color/transparent"
                 android:layout_marginTop="35dp"
                 android:textColor="@color/grey"
-                android:textSize="15dp" />
+                android:textSize="13sp" />
 
         </LinearLayout>
 

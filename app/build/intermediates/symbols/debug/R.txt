@@ -400,7 +400,8 @@ int drawable powered_by_google_dark 0x7f0200ab
 int drawable powered_by_google_light 0x7f0200ac
 int drawable shattered 0x7f0200ad
 int drawable splash_bg 0x7f0200ae
-int drawable splash_logo 0x7f0200af
+int drawable splash_bg_landscape 0x7f0200af
+int drawable splash_logo 0x7f0200b0
 int id LoginBox 0x7f080052
 int id abs__action_bar 0x7f080032
 int id abs__action_bar_container 0x7f080031

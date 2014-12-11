@@ -49,6 +49,9 @@
         <service
             android:name="com.crowdtogo.crowdie.network.UsersInterfaceSpiceService"
             android:exported="false" />
+        <service
+            android:name="com.crowdtogo.crowdie.network.OrdersSpiceService"
+            android:exported="false" />
     </application>
 
 </manifest>

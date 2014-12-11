@@ -14790,7 +14790,7 @@ classic
                 </color>
                 <color name="black" >#000
                 </color>
-                <color name="copyright" >#191514
+                <color name="copyright" >#64ffffff
                 </color>
                 <color name="ctg_dark_green" >#00c03b
                 </color>
@@ -14893,7 +14893,7 @@ WebView
                     name="MyActionBar"
                     parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse" >
                     <item name="android:background">
-#0ca0dd
+#1e94c6
                     </item>
                 </style>
 
@@ -14962,6 +14962,71 @@ true
                 name="logo_only"
                 path="D:\AndroidStudioProjects\CrowdToGoApplication\app\src\main\res\drawable-xxhdpi\logo_only.png"
                 qualifiers="xxhdpi-v4"
+                type="drawable" />
+            <file
+                name="splash_bg_landscape"
+                path="D:\AndroidStudioProjects\CrowdToGoApplication\app\src\main\res\drawable-hdpi\splash_bg_landscape.jpg"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="splash_bg"
+                path="D:\AndroidStudioProjects\CrowdToGoApplication\app\src\main\res\drawable-xhdpi\splash_bg.jpg"
+                qualifiers="xhdpi-v4"
+                type="drawable" />
+            <file
+                name="splash_bg_landscape"
+                path="D:\AndroidStudioProjects\CrowdToGoApplication\app\src\main\res\drawable-xhdpi\splash_bg_landscape.jpg"
+                qualifiers="xhdpi-v4"
+                type="drawable" />
+            <file
+                name="splash_bg"
+                path="D:\AndroidStudioProjects\CrowdToGoApplication\app\src\main\res\drawable-hdpi\splash_bg.jpg"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="splash_bg_landscape"
+                path="D:\AndroidStudioProjects\CrowdToGoApplication\app\src\main\res\drawable-mdpi\splash_bg_landscape.jpg"
+                qualifiers="mdpi-v4"
+                type="drawable" />
+            <file
+                name="splash_logo"
+                path="D:\AndroidStudioProjects\CrowdToGoApplication\app\src\main\res\drawable-xhdpi\splash_logo.png"
+                qualifiers="xhdpi-v4"
+                type="drawable" />
+            <file
+                name="logo_only"
+                path="D:\AndroidStudioProjects\CrowdToGoApplication\app\src\main\res\drawable-hdpi\logo_only.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="logo_only"
+                path="D:\AndroidStudioProjects\CrowdToGoApplication\app\src\main\res\drawable-mdpi\logo_only.png"
+                qualifiers="mdpi-v4"
+                type="drawable" />
+            <file
+                name="logo_only"
+                path="D:\AndroidStudioProjects\CrowdToGoApplication\app\src\main\res\drawable-xhdpi\logo_only.png"
+                qualifiers="xhdpi-v4"
+                type="drawable" />
+            <file
+                name="splash_bg_landscape"
+                path="D:\AndroidStudioProjects\CrowdToGoApplication\app\src\main\res\drawable-xxhdpi\splash_bg_landscape.jpg"
+                qualifiers="xxhdpi-v4"
+                type="drawable" />
+            <file
+                name="splash_bg"
+                path="D:\AndroidStudioProjects\CrowdToGoApplication\app\src\main\res\drawable-mdpi\splash_bg.jpg"
+                qualifiers="mdpi-v4"
+                type="drawable" />
+            <file
+                name="splash_logo"
+                path="D:\AndroidStudioProjects\CrowdToGoApplication\app\src\main\res\drawable-mdpi\splash_logo.png"
+                qualifiers="mdpi-v4"
+                type="drawable" />
+            <file
+                name="splash_logo"
+                path="D:\AndroidStudioProjects\CrowdToGoApplication\app\src\main\res\drawable-hdpi\splash_logo.png"
+                qualifiers="hdpi-v4"
                 type="drawable" />
         </source>
         <source path="D:\AndroidStudioProjects\CrowdToGoApplication\app\build\generated\res\rs\debug" />

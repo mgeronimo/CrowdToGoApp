@@ -1,7 +1,7 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
 
-import com.crowdtogo.crowdie.network1.OrdersSpiceService;
+import com.crowdtogo.crowdie.network.OrdersSpiceService;
 import com.octo.android.robospice.SpiceManager;
 import android.app.Activity;
 import com.crowdtogo.crowdie.network.UsersInterfaceSpiceService;

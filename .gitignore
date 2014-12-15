@@ -36,3 +36,11 @@ build
 *~
 *.swp
 */build/
+
+/*/out
+/*/*/build
+/*/*/production
+*.iws
+*.ipr
+*~
+*.swp

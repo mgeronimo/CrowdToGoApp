@@ -56,16 +56,15 @@ public class DeliveryDetailsActivity extends OrdersSpiceActivity {
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                this.finish();
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
     private class OrdersRequestListener implements RequestListener<OrdersResponse> {

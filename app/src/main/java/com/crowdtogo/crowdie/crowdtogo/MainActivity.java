@@ -11,16 +11,24 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
 
-public class MainActivity extends SherlockFragmentActivity implements OnClickListener {
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.crowdtogo.crowdie.network.requests.AvailabilityRequest;
+import com.octo.android.robospice.persistence.DurationInMillis;
+
+public class MainActivity extends OrdersSpiceActivity implements OnClickListener {
 
 
     private DrawerLayout mDrawerLayout;
@@ -45,11 +53,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         setContentView(R.layout.activity_main);
-
 
         //String accessToken =  getDefaults("access_token", MainActivity.this);
         //Toast.makeText(MainActivity.this, "MainActivity Access Token: "+ accessToken, Toast.LENGTH_LONG).show();
@@ -93,6 +97,34 @@ public class MainActivity extends SherlockFragmentActivity implements OnClickLis
             //mDrawerLayout.openDrawer(mDrawerList); // Keep drawer open everytime the application starts
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(R.menu.home, menu);
+
+        Switch swi = (Switch) menu.findItem(R.id.mySwitch).getActionView().findViewById(R.id.availability);
+
+        swi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if (isChecked)
+                {
+                    // baseSpiceActivity.getAvailabilitySpiceManager().execute(new AvailabilityRequest("1"), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+                    Log.w("myApp", "Your switch is now open");
+                } else
+                {
+                    // baseSpiceActivity.getAvailabilitySpiceManager().execute(new AvailabilityRequest("0"), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+
+                    Log.w("myApp2", "Your switch is now closed");
+                }
+            }
+        });
+
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     public static String getDefaults(String accessToken, Context context) {

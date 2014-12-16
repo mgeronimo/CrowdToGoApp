@@ -21,17 +21,12 @@ public class AvailabilityRequest extends RetrofitSpiceRequest<SuccessResponse,Av
     public AvailabilityRequest(String availabilityParam)
     {
         super(SuccessResponse.class, AvailabilityInterface.class);
-        Log.w("myApp", "You passed Availability Request");
-        Log.w("myApp", availabilityParam);
         this.availabilityParam = availabilityParam;
-
     }
 
     @Override
     public SuccessResponse loadDataFromNetwork() throws Exception
     {
-        Log.w("myApp", "You passed loadDataFromNetwork");
-        Log.w("myApp", availabilityParam);
         return getService().changeAvailability(availabilityParam);
     }
 }

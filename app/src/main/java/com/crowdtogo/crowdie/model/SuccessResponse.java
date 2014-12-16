@@ -16,13 +16,11 @@ public class SuccessResponse
 
     public String getMessage()
     {
-        Log.w("myMessage","You passed getMessage");
         return message;
     }
 
     public void setMessage(String message)
     {
-        Log.w("myMessage","You passed setMessage");
         this.message = message;
     }
 }

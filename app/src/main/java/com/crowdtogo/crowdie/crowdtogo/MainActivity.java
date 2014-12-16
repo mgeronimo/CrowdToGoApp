@@ -118,15 +118,12 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
                 if (isChecked)
                 {
                     getAvailabilitySpiceManager().execute(new AvailabilityRequest("1"), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
-                    Log.w("myApp", "Your switch is now open");
                 } else
                 {
                     getAvailabilitySpiceManager().execute(new AvailabilityRequest("0"), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
-                    Log.w("myApp2", "Your switch is now closed");
                 }
             }
         });
-
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -300,28 +297,17 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
 
     private class AvailabilityRequestListener implements RequestListener<SuccessResponse>
     {
-        public AvailabilityRequestListener()
-        {
-            Log.w("myMessage", "You passed the constructor of Availability Request Listener");
-            // Log.w("myMessage", SuccessResponse.getMessage() );
-
-        }
-
         @Override
         public void onRequestFailure(SpiceException spiceException)
         {
-            Log.w("myMessage", "Request Has Failed");
-
             try
             {
-                // Toast.makeText(getSherlockActivity(), "Failed:Incorrect username or password " + spiceException.getMessage(), Toast.LENGTH_LONG).show();
-                // RetrofitError error = (RetrofitError)RetrofitError.httpError();
-                Log.w("myMessage", "Try Failed");
+                Log.w("myMessage", "Request Failed 1");
 
             } catch (RetrofitError e)
             {
-                //Toast.makeText(getSherlockActivity(), e.getResponse().getStatus(), Toast.LENGTH_LONG).show();
-                Log.w("myMessage", "Failure 2");
+
+                Log.w("myMessage", "Request Failed 2");
             }
 
         }
@@ -333,19 +319,12 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
         }
     }
 
-    private void updateScreen(final SuccessResponse successResponse){
+    private void updateScreen(final SuccessResponse successResponse)
+    {
         if(successResponse != null )
         {
-            //Toast.makeText(getSherlockActivity(), successResponse.getMessage(), Toast.LENGTH_LONG).show();
-
-            Log.w("myMessage", "good :) ");
             Log.w("myMessage", successResponse.getMessage());
         }
-        else
-        {
-            Log.w("myMessage", "lol :) ");
-        }
-
     }
 
 

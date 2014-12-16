@@ -11,8 +11,7 @@ import com.octo.android.robospice.SpiceManager;
  * Created by User on 12/9/2014.
  */
 public class OrdersSpiceActivity extends SherlockFragmentActivity {
-
-
+    
     private SpiceManager ordersSpiceManager = new SpiceManager(OrdersSpiceService.class);
     private SpiceManager availabilitySpiceManager = new SpiceManager(OrdersSpiceService.class);
 
@@ -36,7 +35,6 @@ public class OrdersSpiceActivity extends SherlockFragmentActivity {
 
     protected SpiceManager getAvailabilitySpiceManager()
     {
-        Log.w("myMessage", "You Passed getAvailabilitySpiceManager");
         return availabilitySpiceManager;
     }
 

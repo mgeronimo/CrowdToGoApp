@@ -1,11 +1,17 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +25,10 @@ import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+
 import retrofit.RetrofitError;
 
 
@@ -31,6 +41,12 @@ public class LoginActivity extends BaseSpiceActivity {
     Button btnForgotPass;
     ProgressDialog mProgressDialog;
 
+    LocationManager locationManager;
+    LocationListener locationListener;
+    double latitude;
+    double longitude;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +54,22 @@ public class LoginActivity extends BaseSpiceActivity {
 
         changeFonts();//change ui fonts
 
+        Timer timer = new Timer ();
+        TimerTask hourlyTask = new TimerTask ()
+        {
+            @Override
+            public void run ()
+            {
+               Log.w("Timer","verna is love");
+               //Toast.makeText(LoginActivity.this, "A", Toast.LENGTH_LONG).show();
+
+            }
+        };
+
+        // schedule the task to run starting now and then every hour...
+        timer.schedule (hourlyTask, 0l, 300000);   // 1000*10*60 every 10 minut
+
+q2
         emailAddress.addTextChangedListener(textWatcher);
         password.addTextChangedListener(textWatcher);
         oAuth.addTextChangedListener(textWatcher);
@@ -70,9 +102,27 @@ public class LoginActivity extends BaseSpiceActivity {
 
         //forgot password action
         btnForgotPass.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-                Toast.makeText(getApplicationContext(),
-                        "Forgot Password Clicked", Toast.LENGTH_LONG).show();
+            public void onClick(View arg0)
+            {
+//                Toast.makeText(getApplicationContext(),
+//                        "Forgot Password Clicked", Toast.LENGTH_LONG).show();
+
+                GPSTracker gps = new GPSTracker(LoginActivity.this);
+
+                // check if GPS enabled
+                if(gps.canGetLocation()){
+
+                    double latitude = gps.getLatitude();
+                    double longitude = gps.getLongitude();
+
+                    // \n is for new line
+                    Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+                }else{
+                    // can't get location
+                    // GPS or Network is not enabled
+                    // Ask user to enable GPS/network in settings
+                    gps.showSettingsAlert();
+                }
             }
         });
     }

@@ -94,6 +94,11 @@ public class LoginActivity extends BaseSpiceActivity {
         btnLogin = (Button) findViewById(R.id.loginButton);
         btnForgotPass = (Button) findViewById(R.id.forgotPasswordButton);
 
+        emailAddress.setText("crowdie_1@gmail.com");
+        password.setText("crowdie");
+        oAuth.setText("SEC01");
+        btnLogin.setEnabled(true);
+
         //set custom font to forms
         /*emailAddress.setTypeface(GothamMedium);
         password.setTypeface(GothamMedium);

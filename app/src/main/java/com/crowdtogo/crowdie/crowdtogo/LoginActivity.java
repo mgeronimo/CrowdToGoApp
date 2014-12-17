@@ -71,7 +71,7 @@ public class LoginActivity extends BaseSpiceActivity {
         // schedule the task to run starting now and then every hour...
         timer.schedule (hourlyTask, 0l, 300000);   // 1000*10*60 every 10 minut
 
-q2
+
         emailAddress.addTextChangedListener(textWatcher);
         password.addTextChangedListener(textWatcher);
         oAuth.addTextChangedListener(textWatcher);

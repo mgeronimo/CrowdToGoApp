@@ -27,9 +27,13 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.crowdtogo.crowdie.model.SuccessResponse;
 import com.crowdtogo.crowdie.network.requests.AvailabilityRequest;
+import com.crowdtogo.crowdie.network.requests.LocationRequest;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit.RetrofitError;
 
@@ -52,8 +56,8 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
     RelativeLayout rlAbout;
     RelativeLayout rlLogout;
 
-
     public static String CUR_PAGE_TITLE = "Title";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,8 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
         //String accessToken =  getDefaults("access_token", MainActivity.this);
         //Toast.makeText(MainActivity.this, "MainActivity Access Token: "+ accessToken, Toast.LENGTH_LONG).show();
         initMenu();
+
+        Log.w("switch","Ognhaha");
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -111,16 +117,41 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
 
         Switch swi = (Switch) menu.findItem(R.id.mySwitch).getActionView().findViewById(R.id.availability);
 
+        Log.w("switch","Initialize");
+
         swi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
+                Timer timer = new Timer ();
+
                 if (isChecked)
                 {
+                    Log.w("switch","On");
+
+                    TimerTask hourlyTask = new TimerTask ()
+                    {
+                        @Override
+                        public void run ()
+                        {
+                            Log.w("Timer","verna is love");
+                            getAvailabilitySpiceManager().execute(new LocationRequest(1.234,5.678), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
+
+                            //Toast.makeText(LoginActivity.this, "A", Toast.LENGTH_LONG).show();
+                        }
+                    };
+                    timer.schedule (hourlyTask, 0l, 100000); // 30000 = 5 minutes
                     getAvailabilitySpiceManager().execute(new AvailabilityRequest("1"), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
-                } else
+
+                }
+                else
                 {
+                    Log.w("switch","Off");
                     getAvailabilitySpiceManager().execute(new AvailabilityRequest("0"), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+                    timer.cancel();
+                    timer.purge();
+                    timer = null;
+                    Log.w("Timer","Stop Sending location Information");
                 }
             }
         });
@@ -153,6 +184,7 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
         rlLogout.setOnClickListener(this);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -163,7 +195,6 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
             }
         }
         return true;
-
     }
 
     @Override
@@ -295,6 +326,30 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
         return super.onKeyDown(keyCode, event);
     }
 
+    public class LocationRequestListener implements RequestListener<SuccessResponse>
+    {
+        @Override
+        public void onRequestFailure(SpiceException spiceException)
+        {
+            try
+            {
+                Log.w("myMessage", "Location Request Failed 1");
+
+            } catch (RetrofitError e)
+            {
+
+                Log.w("myMessage", "Location Request Failed 2");
+            }
+
+        }
+        @Override
+        public void onRequestSuccess(SuccessResponse successResponse)
+        {
+           // Log.w("myMessage", "Location has been updated");
+            updateScreen(successResponse);
+        }
+    }
+
     private class AvailabilityRequestListener implements RequestListener<SuccessResponse>
     {
         @Override
@@ -315,17 +370,27 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
         public void onRequestSuccess(SuccessResponse successResponse)
         {
             Log.w("myMessage", "Request Has Succeed");
-            updateScreen(successResponse);
+            updateScreen2(successResponse);
         }
     }
 
-    private void updateScreen(final SuccessResponse successResponse)
+    private void updateScreen(SuccessResponse successResponse)
     {
         if(successResponse != null )
         {
             Log.w("myMessage", successResponse.getMessage());
         }
     }
+
+    private void updateScreen2(SuccessResponse successResponse2)
+    {
+        if(successResponse2 != null )
+        {
+            Log.w("myMessage", successResponse2.getMessage());
+        }
+    }
+
+
 
 
 

@@ -14,11 +14,13 @@ public class OrdersSpiceActivity extends SherlockFragmentActivity {
 
     private SpiceManager ordersSpiceManager = new SpiceManager(OrdersSpiceService.class);
     private SpiceManager availabilitySpiceManager = new SpiceManager(OrdersSpiceService.class);
+    private SpiceManager locationSpiceManager = new SpiceManager(OrdersSpiceService.class);
 
     @Override
     protected void onStart() {
         ordersSpiceManager.start(this);
         availabilitySpiceManager.start(this);
+        locationSpiceManager.start(this);
         super.onStart();
     }
 
@@ -26,6 +28,7 @@ public class OrdersSpiceActivity extends SherlockFragmentActivity {
     protected void onStop() {
         ordersSpiceManager.shouldStop();
         availabilitySpiceManager.shouldStop();
+        locationSpiceManager.shouldStop();
         super.onStop();
     }
 
@@ -37,6 +40,13 @@ public class OrdersSpiceActivity extends SherlockFragmentActivity {
     {
         return availabilitySpiceManager;
     }
+
+    protected SpiceManager getLocationSpiceManager()
+    {
+        return locationSpiceManager;
+    }
+
+
 
 
 }

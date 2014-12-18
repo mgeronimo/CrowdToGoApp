@@ -37,7 +37,7 @@ public class OrdersSpiceService extends RetrofitGsonSpiceService {
                         //kKjCicwgdOdl2FFBLH8hYwz5vaZhhPrdP4l1aT9i
                         //request.addHeader("Authorization",getDefaults("access_token",OrdersSpiceService.this) );
                         //request.addHeader("Authorization","uDzQzKXBEi6Fz5qhcOJTni3V6GpenBMS8mGMsmLE" );
-                        request.addHeader("Authorization","81blB021Y6Xxxx78fSYqWudS9m6k7aoqMt6RLKfE" );
+                        request.addHeader("Authorization","bt55R0kQQ3U006t8k3uKlyK2fY5AYbiGR1sa8qCt" );
                     }
                 })
                 .setEndpoint(BASE_URL)

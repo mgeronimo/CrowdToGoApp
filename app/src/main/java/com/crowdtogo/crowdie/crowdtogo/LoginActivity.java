@@ -56,27 +56,11 @@ public class LoginActivity extends BaseSpiceActivity {
 
         changeFonts();//change ui fonts
 
-        Timer timer = new Timer ();
-        TimerTask hourlyTask = new TimerTask ()
-        {
-            @Override
-            public void run ()
-            {
-               Log.w("Timer","verna is love");
-               //Toast.makeText(LoginActivity.this, "A", Toast.LENGTH_LONG).show();
-
-            }
-        };
-
-        // schedule the task to run starting now and then every hour...
-        timer.schedule (hourlyTask, 0l, 300000);   // 1000*10*60 every 10 minut
-
-
         emailAddress.addTextChangedListener(textWatcher);
         password.addTextChangedListener(textWatcher);
         oAuth.addTextChangedListener(textWatcher);
 
-        //login button action
+        //loginbutton action
         btnLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                     // Start NewActivity.class

@@ -23,21 +23,41 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import com.actionbarsherlock.view.MenuItem;
+//<<<<<<< Updated upstream
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
+import com.crowdtogo.crowdie.model.AccessTokenError;
+import com.crowdtogo.crowdie.model.OrdersResponse;
 import com.crowdtogo.crowdie.model.SuccessResponse;
 import com.crowdtogo.crowdie.network.requests.AvailabilityRequest;
 import com.crowdtogo.crowdie.network.requests.LocationRequest;
+import com.crowdtogo.crowdie.network.requests.OrdersRequest;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import retrofit.RetrofitError;
 
-public class MainActivity extends OrdersSpiceActivity implements OnClickListener {
+//public class MainActivity extends OrdersSpiceActivity implements OnClickListener {
+//=======
+import com.crowdtogo.crowdie.model.AccessTokenError;
+import com.crowdtogo.crowdie.model.OrdersResponse;
+import com.crowdtogo.crowdie.network.requests.OrdersRequest;
+import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
+
+import java.util.HashMap;
+
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+
+public class MainActivity extends OrdersSpiceActivity  implements OnClickListener {//SherlockFragmentActivity
+//>>>>>>> Stashed changes
 
 
     private DrawerLayout mDrawerLayout;
@@ -56,12 +76,19 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
     RelativeLayout rlAbout;
     RelativeLayout rlLogout;
 
+    DBHelper ordersDB = new DBHelper(this);
+    OrdersSpiceActivity orders  = new OrdersSpiceActivity();
+
+
     public static String CUR_PAGE_TITLE = "Title";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        DBHelper ordersDB = new DBHelper(this);
+
         setContentView(R.layout.activity_main);
 
         //String accessToken =  getDefaults("access_token", MainActivity.this);
@@ -107,6 +134,8 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
             setSelected(rlHome);
             //mDrawerLayout.openDrawer(mDrawerList); // Keep drawer open everytime the application starts
         }
+
+        getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", MainActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
 
     }
 
@@ -184,8 +213,12 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
         rlLogout.setOnClickListener(this);
     }
 
+///<<<<<<< Updated upstream
 
     @Override
+//=======
+    //@Override
+//>>>>>>> Stashed changes
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
@@ -263,7 +296,6 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
     public static void resetAccessToken(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
-
         editor.remove("access_token");
         editor.commit();
     }
@@ -392,6 +424,72 @@ public class MainActivity extends OrdersSpiceActivity implements OnClickListener
 
 
 
+
+    private class OrdersRequestListener implements RequestListener<OrdersResponse> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            if (spiceException.getCause() instanceof RetrofitError) {
+                RetrofitError error = (RetrofitError) spiceException.getCause();
+                AccessTokenError body = (AccessTokenError) error.getBodyAs(AccessTokenError.class);
+                //mProgressDialog.dismiss();
+                Toast.makeText(MainActivity.this, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
+            }
+        }
+
+        //Success Request
+        @Override
+        public void onRequestSuccess(OrdersResponse ordersResponse) {
+            //Toast.makeText(DeliveryDetailsActivity.this, "Success" ,Toast.LENGTH_LONG).show();
+            updateOrder(ordersResponse);
+        }
+
+    };
+
+    private void updateOrder(final OrdersResponse response){
+
+        if(response!=null){
+            // setDefaults("access_token",response.getAccess_token(),LoginActivity.this);
+            for(int index = 0; index < response.getData().toArray().length; index++) {
+
+                HashMap<String, String> queryValues = new HashMap<String, String>();
+
+                queryValues.put("orderId",response.getData().get(index).getOrderId());
+                queryValues.put("firstname", response.getData().get(index).getFirstname());
+                queryValues.put("lastname", response.getData().get(index).getLastname());
+                queryValues.put("destination_address", response.getData().get(index).getDestination_address());
+                queryValues.put("contact", response.getData().get(index).getContact());
+                queryValues.put("size", response.getData().get(index).getSize());
+                queryValues.put("status", response.getData().get(index).getStatus());
+                queryValues.put("destination_latitude", response.getData().get(index).getDestination_latitude());
+                queryValues.put("destination_longitude", response.getData().get(index).getDestination_longitude());
+                queryValues.put("merchantId", response.getData().get(index).getMerchantId());
+                queryValues.put("store_name", response.getData().get(index).getStore_name());
+                queryValues.put("store_contact", response.getData().get(index).getStore_contact());
+                queryValues.put("pickup_address", response.getData().get(index).getPickup_address());
+                queryValues.put("pickup_address_line_2", response.getData().get(index).getPickup_address_line_2());
+                queryValues.put("pickup_latitude", response.getData().get(index).getPickup_latitude());
+                queryValues.put("pickup_longitude", response.getData().get(index).getPickup_longitude());
+
+
+                ordersDB.insertOrders(queryValues);
+                //Toast.makeText(DeliveryDetailsActivity.this, "Record saved", Toast.LENGTH_LONG).show();
+                //List<Orders> notes = Orders.findWithQuery(Orders.class, "Select * from ORDERS");
+                //Toast.makeText(DeliveryDetailsActivity.this, notes.toArray().toString(), Toast.LENGTH_LONG).show();
+            }
+            //Toast.makeText(MainActivity.this, "Main: "+ ordersDB.getAllOrders(), Toast.LENGTH_LONG).show();
+            //Intent mainIntent = new Intent(DeliveryDetailsActivity.this, MainActivity.class);
+            //startActivity(mainIntent);
+            //mProgressDialog.dismiss();
+        }
+
+    }
+
+    //get stored crowdie_id
+    public static String getCrowdieId(String accessToken, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(accessToken, null);
+    }
 
 
 

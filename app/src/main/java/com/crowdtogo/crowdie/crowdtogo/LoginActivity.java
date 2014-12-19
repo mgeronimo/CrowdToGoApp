@@ -3,12 +3,14 @@ package com.crowdtogo.crowdie.crowdtogo;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.crowdtogo.crowdie.model.AccessTokenError;
 import com.crowdtogo.crowdie.model.Token;
 import com.crowdtogo.crowdie.model.UserLoginResponse;
 import com.crowdtogo.crowdie.network.requests.AccessTokenRequest;
@@ -41,6 +44,7 @@ public class LoginActivity extends BaseSpiceActivity {
     Button btnLogin;
     Button btnForgotPass;
     ProgressDialog mProgressDialog;
+    String secret;
 
     LocationManager locationManager;
     LocationListener locationListener;
@@ -56,6 +60,16 @@ public class LoginActivity extends BaseSpiceActivity {
 
         changeFonts();//change ui fonts
 
+
+        secret = getSecret("secret",LoginActivity.this);
+        if(secret != null){
+            oAuth.setVisibility(View.INVISIBLE);
+            oAuth.setText(secret);
+            //sample
+            emailAddress.setText("crowdie_1@gmail.com");
+            password.setText("crowdie");
+        }
+
         emailAddress.addTextChangedListener(textWatcher);
         password.addTextChangedListener(textWatcher);
         oAuth.addTextChangedListener(textWatcher);
@@ -64,34 +78,63 @@ public class LoginActivity extends BaseSpiceActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                     // Start NewActivity.class
+                if(secret!= null){
+                    Token token = new Token();
+                    token.setUsername(emailAddress.getText().toString());
+                    token.setPassword(password.getText().toString());
 
-                Token token = new Token();
-                token.setUsername(emailAddress.getText().toString());
-                token.setPassword(password.getText().toString());
-                token.setClient_secret(oAuth.getText().toString());//"h9Q40"
-                token.setClient_id(emailAddress.getText().toString());
-                token.setGrant_type("password");
-                token.setScope("Crowdie");
-                mProgressDialog = new ProgressDialog(LoginActivity.this);
-                // Set progressdialog title
-                mProgressDialog.setTitle("CrowdToGo");
-                // Set progressdialog message
-                mProgressDialog.setMessage("Loading...");
-                mProgressDialog.setIndeterminate(false);
-                // Show progressdialog
-                mProgressDialog.show();
-                //perform login by providing valid parameters to get access token
-                getAccessTokenSpiceManager().execute(new AccessTokenRequest(token), "getAccessToken", DurationInMillis.ALWAYS_EXPIRED, new AccessRequestListener());
+                    token.setClient_secret(secret);//"h9Q40"
+                    token.setClient_id(emailAddress.getText().toString());
+                    token.setGrant_type("password");
+                    token.setScope("Crowdie");
+                    mProgressDialog = new ProgressDialog(LoginActivity.this);
+                    // Set progressdialog title
+                    mProgressDialog.setTitle("CrowdToGo");
+                    // Set progressdialog message
+                    mProgressDialog.setMessage("Loading...");
+                    mProgressDialog.setIndeterminate(false);
+                    // Show progressdialog
+                    mProgressDialog.show();
+                    //perform login by providing valid parameters to get access token
+                    getAccessTokenSpiceManager().execute(new AccessTokenRequest(token), "getAccessToken", DurationInMillis.ALWAYS_EXPIRED, new AccessRequestListener());
+
+                }else {
+
+                    Token token = new Token();
+                    token.setUsername(emailAddress.getText().toString());
+                    token.setPassword(password.getText().toString());
+                    token.setClient_secret(oAuth.getText().toString());//"h9Q40"
+                    saveSecret("secret",oAuth.getText().toString(), LoginActivity.this);
+                    token.setClient_id(emailAddress.getText().toString());
+                    token.setGrant_type("password");
+                    token.setScope("Crowdie");
+                    mProgressDialog = new ProgressDialog(LoginActivity.this);
+                    // Set progressdialog title
+                    mProgressDialog.setTitle("CrowdToGo");
+                    // Set progressdialog message
+                    mProgressDialog.setMessage("Loading...");
+                    mProgressDialog.setIndeterminate(false);
+                    // Show progressdialog
+                    mProgressDialog.show();
+                    //perform login by providing valid parameters to get access token
+                    getAccessTokenSpiceManager().execute(new AccessTokenRequest(token), "getAccessToken", DurationInMillis.ALWAYS_EXPIRED, new AccessRequestListener());
+                }
 
             }
         });
 
         //forgot password action
         btnForgotPass.setOnClickListener(new View.OnClickListener() {
+
             public void onClick(View arg0)
             {
 //                Toast.makeText(getApplicationContext(),
 //                        "Forgot Password Clicked", Toast.LENGTH_LONG).show();
+
+                deleteSecret(LoginActivity.this);
+                oAuth.setVisibility(View.VISIBLE);
+                Intent mainIntent = new Intent(LoginActivity.this, LoginActivity.class);
+                startActivity(mainIntent);
 
                 GPSTracker gps = new GPSTracker(LoginActivity.this);
 
@@ -109,8 +152,9 @@ public class LoginActivity extends BaseSpiceActivity {
                     // Ask user to enable GPS/network in settings
                     gps.showSettingsAlert();
                 }
+
             }
-        });
+       });
     }
 
     public void changeFonts(){
@@ -233,13 +277,11 @@ public class LoginActivity extends BaseSpiceActivity {
     private class AccessRequestListener implements RequestListener<UserLoginResponse> {
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            try {
-                Toast.makeText(LoginActivity.this, "Failed:Incorrect username or password "+ spiceException.getMessage(), Toast.LENGTH_LONG).show();
-                //RetrofitError error = (RetrofitError)RetrofitError.httpError()
+            if (spiceException.getCause() instanceof RetrofitError) {
+                RetrofitError error = (RetrofitError) spiceException.getCause();
+                AccessTokenError body = (AccessTokenError) error.getBodyAs(AccessTokenError.class);
                 mProgressDialog.dismiss();
-            } catch (RetrofitError e) {
-               // System.out.println(e.getResponse().getStatus());
-                Toast.makeText(LoginActivity.this, e.getResponse().getStatus(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
             }
 
         }
@@ -253,11 +295,57 @@ public class LoginActivity extends BaseSpiceActivity {
     private void updateScreen(final UserLoginResponse response){
         if(response!=null){
 
-            Toast.makeText(LoginActivity.this, "Access Token: "+ response.getAccess_token(), Toast.LENGTH_LONG).show();
+            saveAccessToken("access_token", response.getAccess_token(), LoginActivity.this);
+            saveCrowdieID("crowdie_id", response.getCrowdie_id(), LoginActivity.this);
+            //Toast.makeText(LoginActivity.this, "Access Token: "+ response.getAccess_token(), Toast.LENGTH_LONG).show();
+
             Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(mainIntent);
             mProgressDialog.dismiss();
+
         }
 
+
     }
+
+
+    //Save Access Token
+    private void saveAccessToken(String key, String value, Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+    //Save CrowdieID
+    private void saveCrowdieID(String key, String value, Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+    private void saveSecret(String key, String value, Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    private void deleteSecret(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("secret");
+
+        editor.commit();
+    }
+
+    //get stored Secret
+    public static String getSecret(String key, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(key, null);
+    }
+
 }

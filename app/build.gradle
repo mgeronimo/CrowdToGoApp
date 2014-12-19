@@ -35,5 +35,6 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:1.2.+'
     compile 'com.octo.android.robospice:robospice:1.4.12'
     compile 'com.octo.android.robospice:robospice-retrofit:1.4.12'
+    compile 'com.github.satyan:sugar:1.3'
 
 }

@@ -34,10 +34,7 @@ public class OrdersSpiceService extends RetrofitGsonSpiceService {
                     @Override
                     public void intercept(RequestFacade request) {
                         //access token add to header here
-                        //kKjCicwgdOdl2FFBLH8hYwz5vaZhhPrdP4l1aT9i
-                        //request.addHeader("Authorization",getDefaults("access_token",OrdersSpiceService.this) );
-                        //request.addHeader("Authorization","uDzQzKXBEi6Fz5qhcOJTni3V6GpenBMS8mGMsmLE" );
-                        request.addHeader("Authorization","bt55R0kQQ3U006t8k3uKlyK2fY5AYbiGR1sa8qCt" );
+                        request.addHeader("Authorization",getDefaults("access_token",OrdersSpiceService.this) );
                     }
                 })
                 .setEndpoint(BASE_URL)

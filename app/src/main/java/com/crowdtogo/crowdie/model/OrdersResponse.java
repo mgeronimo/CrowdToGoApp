@@ -21,80 +21,64 @@ public class OrdersResponse {
         this.data = data;
     }
 
-    public class Data{
+    public class Data {
 
-    @Expose
-    @SerializedName("orderId")
-    private String orderId;
-    @Expose
-    @SerializedName("crowdieId")
-    private String crowdieId;
-    @Expose
-    @SerializedName("firstname")
-    private String firstname;
-    @Expose
-    @SerializedName("lastname")
-    private String lastname;
-    @Expose
-    @SerializedName("street")
-    private String street;
-    @Expose
-    @SerializedName("city")
-    private String city;
-    @Expose
-    @SerializedName("aptNumber")
-    private String aptNumber;
-    @Expose
-    @SerializedName("state")
-    private String state;
-    @Expose
-    @SerializedName("zipcode")
-    private String zipcode;
-    @Expose
-    @SerializedName("contact")
-    private String contact;
-    @Expose
-    @SerializedName("size")
-    private String size;
-    @Expose
-    @SerializedName("status")
-    private String status;
-    @Expose
-    @SerializedName("destinationlatitude")
-    private double destinationlatitude;
-    @Expose
-    @SerializedName("destinationlongitude")
-    private double destinationlongitude;
-    @Expose
-    @SerializedName("merchantId")
-    private String merchantId;
-    @Expose
-    @SerializedName("store_name")
-    private String store_name;
-    @Expose
-    @SerializedName("store_contact")
-    private String store_contact;
-    @Expose
-    @SerializedName("pickup_street_address")
-    private String pickup_street_address;
-    @Expose
-    @SerializedName("pickup_address_line_2")
-    private String pickup_address_line_2;
-    @Expose
-    @SerializedName("pickup_city")
-    private String pickup_city;
-    @Expose
-    @SerializedName("pickup_state")
-    private String pickup_state;
-    @Expose
-    @SerializedName("pickup_zip")
-    private String pickup_zip;
-    @Expose
-    @SerializedName("pickuplatitude")
-    private double pickuplatitude;
-    @Expose
-    @SerializedName("pickuplongitude")
-    private double pickuplongitude;
+        @Expose
+        @SerializedName("orderId")
+        private String orderId;
+        @Expose
+        @SerializedName("firstname")
+        private String firstname;
+        @Expose
+        @SerializedName("lastname")
+        private String lastname;
+        @Expose
+        @SerializedName("destination_address")
+        private String destination_address;
+        @Expose
+        @SerializedName("contact")
+        private String contact;
+        @Expose
+        @SerializedName("size")
+        private String size;
+        @Expose
+        @SerializedName("status")
+        private String status;
+        @Expose
+        @SerializedName("destination_latitude")
+        private String destination_latitude;
+        @Expose
+        @SerializedName("destination_longitude")
+        private String destination_longitude;
+        @Expose
+        @SerializedName("merchantId")
+        private String merchantId;
+        @Expose
+        @SerializedName("store_name")
+        private String store_name;
+        @Expose
+        @SerializedName("store_contact")
+        private String store_contact;
+        @Expose
+        @SerializedName("pickup_address")
+        private String pickup_address;
+        @Expose
+        @SerializedName("pickup_address_line_2")
+        private String pickup_address_line_2;
+        @Expose
+        @SerializedName("pickup_latitude")
+        private String pickup_latitude;
+        @Expose
+        @SerializedName("pickup_longitude")
+        private String pickup_longitude;
+
+        public String getLastname() {
+            return lastname;
+        }
+
+        public void setLastname(String lastname) {
+            this.lastname = lastname;
+        }
 
         public String getOrderId() {
             return orderId;
@@ -102,14 +86,6 @@ public class OrdersResponse {
 
         public void setOrderId(String orderId) {
             this.orderId = orderId;
-        }
-
-        public String getCrowdieId() {
-            return crowdieId;
-        }
-
-        public void setCrowdieId(String crowdieId) {
-            this.crowdieId = crowdieId;
         }
 
         public String getFirstname() {
@@ -120,52 +96,12 @@ public class OrdersResponse {
             this.firstname = firstname;
         }
 
-        public String getLastname() {
-            return lastname;
+        public String getDestination_address() {
+            return destination_address;
         }
 
-        public void setLastname(String lastname) {
-            this.lastname = lastname;
-        }
-
-        public String getStreet() {
-            return street;
-        }
-
-        public void setStreet(String street) {
-            this.street = street;
-        }
-
-        public String getCity() {
-            return city;
-        }
-
-        public void setCity(String city) {
-            this.city = city;
-        }
-
-        public String getAptNumber() {
-            return aptNumber;
-        }
-
-        public void setAptNumber(String aptNumber) {
-            this.aptNumber = aptNumber;
-        }
-
-        public String getState() {
-            return state;
-        }
-
-        public void setState(String state) {
-            this.state = state;
-        }
-
-        public String getZipcode() {
-            return zipcode;
-        }
-
-        public void setZipcode(String zipcode) {
-            this.zipcode = zipcode;
+        public void setDestination_address(String destination_address) {
+            this.destination_address = destination_address;
         }
 
         public String getContact() {
@@ -192,20 +128,20 @@ public class OrdersResponse {
             this.status = status;
         }
 
-        public double getDestinationlatitude() {
-            return destinationlatitude;
+        public String getDestination_latitude() {
+            return destination_latitude;
         }
 
-        public void setDestinationlatitude(double destinationlatitude) {
-            this.destinationlatitude = destinationlatitude;
+        public void setDestination_latitude(String destination_latitude) {
+            this.destination_latitude = destination_latitude;
         }
 
-        public double getDestinationlongitude() {
-            return destinationlongitude;
+        public String getDestination_longitude() {
+            return destination_longitude;
         }
 
-        public void setDestinationlongitude(double destinationlongitude) {
-            this.destinationlongitude = destinationlongitude;
+        public void setDestination_longitude(String destination_longitude) {
+            this.destination_longitude = destination_longitude;
         }
 
         public String getMerchantId() {
@@ -232,12 +168,12 @@ public class OrdersResponse {
             this.store_contact = store_contact;
         }
 
-        public String getPickup_street_address() {
-            return pickup_street_address;
+        public String getPickup_address() {
+            return pickup_address;
         }
 
-        public void setPickup_street_address(String pickup_street_address) {
-            this.pickup_street_address = pickup_street_address;
+        public void setPickup_address(String pickup_address) {
+            this.pickup_address = pickup_address;
         }
 
         public String getPickup_address_line_2() {
@@ -248,46 +184,43 @@ public class OrdersResponse {
             this.pickup_address_line_2 = pickup_address_line_2;
         }
 
-        public String getPickup_city() {
-            return pickup_city;
+        public String getPickup_latitude() {
+            return pickup_latitude;
         }
 
-        public void setPickup_city(String pickup_city) {
-            this.pickup_city = pickup_city;
+        public void setPickup_latitude(String pickup_latitude) {
+            this.pickup_latitude = pickup_latitude;
         }
 
-        public String getPickup_state() {
-            return pickup_state;
+        public String getPickup_longitude() {
+            return pickup_longitude;
         }
 
-        public void setPickup_state(String pickup_state) {
-            this.pickup_state = pickup_state;
+        public void setPickup_longitude(String pickup_longitude) {
+            this.pickup_longitude = pickup_longitude;
         }
 
-        public String getPickup_zip() {
-            return pickup_zip;
-        }
+        /*
 
-        public void setPickup_zip(String pickup_zip) {
-            this.pickup_zip = pickup_zip;
-        }
+"orderId": 3,
+"firstname": "Ivann",
+"lastname": "Magadia",
+"destination_address": "15 Mocha Bacoor City AL 12345",
+"contact": "091928454548",
+"size": "Car",
+"status": 1,
+"destination_latitude": 36.075614,
+"destination_longitude": -94.169575,
+"merchantId": 3,
+"store_name": "Renan Flower Shop",
+"store_contact": null,
+"pickup_address": "Chestnut Bacoor City AL 1234512345",
+"pickup_address_line_2": "Blk. 28 Lot. 24 Ph.4 Soldiers Hills Molino Bacoor Cavite",
+"pickup_latitude": 36.079549,
+"pickup_longitude": -94.1749507
 
-        public double getPickuplatitude() {
-            return pickuplatitude;
-        }
 
-        public void setPickuplatitude(double pickuplatitude) {
-            this.pickuplatitude = pickuplatitude;
-        }
+         */
 
-        public double getPickuplongitude() {
-            return pickuplongitude;
-        }
-
-        public void setPickuplongitude(double pickuplongitude) {
-            this.pickuplongitude = pickuplongitude;
-        }
     }
-
-
 }

@@ -13,6 +13,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 
 public class SplashActivity extends Activity {
 
@@ -22,8 +24,17 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        DBHelper myDbHelper = new DBHelper(this);
         changeFonts();
+
+
+//        try {
+//             myDbHelper.onCreate();
+//            myDbHelper.onCreate(this);
+//            } catch (IOException ioe) {
+//                  throw new Error("Unable to create database");
+//            }
+
 
         IntentLauncher launcher =new IntentLauncher();
         launcher.start();

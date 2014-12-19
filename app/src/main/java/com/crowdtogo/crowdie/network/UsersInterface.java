@@ -22,6 +22,7 @@ import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 import retrofit.http.Part;
 import retrofit.http.Path;
 import retrofit.http.Query;
@@ -30,9 +31,9 @@ public interface UsersInterface {
 
 
     //@Multipart
-    @GET("/api/v1/orders/crowdie/1")
-    //OrdersResponse getOrder(@Path("crowdie") String crowdieId);
-    OrdersResponse getOrder();
+    @GET("/api/v1/orders/crowdie/{crowdie}")
+    OrdersResponse getOrder(@Path("crowdie") String crowdieId);
+   // OrdersResponse getOrder();
 
 
     @FormUrlEncoded
@@ -44,5 +45,8 @@ public interface UsersInterface {
                                  @Field("grant_type") String grant_type,
                                  @Field("scope") String scope);
 
+    @FormUrlEncoded
+    @PUT("/api/v1/orders/confirm/{id}")
+    OrdersResponse confirm(@Field("id") String crowdieId);
 
 }

@@ -12,13 +12,13 @@ public class OrdersRequest extends RetrofitSpiceRequest<OrdersResponse,UsersInte
 
     String crowdieId;
 
-    public OrdersRequest(){
+    public OrdersRequest(String crowdieId ){
         super(OrdersResponse.class, UsersInterface.class);
-        //this.crowdieId = crowdieId;
+        this.crowdieId = crowdieId;
     }
     @Override
     public OrdersResponse loadDataFromNetwork() throws Exception {
-        return getService().getOrder();
+        return getService().getOrder(crowdieId);
     }
 
 

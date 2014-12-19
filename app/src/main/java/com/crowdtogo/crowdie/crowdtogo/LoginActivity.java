@@ -130,7 +130,6 @@ public class LoginActivity extends BaseSpiceActivity {
             {
 //                Toast.makeText(getApplicationContext(),
 //                        "Forgot Password Clicked", Toast.LENGTH_LONG).show();
-
                 deleteSecret(LoginActivity.this);
                 oAuth.setVisibility(View.VISIBLE);
                 Intent mainIntent = new Intent(LoginActivity.this, LoginActivity.class);

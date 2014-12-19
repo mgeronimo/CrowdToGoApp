@@ -14,13 +14,15 @@ public class LocationRequest  extends RetrofitSpiceRequest<SuccessResponse,Locat
     //private AvailabilityParam availabilityParam;
     Double latitude;
     Double longitude;
+    String crowdieId;
 
 
-    public LocationRequest(Double latitude, Double longitude)
+    public LocationRequest(Double latitude, Double longitude,String crowdieId)
     {
         super(SuccessResponse.class, LocationInterface.class);
         this.latitude = latitude;
         this.longitude = longitude;
+        this.crowdieId = crowdieId;
         Log.w("latitude", String.valueOf(latitude));
         Log.w("longitude", String.valueOf(longitude));
     }
@@ -32,7 +34,7 @@ public class LocationRequest  extends RetrofitSpiceRequest<SuccessResponse,Locat
         Double tempLongitude = longitude;
         latitude = null;
         longitude = null;
-        return getService().changeLocation(tempLatitude, tempLongitude);
+        return getService().changeLocation(tempLatitude, tempLongitude,crowdieId);
 
     }
 }

@@ -6,12 +6,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crowdtogo.crowdie.model.AccessTokenError;
 import com.crowdtogo.crowdie.model.OrdersResponse;
+import com.crowdtogo.crowdie.model.SuccessResponse;
+import com.crowdtogo.crowdie.network.requests.ConfirmationRequest;
 import com.crowdtogo.crowdie.network.requests.OrdersRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,7 +33,7 @@ import java.util.List;
 
 import retrofit.RetrofitError;
 
-public class DeliveryDetailsActivity extends Activity {
+public class DeliveryDetailsActivity extends OrdersSpiceActivity {
     String detailsName;
     String detailsDate;
     String detailsPickup;
@@ -40,6 +45,7 @@ public class DeliveryDetailsActivity extends Activity {
     HashMap<String, String> queryValues;
     // DB Class to perform DB related operations
     DBHelper ordersDB = new DBHelper(this);
+    Button details;
     //OrdersSpiceActivity ordersSpiceActivity = new OrdersSpiceActivity();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +53,6 @@ public class DeliveryDetailsActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_delivery_details);
 
-       // getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", DeliveryDetailsActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
-       // getOrdersSpiceManager().execute(new OrdersRequest(), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
 
 
         Intent i = getIntent();
@@ -65,11 +69,31 @@ public class DeliveryDetailsActivity extends Activity {
         TextView dateTxt=(TextView)findViewById(R.id.details_date);
         TextView pickupTxt=(TextView)findViewById(R.id.details_pickupLocation);
         TextView deliveryTxt=(TextView)findViewById(R.id.details_deliveryLocation);
+        details = (Button)findViewById(R.id.button);
 
         nameTxt.setText(detailsName);
         dateTxt.setText(detailsDate);
         pickupTxt.setText(detailsPickup);
         deliveryTxt.setText(detailsDelivery);
+
+
+        //Onclick event for ccept or Reject Order button
+        details.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                //Accept or Reject Order
+                if(details.getText().equals("Accept Job")){
+
+                    confirmationSpiceManager().execute(new ConfirmationRequest("ACCEPT",getCrowdieId("crowdie_id", DeliveryDetailsActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
+                    details.setText("Reject Job");
+
+                }else{
+                    confirmationSpiceManager().execute(new ConfirmationRequest("REJECT",getCrowdieId("crowdie_id", DeliveryDetailsActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
+                    details.setText("Accept Job");
+                }
+
+            }
+        });
 
     }
 
@@ -84,7 +108,7 @@ public class DeliveryDetailsActivity extends Activity {
 //    }
 
 
-    private class OrdersRequestListener implements RequestListener<OrdersResponse> {
+    private class ConfirmationRequestListener implements RequestListener<SuccessResponse> {
 
         @Override
         public void onRequestFailure(SpiceException spiceException) {
@@ -98,46 +122,17 @@ public class DeliveryDetailsActivity extends Activity {
 
         //Success Request
         @Override
-        public void onRequestSuccess(OrdersResponse ordersResponse) {
+        public void onRequestSuccess(SuccessResponse successResponse) {
             //Toast.makeText(DeliveryDetailsActivity.this, "Success" ,Toast.LENGTH_LONG).show();
-            updateOrder(ordersResponse);
+            updateOrder(successResponse);
         }
 
     };
 
-    private void updateOrder(final OrdersResponse response){
+    private void updateOrder(final SuccessResponse response){
 
         if(response!=null){
-
-
-            for(int index = 0; index < response.getData().toArray().length; index++) {
-
-                queryValues = new HashMap<String, String>();
-
-                queryValues.put("orderId",response.getData().get(index).getOrderId());
-                queryValues.put("firstname", response.getData().get(index).getFirstname());
-                queryValues.put("lastname", response.getData().get(index).getLastname());
-                queryValues.put("destination_address", response.getData().get(index).getDestination_address());
-                queryValues.put("contact", response.getData().get(index).getContact());
-                queryValues.put("size", response.getData().get(index).getSize());
-                queryValues.put("status", response.getData().get(index).getStatus());
-                queryValues.put("destination_latitude", response.getData().get(index).getDestination_latitude());
-                queryValues.put("destination_longitude", response.getData().get(index).getDestination_longitude());
-                queryValues.put("merchantId", response.getData().get(index).getMerchantId());
-                queryValues.put("store_name", response.getData().get(index).getStore_name());
-                queryValues.put("store_contact", response.getData().get(index).getStore_contact());
-                queryValues.put("pickup_address", response.getData().get(index).getPickup_address());
-                queryValues.put("pickup_address_line_2", response.getData().get(index).getPickup_address_line_2());
-                queryValues.put("pickup_latitude", response.getData().get(index).getPickup_latitude());
-                queryValues.put("pickup_longitude", response.getData().get(index).getPickup_longitude());
-
-                ordersDB.insertOrders(queryValues);
-
-//                Toast.makeText(DeliveryDetailsActivity.this, "Record saved", Toast.LENGTH_LONG).show();
-                //List<Orders> notes = Orders.findWithQuery(Orders.class, "Select * from ORDERS");
-                //Toast.makeText(DeliveryDetailsActivity.this, notes.toArray().toString(), Toast.LENGTH_LONG).show();
-            }
-
+            Log.w("DeliveryDetailActivity", response.getMessage());
         }
     }
 

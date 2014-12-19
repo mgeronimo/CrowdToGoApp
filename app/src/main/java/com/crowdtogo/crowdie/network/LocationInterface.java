@@ -32,6 +32,6 @@ public interface LocationInterface
 {
 
     @FormUrlEncoded
-    @PUT("/api/v1/location/2")
-    SuccessResponse changeLocation( @Field("latitude") Double latitiude, @Field("longitude") Double longitude );
+    @PUT("/api/v1/location/{crowdie}")
+    SuccessResponse changeLocation( @Field("latitude") Double latitiude, @Field("longitude") Double longitude,@Path("crowdie") String crowdieId );
 }

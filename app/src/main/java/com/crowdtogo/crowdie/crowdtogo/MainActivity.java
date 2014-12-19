@@ -164,19 +164,19 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                         public void run ()
                         {
                             Log.w("Timer","verna is love");
-                            getAvailabilitySpiceManager().execute(new LocationRequest(1.234,5.678), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
+                            getAvailabilitySpiceManager().execute(new LocationRequest(1.234,5.678,getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
 
                             //Toast.makeText(LoginActivity.this, "A", Toast.LENGTH_LONG).show();
                         }
                     };
                     timer.schedule (hourlyTask, 0l, 100000); // 30000 = 5 minutes
-                    getAvailabilitySpiceManager().execute(new AvailabilityRequest("1"), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+                    getAvailabilitySpiceManager().execute(new AvailabilityRequest("1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
 
                 }
                 else
                 {
                     Log.w("switch","Off");
-                    getAvailabilitySpiceManager().execute(new AvailabilityRequest("0"), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+                    getAvailabilitySpiceManager().execute(new AvailabilityRequest("0",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
                     timer.cancel();
                     timer.purge();
                     timer = null;
@@ -448,7 +448,9 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
 
     private void updateOrder(final OrdersResponse response){
 
+
         if(response!=null){
+            ordersDB.DeleteOrders();
             // setDefaults("access_token",response.getAccess_token(),LoginActivity.this);
             for(int index = 0; index < response.getData().toArray().length; index++) {
 
@@ -473,6 +475,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
 
 
                 ordersDB.insertOrders(queryValues);
+
                 //Toast.makeText(DeliveryDetailsActivity.this, "Record saved", Toast.LENGTH_LONG).show();
                 //List<Orders> notes = Orders.findWithQuery(Orders.class, "Select * from ORDERS");
                 //Toast.makeText(DeliveryDetailsActivity.this, notes.toArray().toString(), Toast.LENGTH_LONG).show();

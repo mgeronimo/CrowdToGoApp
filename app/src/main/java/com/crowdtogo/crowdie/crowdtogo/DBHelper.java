@@ -60,6 +60,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Inserts ORDERS into SQLite DB
      * @param queryValues
      */
+
     public void insertOrders(HashMap<String, String> queryValues) {
 
         try{
@@ -139,5 +140,13 @@ public class DBHelper extends SQLiteOpenHelper {
         count = cursor.getCount();
         database.close();
         return count;
+    }
+
+    public void DeleteOrders()
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        db.execSQL("DELETE FROM ORDERS");
+        db.close();
+        System.out.println("Orders Deleted!");
     }
 }

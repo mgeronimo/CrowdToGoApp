@@ -16,17 +16,18 @@ public class AvailabilityRequest extends RetrofitSpiceRequest<SuccessResponse,Av
 {
     //private AvailabilityParam availabilityParam;
     String availabilityParam;
+    String crowdieId;
 
-
-    public AvailabilityRequest(String availabilityParam)
+    public AvailabilityRequest(String availabilityParam,String crowdieId)
     {
         super(SuccessResponse.class, AvailabilityInterface.class);
         this.availabilityParam = availabilityParam;
+        this.crowdieId = crowdieId;
     }
 
     @Override
     public SuccessResponse loadDataFromNetwork() throws Exception
     {
-        return getService().changeAvailability(availabilityParam);
+        return getService().changeAvailability(availabilityParam,crowdieId);
     }
 }

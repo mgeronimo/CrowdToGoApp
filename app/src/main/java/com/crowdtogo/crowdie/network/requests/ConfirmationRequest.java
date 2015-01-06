@@ -1,8 +1,10 @@
 package com.crowdtogo.crowdie.network.requests;
 
 /**
- * Created by User on 12/19/2014.
+ * Created by Alj on 12/19/2014.
  */
+
+//Request for Accept and Reject Group Orders
 import com.crowdtogo.crowdie.model.SuccessResponse;
 import com.crowdtogo.crowdie.network.OrdersConfirmation;
 import com.octo.android.robospice.request.retrofit.RetrofitSpiceRequest;

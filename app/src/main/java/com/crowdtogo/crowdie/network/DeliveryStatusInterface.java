@@ -10,11 +10,8 @@ import retrofit.http.Path;
 /**
  * Created by Alj on 12/19/2014.
  */
-
-// Accept and Reject Group Orders
-public interface OrdersConfirmation {
-
+public interface DeliveryStatusInterface {
     @FormUrlEncoded
-    @PUT("/api/v1/orders/group/{groupId}/delivery")
-    SuccessResponse confirmation( @Field("action") String action ,@Path("groupId") String groupId);//in API: userId
+    @PUT("/api/v1/orders/{orderId}/delivery")
+    SuccessResponse deliveryStatus( @Field("status") String status ,@Path("orderId") String orderId);//START
 }

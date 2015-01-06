@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import com.crowdtogo.crowdie.model.AccessTokenError;
+import com.crowdtogo.crowdie.model.ErrorMessage;
 import com.crowdtogo.crowdie.model.OrdersResponse;
 import com.crowdtogo.crowdie.network.requests.OrdersRequest;
 import com.octo.android.robospice.persistence.DurationInMillis;

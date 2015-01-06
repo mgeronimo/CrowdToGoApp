@@ -4,7 +4,6 @@ package com.crowdtogo.crowdie.network;
  * Created by Edu on 12/11/2014.
  */
 
-import com.crowdtogo.crowdie.model.AccessTokenResponse;
 import com.crowdtogo.crowdie.model.OrdersResponse;
 import com.crowdtogo.crowdie.model.SuccessResponse;
 import com.crowdtogo.crowdie.model.Token;

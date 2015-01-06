@@ -26,7 +26,7 @@ import com.actionbarsherlock.view.MenuItem;
 //<<<<<<< Updated upstream
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
-import com.crowdtogo.crowdie.model.AccessTokenError;
+import com.crowdtogo.crowdie.model.ErrorMessage;
 import com.crowdtogo.crowdie.model.OrdersResponse;
 import com.crowdtogo.crowdie.model.SuccessResponse;
 import com.crowdtogo.crowdie.network.requests.AvailabilityRequest;
@@ -44,7 +44,7 @@ import retrofit.RetrofitError;
 
 //public class MainActivity extends OrdersSpiceActivity implements OnClickListener {
 //=======
-import com.crowdtogo.crowdie.model.AccessTokenError;
+import com.crowdtogo.crowdie.model.ErrorMessage;
 import com.crowdtogo.crowdie.model.OrdersResponse;
 import com.crowdtogo.crowdie.network.requests.OrdersRequest;
 import com.octo.android.robospice.persistence.DurationInMillis;
@@ -129,8 +129,8 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
-            switchFragment(new HomeFragment());
-            setTitle("Home");
+//            switchFragment(new HomeFragment());
+//            setTitle("Home");
             setSelected(rlHome);
             //mDrawerLayout.openDrawer(mDrawerList); // Keep drawer open everytime the application starts
         }
@@ -158,20 +158,35 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                 {
                     Log.w("switch","On");
 
-                    TimerTask hourlyTask = new TimerTask ()
+                    GPSTracker gps = new GPSTracker(MainActivity.this);
+
+                    if(gps.canGetLocation())
                     {
-                        @Override
-                        public void run ()
+                        final double latitude = gps.getLatitude();
+                        final double longitude = gps.getLongitude();
+
+                        // Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+
+                        TimerTask hourlyTask = new TimerTask ()
                         {
-                            Log.w("Timer","verna is love");
-                            getAvailabilitySpiceManager().execute(new LocationRequest(1.234,5.678,getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
+                            @Override
+                            public void run ()
+                            {
+                                Log.w("Timer","verna is love");
+                                getAvailabilitySpiceManager().execute(new LocationRequest(latitude,longitude,getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
 
-                            //Toast.makeText(LoginActivity.this, "A", Toast.LENGTH_LONG).show();
-                        }
-                    };
-                    timer.schedule (hourlyTask, 0l, 100000); // 30000 = 5 minutes
-                    getAvailabilitySpiceManager().execute(new AvailabilityRequest("1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+                                //Toast.makeText(LoginActivity.this, "A", Toast.LENGTH_LONG).show();
+                            }
+                        };
+                        timer.schedule (hourlyTask, 0l, 300000); // 30000 = 5 minutes
+                        getAvailabilitySpiceManager().execute(new AvailabilityRequest("1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
 
+
+                    }
+                    else
+                    {
+                        gps.showSettingsAlert();
+                    }
                 }
                 else
                 {
@@ -213,12 +228,9 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         rlLogout.setOnClickListener(this);
     }
 
-///<<<<<<< Updated upstream
+
 
     @Override
-//=======
-    //@Override
-//>>>>>>> Stashed changes
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
@@ -278,6 +290,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
             Toast.makeText(getApplicationContext(), "LOGOUT", Toast.LENGTH_LONG).show();
             setSelected(rlLogout);
             resetAccessToken(MainActivity.this);
+            resetCrowdieId(MainActivity.this);
             //Back to Login page
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(loginIntent);
@@ -291,6 +304,14 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
             newContent.setArguments(bundle);
             switchFragment(newContent);
         }
+    }
+
+    //Reset Access Token
+    public static void resetCrowdieId(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove("crowdie_id");
+        editor.commit();
     }
     //Reset Access Token
     public static void resetAccessToken(Context context) {
@@ -431,7 +452,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         public void onRequestFailure(SpiceException spiceException) {
             if (spiceException.getCause() instanceof RetrofitError) {
                 RetrofitError error = (RetrofitError) spiceException.getCause();
-                AccessTokenError body = (AccessTokenError) error.getBodyAs(AccessTokenError.class);
+                ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
                 //mProgressDialog.dismiss();
                 Toast.makeText(MainActivity.this, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
             }
@@ -450,7 +471,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
 
 
         if(response!=null){
-            ordersDB.DeleteOrders();
+           ordersDB.DeleteOrders();
             // setDefaults("access_token",response.getAccess_token(),LoginActivity.this);
             for(int index = 0; index < response.getData().toArray().length; index++) {
 
@@ -473,7 +494,6 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                 queryValues.put("pickup_latitude", response.getData().get(index).getPickup_latitude());
                 queryValues.put("pickup_longitude", response.getData().get(index).getPickup_longitude());
 
-
                 ordersDB.insertOrders(queryValues);
 
                 //Toast.makeText(DeliveryDetailsActivity.this, "Record saved", Toast.LENGTH_LONG).show();
@@ -483,8 +503,11 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
             //Toast.makeText(MainActivity.this, "Main: "+ ordersDB.getAllOrders(), Toast.LENGTH_LONG).show();
             //Intent mainIntent = new Intent(DeliveryDetailsActivity.this, MainActivity.class);
             //startActivity(mainIntent);
-            //mProgressDialog.dismiss();
+
+        }else{
+          //  Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_LONG).show();
         }
+
 
     }
 

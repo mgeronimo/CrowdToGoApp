@@ -3,17 +3,16 @@ package com.crowdtogo.crowdie.network.requests;
 import android.app.ProgressDialog;
 
 import com.crowdtogo.crowdie.crowdtogo.LoginActivity;
-import com.crowdtogo.crowdie.model.AccessTokenResponse;
+
 import com.crowdtogo.crowdie.model.Token;
 import com.crowdtogo.crowdie.model.UserLoginResponse;
 import com.crowdtogo.crowdie.model.UserLoginResponse;
 import com.crowdtogo.crowdie.network.UsersInterface;
 import com.octo.android.robospice.request.retrofit.RetrofitSpiceRequest;
 
-import static com.crowdtogo.crowdie.model.AccessTokenResponse.*;
 
 /**
- * Created by User on 12/1/2014.
+ * Created by Alj on 12/1/2014.
  */
 public class AccessTokenRequest extends RetrofitSpiceRequest<UserLoginResponse,UsersInterface> {
 

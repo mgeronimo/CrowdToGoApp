@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crowdtogo.crowdie.model.AccessTokenError;
+import com.crowdtogo.crowdie.model.ErrorMessage;
 import com.crowdtogo.crowdie.model.OrdersResponse;
 import com.crowdtogo.crowdie.model.SuccessResponse;
 import com.crowdtogo.crowdie.network.requests.ConfirmationRequest;
@@ -52,8 +52,6 @@ public class DeliveryDetailsActivity extends OrdersSpiceActivity {
         super.onCreate(savedInstanceState);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_delivery_details);
-
-
 
         Intent i = getIntent();
         // Get the result of rank
@@ -114,7 +112,7 @@ public class DeliveryDetailsActivity extends OrdersSpiceActivity {
         public void onRequestFailure(SpiceException spiceException) {
             if (spiceException.getCause() instanceof RetrofitError) {
                 RetrofitError error = (RetrofitError) spiceException.getCause();
-                AccessTokenError body = (AccessTokenError) error.getBodyAs(AccessTokenError.class);
+                ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
                 //mProgressDialog.dismiss();
                 Toast.makeText(DeliveryDetailsActivity.this, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
             }

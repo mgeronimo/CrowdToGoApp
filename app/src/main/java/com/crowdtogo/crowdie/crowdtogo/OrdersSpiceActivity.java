@@ -11,21 +11,23 @@ import com.crowdtogo.crowdie.network.OrdersSpiceService;
 import com.octo.android.robospice.SpiceManager;
 
 /**
- * Created by User on 12/9/2014.
+ * Created by Alj on 12/9/2014.
  */
 public class OrdersSpiceActivity extends SherlockFragmentActivity {
-
 
     private SpiceManager ordersSpiceManager = new SpiceManager(OrdersSpiceService.class);
     private SpiceManager availabilitySpiceManager = new SpiceManager(OrdersSpiceService.class);
     private SpiceManager locationSpiceManager = new SpiceManager(OrdersSpiceService.class);
     private SpiceManager confirmationSpiceManager = new SpiceManager(OrdersSpiceService.class);
+    private SpiceManager DeliveryStatusSpiceManager = new SpiceManager(OrdersSpiceService.class);
+
     @Override
     protected void onStart() {
         ordersSpiceManager.start(this);
         availabilitySpiceManager.start(this);
         locationSpiceManager.start(this);
         confirmationSpiceManager.start(this);
+        DeliveryStatusSpiceManager.start(this);
         super.onStart();
     }
 
@@ -35,6 +37,7 @@ public class OrdersSpiceActivity extends SherlockFragmentActivity {
         availabilitySpiceManager.shouldStop();
         locationSpiceManager.shouldStop();
         confirmationSpiceManager.shouldStop();
+        DeliveryStatusSpiceManager.shouldStop();
         super.onStop();
     }
 
@@ -55,6 +58,11 @@ public class OrdersSpiceActivity extends SherlockFragmentActivity {
     protected SpiceManager confirmationSpiceManager()
     {
         return confirmationSpiceManager;
+    }
+
+    protected SpiceManager DeliveryStatusSpiceManager()
+    {
+        return DeliveryStatusSpiceManager;
     }
 
 

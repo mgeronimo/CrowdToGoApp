@@ -1,7 +1,10 @@
 package com.crowdtogo.crowdie.network;
 
 
-import com.crowdtogo.crowdie.model.AccessTokenResponse;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import com.crowdtogo.crowdie.model.UsersResponse;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -29,7 +32,7 @@ public class UsersInterfaceSpiceService extends RetrofitGsonSpiceService {
                     @Override
                     public void intercept(RequestFacade request) {
                           //access token add to header here
-                         // request.addHeader("Authorization", "PiO57dpd0aRTNE3kxCoHvaSwarnT6QKbJroI4tSU");
+                        request.addHeader("Authorization",getDefaults("access_token",UsersInterfaceSpiceService.this) );
                     }
                 })
                 .setEndpoint(BASE_URL)
@@ -44,6 +47,9 @@ public class UsersInterfaceSpiceService extends RetrofitGsonSpiceService {
         return BASE_URL;
     }
 
-
+    public static String getDefaults(String accessToken, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(accessToken, null);
+    }
 
 }

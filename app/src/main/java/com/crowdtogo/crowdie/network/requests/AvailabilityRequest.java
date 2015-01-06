@@ -12,6 +12,8 @@ import com.octo.android.robospice.request.retrofit.RetrofitSpiceRequest;
 /**
  * Created by Edu on 12/11/2014.
  */
+
+//Request for the Availability of crowdie: online or offline
 public class AvailabilityRequest extends RetrofitSpiceRequest<SuccessResponse,AvailabilityInterface>
 {
     //private AvailabilityParam availabilityParam;

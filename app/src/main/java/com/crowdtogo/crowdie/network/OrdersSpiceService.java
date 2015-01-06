@@ -13,7 +13,7 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 /**
- * Created by User on 12/5/2014.
+ * Created by Alj on 12/5/2014.
  */
 public class OrdersSpiceService extends RetrofitGsonSpiceService {
 
@@ -26,6 +26,8 @@ public class OrdersSpiceService extends RetrofitGsonSpiceService {
         // addRetrofitInterface(UsersInterface.class);
         addRetrofitInterface(AvailabilityInterface.class);
         addRetrofitInterface(LocationInterface.class);
+        addRetrofitInterface(DeliveryStatusInterface.class);
+        addRetrofitInterface(OrdersConfirmation.class);
     }
 
     @Override

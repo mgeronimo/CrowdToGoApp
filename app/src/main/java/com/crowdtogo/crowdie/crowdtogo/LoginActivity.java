@@ -21,7 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.crowdtogo.crowdie.model.AccessTokenError;
+import com.crowdtogo.crowdie.model.ErrorMessage;
 import com.crowdtogo.crowdie.model.Token;
 import com.crowdtogo.crowdie.model.UserLoginResponse;
 import com.crowdtogo.crowdie.network.requests.AccessTokenRequest;
@@ -171,7 +171,7 @@ public class LoginActivity extends BaseSpiceActivity {
         btnLogin = (Button) findViewById(R.id.loginButton);
         btnForgotPass = (Button) findViewById(R.id.forgotPasswordButton);
 
-        emailAddress.setText("crowdie_1@gmail.com");
+        emailAddress.setText("crowdie_2@gmail.com");
         password.setText("crowdie");
         oAuth.setText("SEC01");
         btnLogin.setEnabled(true);
@@ -278,7 +278,7 @@ public class LoginActivity extends BaseSpiceActivity {
         public void onRequestFailure(SpiceException spiceException) {
             if (spiceException.getCause() instanceof RetrofitError) {
                 RetrofitError error = (RetrofitError) spiceException.getCause();
-                AccessTokenError body = (AccessTokenError) error.getBodyAs(AccessTokenError.class);
+                ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
                 mProgressDialog.dismiss();
                 Toast.makeText(LoginActivity.this, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
             }

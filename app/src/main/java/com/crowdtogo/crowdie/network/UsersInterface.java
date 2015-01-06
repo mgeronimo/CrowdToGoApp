@@ -4,7 +4,6 @@ package com.crowdtogo.crowdie.network;
  * Created by User on 11/25/2014.
  */
 
-import com.crowdtogo.crowdie.model.AccessTokenResponse;
 import com.crowdtogo.crowdie.model.OrdersResponse;
 import com.crowdtogo.crowdie.model.Token;
 import com.crowdtogo.crowdie.model.UserLoginResponse;
@@ -33,8 +32,6 @@ public interface UsersInterface {
     //@Multipart
     @GET("/api/v1/orders/crowdie/{crowdie}")
     OrdersResponse getOrder(@Path("crowdie") String crowdieId);
-   // OrdersResponse getOrder();
-
 
     @FormUrlEncoded
     @POST("/oauth/access_token")

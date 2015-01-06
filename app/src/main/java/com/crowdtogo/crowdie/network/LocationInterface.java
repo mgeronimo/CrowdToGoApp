@@ -4,7 +4,7 @@ package com.crowdtogo.crowdie.network;
  * Created by Edu on 12/11/2014.
  */
 
-import com.crowdtogo.crowdie.model.AccessTokenResponse;
+
 import com.crowdtogo.crowdie.model.OrdersResponse;
 import com.crowdtogo.crowdie.model.SuccessResponse;
 import com.crowdtogo.crowdie.model.Token;
@@ -30,7 +30,6 @@ import retrofit.http.Query;
 
 public interface LocationInterface
 {
-
     @FormUrlEncoded
     @PUT("/api/v1/location/{crowdie}")
     SuccessResponse changeLocation( @Field("latitude") Double latitiude, @Field("longitude") Double longitude,@Path("crowdie") String crowdieId );

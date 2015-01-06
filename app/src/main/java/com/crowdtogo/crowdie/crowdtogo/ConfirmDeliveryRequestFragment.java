@@ -1,5 +1,6 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
+//<<<<<<< HEAD
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,10 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+//=======
+import android.content.Intent;
+import android.os.Bundle;
+//>>>>>>> 0c487dfa1a583ed25a16d1e51e4d1abd90476608
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +20,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+//<<<<<<< HEAD
 import com.crowdtogo.crowdie.model.ErrorMessage;
 import com.crowdtogo.crowdie.model.SuccessResponse;
 import com.crowdtogo.crowdie.network.OrdersSpiceService;
@@ -25,10 +31,13 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import retrofit.RetrofitError;
+//=======
+//>>>>>>> 0c487dfa1a583ed25a16d1e51e4d1abd90476608
 
 public class ConfirmDeliveryRequestFragment extends SherlockFragment {
 
 
+//<<<<<<< HEAD
     private SpiceManager confirmationSpiceManager = new SpiceManager(OrdersSpiceService.class);
     OrdersSpiceActivity ordersSpiceActivity  = new OrdersSpiceActivity();
     MainActivity mainActivity = new MainActivity();
@@ -129,6 +138,39 @@ public class ConfirmDeliveryRequestFragment extends SherlockFragment {
     protected SpiceManager confirmationSpiceManager()
     {
         return confirmationSpiceManager;
+////=======
+//    Button accept;
+//    Button reject;
+//
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        Intent intent = new Intent(getSherlockActivity(), DeliveryDetailsActivity.class);
+//        startActivity(intent);
+//        //getActionBar().setDisplayHomeAsUpEnabled(true);
+//        //setContentView(R.layout.activity_delivery_details);
+//       // accept = getView().findViewById(R.id.accept);
+//
+//
+////        accept.setOnClickListener(new View.OnClickListener() {
+////            public void onClick(View view) {
+////
+////                Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
+////
+////
+////            }
+////        });
+//
+//
+//    }
+//
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        View v = inflater.inflate(R.layout.fragment_confirm_delivery_request, container, false);
+//
+//        return v;
+//
+/////>>>>>>> 0c487dfa1a583ed25a16d1e51e4d1abd90476608
     }
 
 }

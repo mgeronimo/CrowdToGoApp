@@ -129,6 +129,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
+//<<<<<<< HEAD
             //Default HOME
 //            switchFragment(new HomeFragment());
 //            setTitle("Home");
@@ -136,6 +137,10 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
 
             switchFragment(new ConfirmDeliveryRequestFragment());
             setTitle("New Delivery");
+//=======
+//            switchFragment(new HomeFragment());
+//            setTitle("Home");
+//>>>>>>> 0c487dfa1a583ed25a16d1e51e4d1abd90476608
             setSelected(rlHome);
 
             //mDrawerLayout.openDrawer(mDrawerList); // Keep drawer open everytime the application starts
@@ -234,12 +239,9 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         rlLogout.setOnClickListener(this);
     }
 
-///<<<<<<< Updated upstream
+
 
     @Override
-//=======
-    //@Override
-//>>>>>>> Stashed changes
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             if (mDrawerLayout.isDrawerOpen(mDrawerList)) {

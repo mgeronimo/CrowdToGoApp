@@ -82,11 +82,11 @@ public class DeliveryDetailsActivity extends OrdersSpiceActivity {
                 //Accept or Reject Order
                 if(details.getText().equals("Accept Job")){
 
-                    confirmationSpiceManager().execute(new ConfirmationRequest("ACCEPT",getCrowdieId("crowdie_id", DeliveryDetailsActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
+                    //confirmationSpiceManager().execute(new ConfirmationRequest("ACCEPT",getCrowdieId("crowdie_id", DeliveryDetailsActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
                     details.setText("Reject Job");
 
                 }else{
-                    confirmationSpiceManager().execute(new ConfirmationRequest("REJECT",getCrowdieId("crowdie_id", DeliveryDetailsActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
+                    //confirmationSpiceManager().execute(new ConfirmationRequest("REJECT",getCrowdieId("crowdie_id", DeliveryDetailsActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
                     details.setText("Accept Job");
                 }
 

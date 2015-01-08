@@ -82,7 +82,7 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter{
         //imgprofile.setImageResource(thumbnail[position]);
 
         //Onclick event for view details button
-        Button details = (Button)itemView.findViewById(R.id.viewDetails);
+        Button details = (Button)itemView.findViewById(R.id.start);
         details.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent detailsIntent = new Intent(context,DeliveryDetailsActivity.class);

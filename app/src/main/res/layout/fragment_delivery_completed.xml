@@ -5,12 +5,23 @@
     tools:context="com.crowdtogo.crowdie.crowdtogo.DeliveryCompletedFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!--<TextView
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:text="DELIVERY WAS SUCCESSFULLY DONE!"
         android:gravity="center"
-        android:layout_gravity="center" />
+        android:layout_gravity="center" />-->
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/splashImage"
+        android:src="@drawable/good_job"
+        android:visibility="invisible"
+        android:layout_marginTop="85dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
     <RelativeLayout

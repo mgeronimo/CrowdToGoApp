@@ -66,7 +66,7 @@ public class LoginActivity extends BaseSpiceActivity {
             oAuth.setVisibility(View.INVISIBLE);
             oAuth.setText(secret);
             //sample
-            emailAddress.setText("crowdie_2@gmail.com");
+            emailAddress.setText("crowdie_1@gmail.com");
             password.setText("crowdie");
         }
 

@@ -61,7 +61,7 @@ public class OngoingDeliveryRequestListViewAdapter extends BaseAdapter{
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View itemView = inflater.inflate(R.layout.listview_item_deliveryrequest, parent, false);
+        View itemView = inflater.inflate(R.layout.listview_item_ongoing_deliveryrequest_detail, parent, false);
 
         // Locate the TextViews in listview_item.xml
         txtname = (TextView) itemView.findViewById(R.id.name);

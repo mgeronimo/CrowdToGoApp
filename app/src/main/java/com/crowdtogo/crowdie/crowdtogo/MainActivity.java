@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -76,6 +77,9 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
     RelativeLayout rlAbout;
     RelativeLayout rlLogout;
 
+    TextView tvName;
+    String name;
+
     DBHelper ordersDB = new DBHelper(this);
     OrdersSpiceActivity orders  = new OrdersSpiceActivity();
 
@@ -107,6 +111,12 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        tvName = (TextView) findViewById(R.id.title);
+
+        name = getName("name",MainActivity.this);
+
+        tvName.setText(name);
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
@@ -526,6 +536,12 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
     public static String getCrowdieId(String accessToken, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(accessToken, null);
+    }
+
+    //get stored Name
+    public static String getName(String key, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(key, null);
     }
 
 

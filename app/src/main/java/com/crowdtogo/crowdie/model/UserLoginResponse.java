@@ -23,6 +23,17 @@ public class UserLoginResponse {
     @Expose
     @SerializedName("crowdie_id")
     private String crowdie_id;
+    @Expose
+    @SerializedName("name")
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getCrowdie_id() {
         return crowdie_id;

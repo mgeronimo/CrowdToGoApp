@@ -296,6 +296,7 @@ public class LoginActivity extends BaseSpiceActivity {
 
             saveAccessToken("access_token", response.getAccess_token(), LoginActivity.this);
             saveCrowdieID("crowdie_id", response.getCrowdie_id(), LoginActivity.this);
+            saveName("name", response.getName(), LoginActivity.this);
             //Toast.makeText(LoginActivity.this, "Access Token: "+ response.getAccess_token(), Toast.LENGTH_LONG).show();
 
             Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
@@ -306,7 +307,6 @@ public class LoginActivity extends BaseSpiceActivity {
 
 
     }
-
 
     //Save Access Token
     private void saveAccessToken(String key, String value, Context context) {
@@ -325,6 +325,13 @@ public class LoginActivity extends BaseSpiceActivity {
         editor.commit();
     }
     private void saveSecret(String key, String value, Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+    private void saveName(String key, String value, Context context) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();

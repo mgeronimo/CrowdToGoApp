@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.crowdtogo.crowdie.crowdtogo.ConfirmDeliveryRequestFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- TODO: Update blank fragment layout
     <TextView
         android:layout_width="match_parent"
         android:layout_height="55dp"
@@ -13,7 +13,18 @@
         android:text="NEW DELIVERY JOBS AWAIT YOU!"
 
         android:gravity="center"
-        android:layout_gravity="center" />
+        android:layout_gravity="center" />-->
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/splashImage"
+        android:src="@drawable/new_job"
+        android:visibility="invisible"
+        android:layout_marginTop="85dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
     <RelativeLayout

@@ -6,7 +6,7 @@
             <!-- Blue Top color -->
             <item >
                 <shape  android:shape="rectangle">
-                    <solid android:color="#55037eb1" />
+                    <solid android:color="#a0d4250d" />
                     <corners android:radius="4dp" />
                 </shape>
             </item>
@@ -18,7 +18,7 @@
             <!-- Blue Top color -->
             <item >
                 <shape  android:shape="rectangle">
-                    <solid android:color="#037eb1" />
+                    <solid android:color="@color/ctg_dark_red" />
                     <corners android:radius="4dp" />
                 </shape>
             </item>
@@ -30,7 +30,7 @@
             <!-- Bottom 2dp Shadow -->
             <item>
                 <shape  android:shape="rectangle">
-                    <solid android:color="#037eb1" />
+                    <solid android:color="@color/ctg_dark_red" />
                     <corners android:radius="4dp" />
                 </shape>
             </item>
@@ -38,7 +38,7 @@
             <!-- Blue Top color -->
             <item android:bottom="5px">
                 <shape  android:shape="rectangle">
-                    <solid android:color="@color/button_blue" />
+                    <solid android:color="@color/ctg_red" />
                     <corners android:radius="4dp" />
                 </shape>
             </item>

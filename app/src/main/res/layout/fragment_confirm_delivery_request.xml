@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     tools:context="com.crowdtogo.crowdie.crowdtogo.ConfirmDeliveryRequestFragment">
 
-    <!-- TODO: Update blank fragment layout
-    <TextView
+    <!-- TODO: Update blank fragment layout-->
+    <!--<TextView
         android:layout_width="match_parent"
         android:layout_height="55dp"
 
@@ -19,12 +19,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/splashImage"
-        android:src="@drawable/new_job"
-        android:visibility="invisible"
-        android:layout_marginTop="85dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:src="@drawable/job_awaits"
+        android:layout_marginTop="85dp" />
 
 
     <RelativeLayout
@@ -56,7 +52,7 @@
         android:layout_height="wrap_content"
         android:text="REJECT"
         android:textColor="@color/white"
-        android:background="@drawable/bg_btn"
+        android:background="@drawable/bg_btn_danger"
         android:focusable="false"
         android:layout_gravity="right|bottom"
         android:layout_alignParentBottom="true"

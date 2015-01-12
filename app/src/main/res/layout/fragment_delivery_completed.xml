@@ -17,7 +17,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/splashImage"
         android:src="@drawable/good_job"
-        android:visibility="invisible"
         android:layout_marginTop="85dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"

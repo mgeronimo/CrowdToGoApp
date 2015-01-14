@@ -35,7 +35,7 @@
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/job_awaits_text"
+            android:src="@drawable/job_awaits_text2"
             android:layout_marginTop="250dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"/>
@@ -46,7 +46,6 @@
         android:layout_width="fill_parent"
         android:layout_height="62dp"
         android:orientation="vertical"
-        android:background="@drawable/bg_delivery_feed_item_delivery"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:padding="10dp"

@@ -20,6 +20,7 @@ public class OrdersSpiceActivity extends SherlockFragmentActivity {
     private SpiceManager locationSpiceManager = new SpiceManager(OrdersSpiceService.class);
     private SpiceManager confirmationSpiceManager = new SpiceManager(OrdersSpiceService.class);
     private SpiceManager DeliveryStatusSpiceManager = new SpiceManager(OrdersSpiceService.class);
+    private SpiceManager CheckOrderCodeSpiceManager = new SpiceManager(OrdersSpiceService.class);
 
     @Override
     protected void onStart() {
@@ -28,6 +29,7 @@ public class OrdersSpiceActivity extends SherlockFragmentActivity {
         locationSpiceManager.start(this);
         confirmationSpiceManager.start(this);
         DeliveryStatusSpiceManager.start(this);
+        CheckOrderCodeSpiceManager.start(this);
         super.onStart();
     }
 
@@ -38,6 +40,7 @@ public class OrdersSpiceActivity extends SherlockFragmentActivity {
         locationSpiceManager.shouldStop();
         confirmationSpiceManager.shouldStop();
         DeliveryStatusSpiceManager.shouldStop();
+        CheckOrderCodeSpiceManager.shouldStop();
         super.onStop();
     }
 
@@ -63,6 +66,11 @@ public class OrdersSpiceActivity extends SherlockFragmentActivity {
     protected SpiceManager DeliveryStatusSpiceManager()
     {
         return DeliveryStatusSpiceManager;
+    }
+
+    protected SpiceManager getCheckOrderCodeSpiceManager()
+    {
+        return CheckOrderCodeSpiceManager;
     }
 
 

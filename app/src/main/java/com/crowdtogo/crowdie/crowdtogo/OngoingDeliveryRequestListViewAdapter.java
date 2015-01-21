@@ -61,7 +61,7 @@ public class OngoingDeliveryRequestListViewAdapter extends BaseAdapter{
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View itemView = inflater.inflate(R.layout.listview_item_ongoing_deliveryrequest_detail, parent, false);
+        View itemView = inflater.inflate(R.layout.listview_item_ongoing_deliveryrequest, parent, false);
 
         // Locate the TextViews in listview_item.xml
         txtname = (TextView) itemView.findViewById(R.id.name);
@@ -82,10 +82,10 @@ public class OngoingDeliveryRequestListViewAdapter extends BaseAdapter{
         //imgprofile.setImageResource(thumbnail[position]);
 
         //Onclick event for view details button
-        Button details = (Button)itemView.findViewById(R.id.viewDetails);
+        Button details = (Button)itemView.findViewById(R.id.viewOngoingDetails);
         details.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent detailsIntent = new Intent(context,DeliveryDetailsActivity.class);
+                Intent detailsIntent = new Intent(context,OngoingDeliveryDetailsActivity.class);
                 detailsIntent.putExtra("name",name[position]);
                 detailsIntent.putExtra("date",date[position]);
                 detailsIntent.putExtra("pickup",pickup[position]);

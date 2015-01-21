@@ -233,7 +233,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="DONE"
-            android:id="@+id/button"
+            android:id="@+id/done"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"

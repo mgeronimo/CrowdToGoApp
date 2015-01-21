@@ -232,8 +232,8 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Accept Job"
-            android:id="@+id/button"
+            android:text="START"
+            android:id="@+id/start"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"

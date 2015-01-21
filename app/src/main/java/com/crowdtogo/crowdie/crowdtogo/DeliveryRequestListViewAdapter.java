@@ -1,6 +1,15 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.widget.BaseAdapter;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,15 +17,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.crowdtogo.crowdie.model.ErrorMessage;
+import com.crowdtogo.crowdie.model.SuccessResponse;
+import com.crowdtogo.crowdie.network.OrdersSpiceService;
+import com.crowdtogo.crowdie.network.requests.DeliveryStatusRequest;
+import com.octo.android.robospice.SpiceManager;
+import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
+
+import java.lang.reflect.Field;
+
+import javax.net.ssl.HostnameVerifier;
+
+import retrofit.RetrofitError;
 
 
-public class DeliveryRequestListViewAdapter extends BaseAdapter{
+public class DeliveryRequestListViewAdapter extends BaseAdapter  {
     // Declare Variables
     Context context;
-
-
-
+    String status;
 
     String[] name;
     String[] date;
@@ -24,7 +49,12 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter{
     String[] delivery;
     int[] thumbnail;
     LayoutInflater inflater;
+    private DrawerLayout mDrawerLayout;
+    private RelativeLayout mDrawerList;
 
+    //DBHelper ordersDB = new DBHelper(context);
+
+    OrdersSpiceActivity ordersSpiceActivity = new OrdersSpiceActivity();
     public DeliveryRequestListViewAdapter(Context context, String[] name, String[] date,
                                         String[] pickup, String[] delivery, int[] thumbnail) {
 
@@ -36,6 +66,7 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter{
         this.thumbnail = thumbnail;
 
     }
+
 
     public int getCount() {
         return name.length;
@@ -49,7 +80,7 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter{
         return 0;
     }
 
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView,final ViewGroup parent) {
 
         // Declare Variables
         final TextView txtname;
@@ -82,15 +113,24 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter{
         //imgprofile.setImageResource(thumbnail[position]);
 
         //Onclick event for view details button
-        Button details = (Button)itemView.findViewById(R.id.start);
-        details.setOnClickListener(new View.OnClickListener() {
+        Button start = (Button)itemView.findViewById(R.id.start);
+
+        start.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent detailsIntent = new Intent(context,DeliveryDetailsActivity.class);
-                detailsIntent.putExtra("name",name[position]);
-                detailsIntent.putExtra("date",date[position]);
-                detailsIntent.putExtra("pickup",pickup[position]);
-                detailsIntent.putExtra("delivery",delivery[position]);
-                context.startActivity(detailsIntent);
+
+                //--execute request for START--//
+                ordersSpiceActivity.DeliveryStatusSpiceManager().execute(new DeliveryStatusRequest("START",date[position]) , "DeliveryStatusRequest", DurationInMillis.ALWAYS_EXPIRED, new DeliveryStatusRequestListener());
+                //--execute request for START--//
+
+                ///---Test for sqlite: Set the status to value 1(START)--///
+//                status = date[position].toString();
+//                DBHelper ordersDB = new DBHelper(context);
+//                ordersDB.UpdateDeliveryStatus(status,"1");
+//                Intent refresh = new Intent(context,MainActivity.class);
+//                context.startActivity(refresh);
+                //parent.refreshDrawableState();
+                ///---Test for sqlite --///
+
             }
         });
         return itemView;
@@ -99,5 +139,46 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter{
     public boolean isEnabled(int position) {
         return false;
     }
+
+
+
+
+
+
+///----DeliveryStatusRequestListener----//
+    private class DeliveryStatusRequestListener implements RequestListener<SuccessResponse> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            if (spiceException.getCause() instanceof RetrofitError) {
+                RetrofitError error = (RetrofitError) spiceException.getCause();
+                ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
+                Toast.makeText(context, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
+            }
+        }
+
+        //Success Request
+        @Override
+        public void onRequestSuccess(SuccessResponse successResponse) {
+            if(successResponse!=null){
+                ///---sqlite: Set the status to value 1(START)--///
+                DBHelper ordersDB = new DBHelper(context);
+                ordersDB.UpdateDeliveryStatus(status,"1");
+                Intent refresh = new Intent(context,MainActivity.class);
+                context.startActivity(refresh);
+                ///---sqlite --///
+                Log.w("DeliveryRequestListViewAdapter", successResponse.getMessage());
+            }
+        }
+    };
+    ///----DeliveryStatusRequestListener----//
+
+    //get stored crowdie_id
+    public static String getCrowdieId(String accessToken, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(accessToken, null);
+    }
+
+
 }
 

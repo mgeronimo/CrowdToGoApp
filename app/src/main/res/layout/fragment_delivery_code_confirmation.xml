@@ -25,7 +25,7 @@
         android:layout_gravity="center_horizontal|bottom">
 
         <EditText
-            android:id="@+id/uniqueEditText"
+            android:id="@+id/codeEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
@@ -39,7 +39,7 @@
 
 
     <Button
-        android:id="@+id/done"
+        android:id="@+id/enterCode"
         android:layout_width="169dp"
         android:layout_height="wrap_content"
         android:text="ENTER"

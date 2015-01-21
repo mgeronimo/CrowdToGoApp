@@ -18,7 +18,7 @@ public class DeliveryConfirmationFragment extends SherlockFragment  {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_delivery_confirmation, container, false);
+        View v = inflater.inflate(R.layout.fragment_delivery_code_confirmation, container, false);
 
         v.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override

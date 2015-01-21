@@ -71,6 +71,65 @@ public class OrdersResponse {
         @Expose
         @SerializedName("pickup_longitude")
         private String pickup_longitude;
+        @Expose
+        @SerializedName("pickup_date")
+        private String pickup_date;
+        @Expose
+        @SerializedName("pickup_time")
+        private String pickup_time;
+
+        @Expose
+        @SerializedName("groupId")
+        private String groupId;
+        @Expose
+        @SerializedName("deliveryStatus")
+        private String deliveryStatus;
+        @Expose
+        @SerializedName("duration")
+        private String duration;
+
+        public String getDuration() {
+            return duration;
+        }
+
+        public void setDuration(String duration) {
+            this.duration = duration;
+        }
+
+        public String getPickup_date() {
+            return pickup_date;
+        }
+
+        public void setPickup_date(String pickup_date) {
+            this.pickup_date = pickup_date;
+        }
+
+        public String getPickup_time() {
+            return pickup_time;
+        }
+
+        public void setPickup_time(String pickup_time) {
+            this.pickup_time = pickup_time;
+        }
+
+        public String getGroupId() {
+            return groupId;
+        }
+
+        public void setGroupId(String groupId) {
+            this.groupId = groupId;
+        }
+
+        public String getDeliveryStatus() {
+            return deliveryStatus;
+        }
+
+        public void setDeliveryStatus(String deliveryStatus) {
+            this.deliveryStatus = deliveryStatus;
+        }
+
+
+
 
         public String getLastname() {
             return lastname;

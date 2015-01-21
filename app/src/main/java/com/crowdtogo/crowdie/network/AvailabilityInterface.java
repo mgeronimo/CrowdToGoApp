@@ -24,5 +24,5 @@ public interface AvailabilityInterface
 {
     @FormUrlEncoded
     @PUT("/api/v1/availability/{crowdie}")
-    SuccessResponse changeAvailability( @Field("availability") String availability ,@Path("crowdie") String crowdieId);//in API: userId
+    SuccessResponse changeAvailability( @Field("latitude") double latitude ,@Field("longitude") double longitude ,@Field("availability") String availability ,@Path("crowdie") String crowdieId);//in API: userId
 }

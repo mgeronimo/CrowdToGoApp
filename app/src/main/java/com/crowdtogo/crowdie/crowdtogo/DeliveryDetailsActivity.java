@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.crowdtogo.crowdie.model.ErrorMessage;
 import com.crowdtogo.crowdie.model.OrdersResponse;
 import com.crowdtogo.crowdie.model.SuccessResponse;
 import com.crowdtogo.crowdie.network.requests.ConfirmationRequest;
+import com.crowdtogo.crowdie.network.requests.DeliveryStatusRequest;
 import com.crowdtogo.crowdie.network.requests.OrdersRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -45,12 +48,13 @@ public class DeliveryDetailsActivity extends OrdersSpiceActivity {
     HashMap<String, String> queryValues;
     // DB Class to perform DB related operations
     DBHelper ordersDB = new DBHelper(this);
-    Button details;
+    MainActivity mainActivity = new MainActivity();
+    Button start;
     //OrdersSpiceActivity ordersSpiceActivity = new OrdersSpiceActivity();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+
         setContentView(R.layout.activity_delivery_details);
 
         Intent i = getIntent();
@@ -67,7 +71,7 @@ public class DeliveryDetailsActivity extends OrdersSpiceActivity {
         TextView dateTxt=(TextView)findViewById(R.id.details_date);
         TextView pickupTxt=(TextView)findViewById(R.id.details_pickupLocation);
         TextView deliveryTxt=(TextView)findViewById(R.id.details_deliveryLocation);
-        details = (Button)findViewById(R.id.button);
+        start = (Button)findViewById(R.id.start);
 
         nameTxt.setText(detailsName);
         dateTxt.setText(detailsDate);
@@ -75,21 +79,13 @@ public class DeliveryDetailsActivity extends OrdersSpiceActivity {
         deliveryTxt.setText(detailsDelivery);
 
 
-        //Onclick event for ccept or Reject Order button
-        details.setOnClickListener(new View.OnClickListener() {
+        //Onclick event to START the ORDER
+        start.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
-                //Accept or Reject Order
-                if(details.getText().equals("Accept Job")){
-
-                    //confirmationSpiceManager().execute(new ConfirmationRequest("ACCEPT",getCrowdieId("crowdie_id", DeliveryDetailsActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
-                    details.setText("Reject Job");
-
-                }else{
-                    //confirmationSpiceManager().execute(new ConfirmationRequest("REJECT",getCrowdieId("crowdie_id", DeliveryDetailsActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
-                    details.setText("Accept Job");
-                }
-
+//                Toast.makeText(DeliveryDetailsActivity.this, "START", Toast.LENGTH_SHORT).show();
+//                DeliveryStatusSpiceManager().execute(new DeliveryStatusRequest("START",detailsDate) , "DeliveryStatusRequest", DurationInMillis.ALWAYS_EXPIRED, new DeliveryStatusRequestListener());
+//                ordersDB.UpdateDeliveryStatus(detailsDate,"1");
             }
         });
 
@@ -103,41 +99,44 @@ public class DeliveryDetailsActivity extends OrdersSpiceActivity {
 //                return true;
 //        }
 //        return super.onOptionsItemSelected(item);
+//   }
+
+
+    ////----- DeliveryStatusRequestListener ------///////////
+//    private class DeliveryStatusRequestListener implements RequestListener<SuccessResponse> {
+//
+//        @Override
+//        public void onRequestFailure(SpiceException spiceException) {
+//            if (spiceException.getCause() instanceof RetrofitError) {
+//                RetrofitError error = (RetrofitError) spiceException.getCause();
+//                ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
+//                //mProgressDialog.dismiss();
+//                Toast.makeText(DeliveryDetailsActivity.this, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
+//            }
+//        }
+//
+//        //Success Request
+//        @Override
+//        public void onRequestSuccess(SuccessResponse successResponse) {
+//            //Toast.makeText(DeliveryDetailsActivity.this, "Success" ,Toast.LENGTH_LONG).show();
+//            updateOrder(successResponse);
+//        }
+//
+//    };
+//
+//    private void updateOrder(final SuccessResponse response){
+//
+//        if(response!=null){
+//            Log.w("DeliveryDetailActivity", response.getMessage());
+//        }
 //    }
 
-
-    private class ConfirmationRequestListener implements RequestListener<SuccessResponse> {
-
-        @Override
-        public void onRequestFailure(SpiceException spiceException) {
-            if (spiceException.getCause() instanceof RetrofitError) {
-                RetrofitError error = (RetrofitError) spiceException.getCause();
-                ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
-                //mProgressDialog.dismiss();
-                Toast.makeText(DeliveryDetailsActivity.this, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
-            }
-        }
-
-        //Success Request
-        @Override
-        public void onRequestSuccess(SuccessResponse successResponse) {
-            //Toast.makeText(DeliveryDetailsActivity.this, "Success" ,Toast.LENGTH_LONG).show();
-            updateOrder(successResponse);
-        }
-
-    };
-
-    private void updateOrder(final SuccessResponse response){
-
-        if(response!=null){
-            Log.w("DeliveryDetailActivity", response.getMessage());
-        }
-    }
-
-    //get stored crowdie_id
-    public static String getCrowdieId(String accessToken, Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(accessToken, null);
-    }
+    ////----- DeliveryStatusRequestListener ------///////////
+//
+//    //get stored crowdie_id
+//    public static String getCrowdieId(String accessToken, Context context) {
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+//        return preferences.getString(accessToken, null);
+//    }
 
 }

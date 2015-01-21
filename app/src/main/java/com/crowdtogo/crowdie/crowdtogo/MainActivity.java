@@ -57,8 +57,8 @@ import java.util.HashMap;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 
-public class MainActivity extends OrdersSpiceActivity  implements OnClickListener {//SherlockFragmentActivity
-//>>>>>>> Stashed changes
+public class MainActivity extends OrdersSpiceActivity  implements OnClickListener {
+
 
 
     private DrawerLayout mDrawerLayout;
@@ -68,6 +68,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
     private CharSequence mTitle;
 
     // SLIDING MENU OPTIONS
+    RelativeLayout rlNewDelivery;
     RelativeLayout rlProfile;
     RelativeLayout rlHome;
     RelativeLayout rlMessages;
@@ -95,8 +96,6 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
 
         setContentView(R.layout.activity_main);
 
-        //String accessToken =  getDefaults("access_token", MainActivity.this);
-        //Toast.makeText(MainActivity.this, "MainActivity Access Token: "+ accessToken, Toast.LENGTH_LONG).show();
         initMenu();
 
         Log.w("switch","Ognhaha");
@@ -139,24 +138,28 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
-//<<<<<<< HEAD
-            //Default HOME
-//            switchFragment(new HomeFragment());
-//            setTitle("Home");
+
+            //Default
+//            switchFragment(new ConfirmDeliveryRequestFragment());
+//            setTitle("New Delivery");
 //            setSelected(rlHome);
 
-            switchFragment(new ConfirmDeliveryRequestFragment());
-            setTitle("New Delivery");
-//=======
-//            switchFragment(new HomeFragment());
-//            setTitle("Home");
-//>>>>>>> 0c487dfa1a583ed25a16d1e51e4d1abd90476608
+            switchFragment(new HomeFragment());
+            setTitle("Home");
             setSelected(rlHome);
+
+
+            ///------Notifications Fragment---///
+//            switchFragment(new ConfirmDeliveryRequestFragment());
+//            setTitle("Notifications");
+//            setSelected(rlNotifs);
+            ///------Notifications Fragment---///
 
             //mDrawerLayout.openDrawer(mDrawerList); // Keep drawer open everytime the application starts
         }
 
-        getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", MainActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
+        //Order Request
+//        getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", MainActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
 
     }
 
@@ -193,14 +196,17 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                             @Override
                             public void run ()
                             {
-                                Log.w("Timer","verna is love");
-                                getAvailabilitySpiceManager().execute(new LocationRequest(latitude,longitude,getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
+                                Log.w("Timer","ID: " +getCrowdieId("userId", MainActivity.this) +" Lat " + latitude + "Long  " + longitude );
+                                //Log.w("Timer","verna is love");
+                                //set location request using userId
+                                 getAvailabilitySpiceManager().execute(new LocationRequest(latitude,longitude,getCrowdieId("userId", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
 
                                 //Toast.makeText(LoginActivity.this, "A", Toast.LENGTH_LONG).show();
                             }
                         };
                         timer.schedule (hourlyTask, 0l, 300000); // 30000 = 5 minutes
-                        getAvailabilitySpiceManager().execute(new AvailabilityRequest("1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+                        getAvailabilitySpiceManager().execute(new AvailabilityRequest(latitude,longitude,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+                        //getAvailabilitySpiceManager().execute(new AvailabilityRequest(47.616452301,-122.156219501,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
 
 
                     }
@@ -212,7 +218,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                 else
                 {
                     Log.w("switch","Off");
-                    getAvailabilitySpiceManager().execute(new AvailabilityRequest("0",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+                    getAvailabilitySpiceManager().execute(new AvailabilityRequest(0.0,0.0,"0",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
                     timer.cancel();
                     timer.purge();
                     timer = null;
@@ -273,7 +279,10 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         if (v.getId() == R.id.rlProfile) {
             // PROFILE
             newContent = new UserProfileFragment();
-            setTitle("Profile");
+// May Start
+            name = getName("name",MainActivity.this);
+            setTitle(name);
+// May End
             setSelected(rlProfile);
         } else if (v.getId() == R.id.rlHome) {
             // HOME
@@ -287,7 +296,10 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
             setSelected(rlMessages);
         } else if (v.getId() == R.id.rlNotifs) {
             // NOTIFICATIONS
-            newContent = new NotificationFragment();
+//            newContent = new NotificationFragment();
+//            setTitle("Notifications");
+//            setSelected(rlNotifs);
+            newContent = new ConfirmDeliveryRequestFragment();
             setTitle("Notifications");
             setSelected(rlNotifs);
         } else if (v.getId() == R.id.rlSettings) {
@@ -343,8 +355,15 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
     }
 
     // switching fragment
-    private void switchFragment(Fragment fragment) {
+    public void switchFragment(Fragment fragment) {
         mDrawerLayout.closeDrawer(mDrawerList);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+    }
+
+    // switching homeFragment
+    public void homeFragment(Fragment fragment) {
+        //mDrawerLayout.closeDrawer(mDrawerList);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
@@ -464,73 +483,68 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         }
     }
 
+///---OrdersRequestListener----///
+//    private class OrdersRequestListener implements RequestListener<OrdersResponse> {
+//
+//        @Override
+//        public void onRequestFailure(SpiceException spiceException) {
+//            if (spiceException.getCause() instanceof RetrofitError) {
+//                RetrofitError error = (RetrofitError) spiceException.getCause();
+//                ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
+//                //mProgressDialog.dismiss();
+//                Toast.makeText(MainActivity.this, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
+//            }
+//        }
+//
+//        //Success Request
+//        @Override
+//        public void onRequestSuccess(OrdersResponse ordersResponse) {
+//            //Toast.makeText(DeliveryDetailsActivity.this, "Success" ,Toast.LENGTH_LONG).show();
+//            updateOrder(ordersResponse);
+//        }
+//
+//    };
+//
+//    private void updateOrder(final OrdersResponse response){
+//
+//
+//        if(response!=null){
+//           //ordersDB.DeleteOrders();
+//            for(int index = 0; index < response.getData().toArray().length; index++) {
+//
+//                HashMap<String, String> queryValues = new HashMap<String, String>();
+//
+//                queryValues.put("orderId",response.getData().get(index).getOrderId());
+//                queryValues.put("firstname", response.getData().get(index).getFirstname());
+//                queryValues.put("lastname", response.getData().get(index).getLastname());
+//                queryValues.put("destination_address", response.getData().get(index).getDestination_address());
+//                queryValues.put("contact", response.getData().get(index).getContact());
+//                queryValues.put("size", response.getData().get(index).getSize());
+//                queryValues.put("status", response.getData().get(index).getStatus());
+//                queryValues.put("destination_latitude", response.getData().get(index).getDestination_latitude());
+//                queryValues.put("destination_longitude", response.getData().get(index).getDestination_longitude());
+//                queryValues.put("merchantId", response.getData().get(index).getMerchantId());
+//                queryValues.put("store_name", response.getData().get(index).getStore_name());
+//                queryValues.put("store_contact", response.getData().get(index).getStore_contact());
+//                queryValues.put("pickup_address", response.getData().get(index).getPickup_address());
+//                queryValues.put("pickup_address_line_2", response.getData().get(index).getPickup_address_line_2());
+//                queryValues.put("pickup_latitude", response.getData().get(index).getPickup_latitude());
+//                queryValues.put("pickup_longitude", response.getData().get(index).getPickup_longitude());
+//                queryValues.put("pickup_date", response.getData().get(index).getPickup_date());
+//                queryValues.put("pickup_time", response.getData().get(index).getPickup_time());
+//                queryValues.put("groupId", response.getData().get(index).getGroupId());
+//                queryValues.put("deliveryStatus", response.getData().get(index).getDeliveryStatus());
+//
+//                ordersDB.insertOrders(queryValues);
+//            }
+//
+//
+//        }else{
+//          //  Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_LONG).show();
+//        }
+//    }
+///---OrdersRequestListener----///
 
-
-
-    private class OrdersRequestListener implements RequestListener<OrdersResponse> {
-
-        @Override
-        public void onRequestFailure(SpiceException spiceException) {
-            if (spiceException.getCause() instanceof RetrofitError) {
-                RetrofitError error = (RetrofitError) spiceException.getCause();
-                ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
-                //mProgressDialog.dismiss();
-                Toast.makeText(MainActivity.this, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
-            }
-        }
-
-        //Success Request
-        @Override
-        public void onRequestSuccess(OrdersResponse ordersResponse) {
-            //Toast.makeText(DeliveryDetailsActivity.this, "Success" ,Toast.LENGTH_LONG).show();
-            updateOrder(ordersResponse);
-        }
-
-    };
-
-    private void updateOrder(final OrdersResponse response){
-
-
-        if(response!=null){
-           ordersDB.DeleteOrders();
-            // setDefaults("access_token",response.getAccess_token(),LoginActivity.this);
-            for(int index = 0; index < response.getData().toArray().length; index++) {
-
-                HashMap<String, String> queryValues = new HashMap<String, String>();
-
-                queryValues.put("orderId",response.getData().get(index).getOrderId());
-                queryValues.put("firstname", response.getData().get(index).getFirstname());
-                queryValues.put("lastname", response.getData().get(index).getLastname());
-                queryValues.put("destination_address", response.getData().get(index).getDestination_address());
-                queryValues.put("contact", response.getData().get(index).getContact());
-                queryValues.put("size", response.getData().get(index).getSize());
-                queryValues.put("status", response.getData().get(index).getStatus());
-                queryValues.put("destination_latitude", response.getData().get(index).getDestination_latitude());
-                queryValues.put("destination_longitude", response.getData().get(index).getDestination_longitude());
-                queryValues.put("merchantId", response.getData().get(index).getMerchantId());
-                queryValues.put("store_name", response.getData().get(index).getStore_name());
-                queryValues.put("store_contact", response.getData().get(index).getStore_contact());
-                queryValues.put("pickup_address", response.getData().get(index).getPickup_address());
-                queryValues.put("pickup_address_line_2", response.getData().get(index).getPickup_address_line_2());
-                queryValues.put("pickup_latitude", response.getData().get(index).getPickup_latitude());
-                queryValues.put("pickup_longitude", response.getData().get(index).getPickup_longitude());
-
-                ordersDB.insertOrders(queryValues);
-
-                //Toast.makeText(DeliveryDetailsActivity.this, "Record saved", Toast.LENGTH_LONG).show();
-                //List<Orders> notes = Orders.findWithQuery(Orders.class, "Select * from ORDERS");
-                //Toast.makeText(DeliveryDetailsActivity.this, notes.toArray().toString(), Toast.LENGTH_LONG).show();
-            }
-            //Toast.makeText(MainActivity.this, "Main: "+ ordersDB.getAllOrders(), Toast.LENGTH_LONG).show();
-            //Intent mainIntent = new Intent(DeliveryDetailsActivity.this, MainActivity.class);
-            //startActivity(mainIntent);
-
-        }else{
-          //  Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_LONG).show();
-        }
-
-
-    }
 
     //get stored crowdie_id
     public static String getCrowdieId(String accessToken, Context context) {

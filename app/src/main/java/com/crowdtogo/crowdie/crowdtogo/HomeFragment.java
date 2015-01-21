@@ -70,9 +70,10 @@ public class HomeFragment extends Fragment {
                 case 0:
                     // tab 1 delivery requests fragment
                     return new DeliveryRequestFragment();
+
                 case 1:
                     // tab2 ongoing delivery fragment
-                    return new OngoingDeliveryFragment();
+                    return new OngoingDeliveryRequestFragment();
             }
 
             return null;

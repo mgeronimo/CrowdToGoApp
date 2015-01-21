@@ -1,14 +1,21 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
+import android.app.ActionBar;
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,7 +23,9 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import com.crowdtogo.crowdie.model.ErrorMessage;
 import com.crowdtogo.crowdie.model.OrdersResponse;
+import com.crowdtogo.crowdie.network.OrdersSpiceService;
 import com.crowdtogo.crowdie.network.requests.OrdersRequest;
+import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -30,30 +39,58 @@ import java.util.List;
 
 import retrofit.RetrofitError;
 
-public class DeliveryRequestFragment extends SherlockFragment {//
-
+public class DeliveryRequestFragment extends SherlockFragment   {//
+   Context context;
     String[] name;
     String[] date;
     String[] pickup;
     String[] delivery;
     int[] thumbnail;
     ListView list;
+    MainActivity mainActivity = new MainActivity();
+
     DeliveryRequestListViewAdapter adapter;
     OrdersSpiceActivity orders  = new OrdersSpiceActivity();
     OrdersResponse ordersResponse = new OrdersResponse();
     private SQLiteDatabase db;
-   // DBHelper ordersDB = new DBHelper(getActivity());
+    private SpiceManager DeliveryStatusSpiceManager = new SpiceManager(OrdersSpiceService.class);
 
-    //List<String> list = new ArrayList<String>();
+
+    @Override
+    public void onStart() {
+
+        DeliveryStatusSpiceManager.start(getActivity());
+        super.onStart();
+    }
+    @Override
+    public void onStop() {
+
+        DeliveryStatusSpiceManager.shouldStop();
+         super.onStop();
+    }
+
+    protected SpiceManager DeliveryStatusSpiceManager()
+    {
+        return DeliveryStatusSpiceManager;
+    }
 
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        DBHelper ordersDB = new DBHelper(getActivity());
-       // System.out.println("Fragments: " + ordersDB.getAllOrders());
+                             Bundle savedInstanceState){
 
+       getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+        context = getActivity();
+        View view = inflater.inflate(R.layout.fragment_delivery_request, container, false);
+        // Locate the ListView in fragment_delivery_request.xml
+        list = (ListView) view.findViewById(R.id.listview);
+
+
+
+
+        DBHelper ordersDB = new DBHelper(getActivity());
+        ordersDB.open();
         ////---------------
         db = ordersDB.getReadableDatabase();
         String columns[] = {
@@ -69,14 +106,19 @@ public class DeliveryRequestFragment extends SherlockFragment {//
 //                        "merchantId",
                         "store_name",
 //                        "store_contact",
-                        "pickup_address"
+                        "pickup_address",
 //                        "pickup_address_line_2",
 //                        "pickup_latitude",
-//                        "pickup_longitude"
+//                        "pickup_longitude",
+//                        "pickup_date",
+//                        "pickup_time"
+//                      "groupId",
+                      "deliveryStatus"//,
+                      //"duration"
+
         };
 
-
-        Cursor cursor = db.query("ORDERS", columns, null, null,null, null, null, null);
+        Cursor cursor = db.query("ORDERS", columns, "deliveryStatus ='0'", null, null, null, null, null);
 
         int orderId = cursor.getColumnIndex("orderId");
 //        int firstname = cursor.getColumnIndex("firstname");
@@ -94,7 +136,12 @@ public class DeliveryRequestFragment extends SherlockFragment {//
 //        int pickup_address_line_2 = cursor.getColumnIndex("pickup_address_line_2");
 //        int pickup_latitude = cursor.getColumnIndex("pickup_latitude");
 //        int pickup_longitude = cursor.getColumnIndex("pickup_longitude");
-       // int topical_subject = cursor.getColumnIndex(Variables.TOPICAL_SUBJECT );
+
+//         int pickup_date = cursor.getColumnIndex("pickup_date");
+//        int pickup_time = cursor.getColumnIndex("pickup_time");
+//        int groupId = cursor.getColumnIndex("groupId");
+//        int deliveryStatus = cursor.getColumnIndex("deliveryStatus");
+
 
                 ArrayList<String> arrOrderId = new ArrayList<String>(),
 //                arrFirstname = new ArrayList<String>(),
@@ -108,11 +155,14 @@ public class DeliveryRequestFragment extends SherlockFragment {//
 //                arrMerchantId = new ArrayList<String>(),
                 arrStore_name = new ArrayList<String>(),
 //                arrStore_contact = new ArrayList<String>(),
-                arrPickup_address = new ArrayList<String>();
+                arrPickup_address = new ArrayList<String>(); //,
 //                arrPickup_address_line_2 = new ArrayList<String>(),
 //                arrPickup_latitude = new ArrayList<String>(),
-//                arrPickup_longitude= new ArrayList<String>();
-               // arrTOPICAL_SUBJECT = new ArrayList<String>();
+//                arrPickup_longitude= new ArrayList<String>(),
+//                arrPickup_date = new ArrayList<String>(),
+//                arrPickup_time= new ArrayList<String>(),
+//                arrGroupId = new ArrayList<String>(),
+//                arrDeliveryStatus= new ArrayList<String>();
 
 
 
@@ -134,9 +184,11 @@ public class DeliveryRequestFragment extends SherlockFragment {//
 //                    arrPickup_address_line_2.add(cursor.getString(pickup_address_line_2));
 //                    arrPickup_latitude.add(cursor.getString(pickup_latitude));
 //                    arrPickup_longitude.add(cursor.getString(pickup_longitude));
-
+//                    arrPickup_date.add(cursor.getString(pickup_date));
+//                    arrPickup_time.add(cursor.getString(pickup_time));
+//                    arrGroupId.add(cursor.getString(groupId));
+//                    arrDeliveryStatus.add(cursor.getString(deliveryStatus));
         }
-
 
         String[] strOrderId = new String[arrOrderId.size()];
 //        String[] strFirstname = new String[arrFirstname.size()];
@@ -154,7 +206,11 @@ public class DeliveryRequestFragment extends SherlockFragment {//
 //        String[] strPickup_address_line_2 = new String[arrPickup_address_line_2.size()];
 //        String[] strPickup_latitude = new String[arrPickup_latitude.size()];
 //        String[] strPickup_longitude = new String[arrPickup_longitude.size()];
-        //String[] strTOPICAL_SUBJECT= new String[arrTOPICAL_SUBJECT.size()];
+//        String[] strPickup_date = new String[arrPickup_date.size()];
+//        String[] strPickup_time = new String[arrPickup_time.size()];
+//        String[] strGroupId = new String[arrGroupId.size()];
+//        String[] strDeliveryStatus = new String[arrDeliveryStatus.size()];
+
 
         arrOrderId.toArray(strOrderId);
 //        arrFirstname.toArray(strFirstname);
@@ -172,31 +228,29 @@ public class DeliveryRequestFragment extends SherlockFragment {//
 //        arrPickup_address_line_2.toArray(strPickup_address_line_2);
 //        arrPickup_latitude.toArray(strPickup_latitude);
 //        arrPickup_longitude.toArray(strPickup_longitude);
-        //arrTOPICAL_SUBJECT.toArray(strTOPICAL_SUBJECT);
+//        arrPickup_date.toArray(strPickup_date);
+//        arrPickup_time.toArray(strPickup_time);
+//        arrGroupId.toArray(strGroupId);
+//        arrPDeliveryStatus.toArray(strDeliveryStatus);
 
         ////---------------
 
-        View view = inflater.inflate(R.layout.fragment_delivery_request, container, false);
-        // Generate sample data
+        // Generate  data
         name = arrStore_name.toArray(strStore_name);
         date =  arrOrderId.toArray(strOrderId);
         pickup =  arrPickup_address.toArray(strPickup_address);
-//        delivery = new String[] { "456 Rainier Ave, Seattle, WA" , "457 Rainier Ave, Seattle, WA" ,
-       // name = new String[] { "The Kingfish Cafe", "The Home Depot", "Walgreens" };
-//        date = new String[] { "November 5, 2014", "November 5, 2014", "November 5, 2014"};
-//        pickup = new String[] { "602 19th Avenue East, Seattle, WA" , "7345 Delridge Way SW, Seattle, WA" ,
-//                "566 Denny Way, Seattle, WA" };
-       delivery = arrDestination_address.toArray(strDestination_address);
+        delivery = arrDestination_address.toArray(strDestination_address);
         thumbnail = new int[] { R.drawable.ic_home, R.drawable.ic_home,R.drawable.ic_home};
-        // Locate the ListView in fragment_delivery_request.xml
-        list = (ListView) view.findViewById(R.id.listview);
-
         // Pass results to ListViewAdapter Class
         adapter = new DeliveryRequestListViewAdapter(getActivity(), name, date, pickup, delivery,thumbnail);
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
+        list.refreshDrawableState();
         list.setItemsCanFocus(true);
+        ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
+
         return view;
+
     }
 
     @Override
@@ -205,48 +259,19 @@ public class DeliveryRequestFragment extends SherlockFragment {//
         setUserVisibleHint(true);
     }
 
-
-//    private class OrdersRequestListener implements RequestListener<OrdersResponse> {
-//
-//        @Override
-//        public void onRequestFailure(SpiceException spiceException) {
-//            if (spiceException.getCause() instanceof RetrofitError) {
-//                RetrofitError error = (RetrofitError) spiceException.getCause();
-//                AccessTokenError body = (AccessTokenError) error.getBodyAs(AccessTokenError.class);
-//                //mProgressDialog.dismiss();
-//                Toast.makeText(getActivity(), "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
-//            }
-//        }
-//
-//        //Success Request
-//        @Override
-//        public void onRequestSuccess(OrdersResponse ordersResponse) {
-//            //Toast.makeText(DeliveryDetailsActivity.this, "Success" ,Toast.LENGTH_LONG).show();
-//            updateOrder(ordersResponse);
-//        }
-//
-//    };
-//
-//    private void updateOrder(final OrdersResponse response){
-//
-//        if(response!=null){
-//            // setDefaults("access_token",response.getAccess_token(),LoginActivity.this);
-//            Toast.makeText(getActivity(), "Order Details: "+ response.getData().get(1).getPickup_address_line_2(), Toast.LENGTH_LONG).show();
-//            //Intent mainIntent = new Intent(DeliveryDetailsActivity.this, MainActivity.class);
-//            //startActivity(mainIntent);
-//            //mProgressDialog.dismiss();
-//        }else{
-//            Toast.makeText(getActivity(), "wala pang order(s)", Toast.LENGTH_LONG).show();
-//        }
-//
-//    }
-//
-//    //get stored crowdie_id
-//    public static String getCrowdieId(String crowdieId, Context context) {
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        return preferences.getString(crowdieId, null);
-//    }
-
+    public void refresh(){
+        adapter.notifyDataSetChanged();
+        list.setAdapter(adapter);
+        list.invalidateViews();
+        list.scrollBy(0, 0);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+       // items.clear();
+        //items = dbHelper.getItems(); // reload the items from database
+        adapter.notifyDataSetChanged();
+    }
 
 
 }

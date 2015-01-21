@@ -114,12 +114,12 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/viewDetails"
+            android:id="@+id/viewOngoingDetails"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:text="START"
+            android:text="DETAILS"
             android:textColor="@color/white"
             android:background="@drawable/bg_btn"
             android:focusable="false"/>

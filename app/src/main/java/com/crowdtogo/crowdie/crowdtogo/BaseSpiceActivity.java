@@ -29,6 +29,8 @@ public  class BaseSpiceActivity extends SherlockFragmentActivity {
         super.onStop();
     }
 
+
+
     protected SpiceManager getAccessTokenSpiceManager(){
         return accessTokenSpiceManager;
     }

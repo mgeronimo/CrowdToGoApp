@@ -13,7 +13,6 @@ import retrofit.http.Path;
 
 // Accept and Reject Group Orders
 public interface OrdersConfirmation {
-
     @FormUrlEncoded
     @PUT("/api/v1/orders/group/{groupId}/delivery")
     SuccessResponse confirmation( @Field("action") String action ,@Path("groupId") String groupId);//in API: userId

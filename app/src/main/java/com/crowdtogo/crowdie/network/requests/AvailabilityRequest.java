@@ -17,12 +17,17 @@ import com.octo.android.robospice.request.retrofit.RetrofitSpiceRequest;
 public class AvailabilityRequest extends RetrofitSpiceRequest<SuccessResponse,AvailabilityInterface>
 {
     //private AvailabilityParam availabilityParam;
+    double latitude;
+    double longitude;
     String availabilityParam;
     String crowdieId;
 
-    public AvailabilityRequest(String availabilityParam,String crowdieId)
+
+    public AvailabilityRequest(double latitude, double longitude,String availabilityParam,String crowdieId)
     {
         super(SuccessResponse.class, AvailabilityInterface.class);
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.availabilityParam = availabilityParam;
         this.crowdieId = crowdieId;
     }
@@ -30,6 +35,6 @@ public class AvailabilityRequest extends RetrofitSpiceRequest<SuccessResponse,Av
     @Override
     public SuccessResponse loadDataFromNetwork() throws Exception
     {
-        return getService().changeAvailability(availabilityParam,crowdieId);
+        return getService().changeAvailability(latitude,longitude,availabilityParam,crowdieId);
     }
 }

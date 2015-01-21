@@ -22,12 +22,10 @@ public class OrdersSpiceService extends RetrofitGsonSpiceService {
     @Override
     public void onCreate() {
         super.onCreate();
-        // addRetrofitInterface(UsersResponse.class);
-        // addRetrofitInterface(UsersInterface.class);
         addRetrofitInterface(AvailabilityInterface.class);
         addRetrofitInterface(LocationInterface.class);
         addRetrofitInterface(DeliveryStatusInterface.class);
-
+        addRetrofitInterface(CheckOrderCodeInterface.class);
         addRetrofitInterface(OrdersConfirmation.class);
 
     }

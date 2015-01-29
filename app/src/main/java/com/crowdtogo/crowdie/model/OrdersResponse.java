@@ -77,10 +77,7 @@ public class OrdersResponse {
         @Expose
         @SerializedName("pickup_time")
         private String pickup_time;
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
         @Expose
         @SerializedName("groupId")
         private String groupId;
@@ -130,12 +127,6 @@ public class OrdersResponse {
         public void setDeliveryStatus(String deliveryStatus) {
             this.deliveryStatus = deliveryStatus;
         }
-<<<<<<< Updated upstream
-
-
-
-=======
->>>>>>> Stashed changes
 
         public String getLastname() {
             return lastname;

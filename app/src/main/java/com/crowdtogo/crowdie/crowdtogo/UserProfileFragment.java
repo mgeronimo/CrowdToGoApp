@@ -135,11 +135,9 @@ public class UserProfileFragment extends SherlockFragment {
     }
 
     public void setUserVehicle(String vehicle){
-<<<<<<< Updated upstream
-        if( vehicle.equalsIgnoreCase("Bicycle") ){
-=======
+
         if( vehicle.equalsIgnoreCase("bike") ){
->>>>>>> Stashed changes
+
             ivUserVehicle.setImageDrawable(getResources().getDrawable(R.drawable.bike));
         }else if( vehicle.equalsIgnoreCase("motorcycle") ){
             ivUserVehicle.setImageDrawable(getResources().getDrawable(R.drawable.motor));
@@ -147,17 +145,12 @@ public class UserProfileFragment extends SherlockFragment {
         else if( vehicle.equalsIgnoreCase("car") ){
             ivUserVehicle.setImageDrawable(getResources().getDrawable(R.drawable.car));
         }
-<<<<<<< Updated upstream
-        else if( vehicle.equalsIgnoreCase("van") ){
-=======
         else if( vehicle.equalsIgnoreCase("mini van") ){
->>>>>>> Stashed changes
             ivUserVehicle.setImageDrawable(getResources().getDrawable(R.drawable.van));
         }else{
             ivUserVehicle.setImageDrawable(getResources().getDrawable(R.drawable.van));
         }
     }
-
 
 
 }

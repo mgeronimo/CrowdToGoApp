@@ -20,10 +20,6 @@ public class UserProfileRequest extends RetrofitSpiceRequest<UserProfileResponse
 
         @Override
         public UserProfileResponse loadDataFromNetwork() throws Exception {
-<<<<<<< Updated upstream
-        //return getService().getUserSummaryInfo(this.crowdieId);
-=======
->>>>>>> Stashed changes
         return getService().getUserSummaryInfo(crowdieId);
     }
 

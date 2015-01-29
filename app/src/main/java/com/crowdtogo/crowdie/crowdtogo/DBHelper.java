@@ -97,11 +97,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         };
         Cursor cur = database.query("ORDERS", columns, "orderId=" +orderId, null, null, null, null, null);
-<<<<<<< Updated upstream
         System.out.println("checkDuplicate "+cur.getCount());
-=======
-        System.out.println("checkDuplicate " + cur.getCount());
->>>>>>> Stashed changes
+
         if (cur != null && cur.getCount()>0) {
 
             // duplicate found
@@ -123,11 +120,8 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             //check for duplicate else insert the data to sqlite
             if(checkDuplicate(queryValues.get("orderId"))) {
-<<<<<<< Updated upstream
-                System.out.println("There's a Duplicate on orderId: " + queryValues.get("orderId"));
-=======
+
                 System.out.println("Duplicate orderId: " + queryValues.get("orderId"));
->>>>>>> Stashed changes
             }else{
 
             this.open();
@@ -172,14 +166,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-<<<<<<< Updated upstream
 
-        values.put("deliveryStatus", deliveryStatus);
-        database.update("ORDERS", values, "orderId="+orderId, null);
-        System.out.println("Orders status updated");
-    } catch (Exception exception) {
-        System.out.println(exception);
-=======
         values.put("deliveryStatus", deliveryStatus);
         database.update("ORDERS", values, "orderId="+orderId, null);
         System.out.println("Orders status updated");
@@ -188,7 +175,6 @@ public class DBHelper extends SQLiteOpenHelper {
     } catch (Exception exception) {
         System.out.println(exception);
         Log.e("Failed updated", deliveryStatus);
->>>>>>> Stashed changes
     }
     }
 
@@ -226,10 +212,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 map.put("pickup_time", cursor.getString(17));
                 map.put("groupId", cursor.getString(18));
                 map.put("deliveryStatus", cursor.getString(19));
-<<<<<<< Updated upstream
-=======
                 map.put("duration", cursor.getString(20));
->>>>>>> Stashed changes
 
                 ordersList.add(map);
             } while (cursor.moveToNext());
@@ -272,10 +255,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 map.put("pickup_time", cursor.getString(17));
                 map.put("groupId", cursor.getString(18));
                 map.put("deliveryStatus", cursor.getString(19));
-<<<<<<< Updated upstream
-=======
+
                 map.put("duration", cursor.getString(20));
->>>>>>> Stashed changes
 
                 ordersList.add(map);
             } while (cursor.moveToNext());

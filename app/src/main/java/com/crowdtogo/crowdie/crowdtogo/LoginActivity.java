@@ -316,11 +316,9 @@ public class LoginActivity extends BaseSpiceActivity {
                // RetrofitError error = (RetrofitError) spiceException.getCause();
                 ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
                 mProgressDialog.dismiss();
-<<<<<<< Updated upstream
-                Toast.makeText(LoginActivity.this, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
-=======
+
                 Toast.makeText(LoginActivity.this, "Error: "+spiceException.getMessage(), Toast.LENGTH_LONG).show();
->>>>>>> Stashed changes
+
             }else{
 
                 mProgressDialog.dismiss();

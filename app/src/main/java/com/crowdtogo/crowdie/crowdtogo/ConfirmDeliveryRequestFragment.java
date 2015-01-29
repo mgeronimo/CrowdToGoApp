@@ -47,8 +47,6 @@ public class ConfirmDeliveryRequestFragment extends SherlockFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_confirm_delivery_request, container, false);
         DBHelper dbHelper = new DBHelper(getSherlockActivity());
-        getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", getSherlockActivity())), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
-
 
 
         v.findViewById(R.id.accept).setOnClickListener(new View.OnClickListener() {
@@ -56,18 +54,18 @@ public class ConfirmDeliveryRequestFragment extends SherlockFragment {
             public void onClick(View arg0) {
 
                 Toast.makeText(getActivity(), "ACCEPT " + getGroupId("groupId",getSherlockActivity()) , Toast.LENGTH_SHORT).show();
-                //confirmationSpiceManager().execute(new ConfirmationRequest("ACCEPT",getGroupId("groupId",getActivity())), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
+                confirmationSpiceManager().execute(new ConfirmationRequest("ACCEPT",getGroupId("groupId",getActivity())), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
 
-                //---TEST
-                Fragment frag = new HomeFragment();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, frag);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.addToBackStack(null);
-                ft.commit();
-//                Intent mainIntent = new Intent(getActivity(), MainActivity.class);
-//                startActivity(mainIntent);
-                //---TEST
+//                //---TEST
+//                Fragment frag = new HomeFragment();
+//                FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                ft.replace(R.id.content_frame, frag);
+//                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//                ft.addToBackStack(null);
+//                ft.commit();
+////                Intent mainIntent = new Intent(getActivity(), MainActivity.class);
+////                startActivity(mainIntent);
+//                //---TEST
                 }
 
         });
@@ -92,7 +90,6 @@ public class ConfirmDeliveryRequestFragment extends SherlockFragment {
             RetrofitError error = (RetrofitError) spiceException.getCause();
             if (spiceException.getCause() instanceof RetrofitError && error.getBody() != null) {
                 // RetrofitError error = (RetrofitError) spiceException.getCause();
-<<<<<<< Updated upstream
                 ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
                 //mProgressDialog.dismiss();
                 Toast.makeText(getActivity(), "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
@@ -110,6 +107,8 @@ public class ConfirmDeliveryRequestFragment extends SherlockFragment {
 
             if(successResponse!=null){
 
+                getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", getSherlockActivity())), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
+
 //                Intent mainIntent = new Intent(ConfirmDeliveryRequestActivity.this, MainActivity.class);
 //                startActivity(mainIntent);
                 Toast.makeText(getActivity(),"ConfirmDeliveryRequestFragment",Toast.LENGTH_LONG).show();
@@ -124,93 +123,6 @@ public class ConfirmDeliveryRequestFragment extends SherlockFragment {
 
     };
 
-    //-----ConfirmationRequestListener----///
-
-    ///---OrdersRequestListener----///
-    private class OrdersRequestListener implements RequestListener<OrdersResponse> {
-
-        @Override
-        public void onRequestFailure(SpiceException spiceException) {
-            if (spiceException.getCause() instanceof RetrofitError) {
-                RetrofitError error = (RetrofitError) spiceException.getCause();
-=======
->>>>>>> Stashed changes
-                ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
-                //mProgressDialog.dismiss();
-                Toast.makeText(getActivity(), "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
-            }else{
-                ;
-                //mProgressDialog.dismiss();
-                Toast.makeText(getActivity(), "Connection Error: \nPlease check your connection then try again", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        //Success Request
-        @Override
-        public void onRequestSuccess(OrdersResponse ordersResponse) {
-            //Toast.makeText(DeliveryDetailsActivity.this, "Success" ,Toast.LENGTH_LONG).show();
-<<<<<<< Updated upstream
-            updateOrder(ordersResponse);
-=======
-
-            if(successResponse!=null){
-
-//                Intent mainIntent = new Intent(ConfirmDeliveryRequestActivity.this, MainActivity.class);
-//                startActivity(mainIntent);
-                Toast.makeText(getActivity(),"ConfirmDeliveryRequestFragment",Toast.LENGTH_LONG).show();
-                Fragment frag = new HomeFragment();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, frag);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
->>>>>>> Stashed changes
-        }
-
-    };
-
-<<<<<<< Updated upstream
-    private void updateOrder(final OrdersResponse response){
-
-        if(response.getData().size()!=0){
-            //ordersDB.DeleteOrders();
-            DBHelper dbHelper = new DBHelper(getSherlockActivity());
-            Toast.makeText(getActivity(), "" +response.getData().size(), Toast.LENGTH_LONG).show();
-            saveGroudId("groupId",response.getData().get(0).getGroupId(),getSherlockActivity());
-
-            for(int index = 0; index < response.getData().toArray().length; index++) {
-
-                HashMap<String, String> queryValues = new HashMap<String, String>();
-
-                queryValues.put("orderId",response.getData().get(index).getOrderId());
-                queryValues.put("firstname", response.getData().get(index).getFirstname());
-                queryValues.put("lastname", response.getData().get(index).getLastname());
-                queryValues.put("destination_address", response.getData().get(index).getDestination_address());
-                queryValues.put("contact", response.getData().get(index).getContact());
-                queryValues.put("size", response.getData().get(index).getSize());
-                queryValues.put("status", response.getData().get(index).getStatus());
-                queryValues.put("destination_latitude", response.getData().get(index).getDestination_latitude());
-                queryValues.put("destination_longitude", response.getData().get(index).getDestination_longitude());
-                queryValues.put("merchantId", response.getData().get(index).getMerchantId());
-                queryValues.put("store_name", response.getData().get(index).getStore_name());
-                queryValues.put("store_contact", response.getData().get(index).getStore_contact());
-                queryValues.put("pickup_address", response.getData().get(index).getPickup_address());
-                queryValues.put("pickup_address_line_2", response.getData().get(index).getPickup_address_line_2());
-                queryValues.put("pickup_latitude", response.getData().get(index).getPickup_latitude());
-                queryValues.put("pickup_longitude", response.getData().get(index).getPickup_longitude());
-                queryValues.put("pickup_date", response.getData().get(index).getPickup_date());
-                queryValues.put("pickup_time", response.getData().get(index).getPickup_time());
-                queryValues.put("groupId", response.getData().get(index).getGroupId());
-                queryValues.put("deliveryStatus", response.getData().get(index).getDeliveryStatus());
-                queryValues.put("duration", response.getData().get(index).getDuration());
-
-
-                dbHelper.insertOrders(queryValues);
-            }
-
-
-=======
     //-----ConfirmationRequestListener----///
 
     ///---OrdersRequestListener----///
@@ -274,7 +186,6 @@ public class ConfirmDeliveryRequestFragment extends SherlockFragment {
             }
 
 
->>>>>>> Stashed changes
         }else{
             //  Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_LONG).show();
         }

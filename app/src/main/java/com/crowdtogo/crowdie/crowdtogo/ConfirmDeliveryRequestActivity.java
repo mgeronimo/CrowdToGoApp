@@ -52,14 +52,10 @@ public class ConfirmDeliveryRequestActivity extends OrdersSpiceActivity {
         setContentView(R.layout.fragment_confirm_delivery_request);
         DBHelper ordersDB = new DBHelper(this);
         //Order Request
-<<<<<<< Updated upstream
-        getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", ConfirmDeliveryRequestActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
-
-=======
 
         getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id",ConfirmDeliveryRequestActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
         Log.e("crowdie id",getCrowdieId("crowdie_id",ConfirmDeliveryRequestActivity.this));
->>>>>>> Stashed changes
+
 //        Intent i = getIntent();
 //        // Get the result of country
 //        orderId = i.getStringExtra("date");
@@ -187,18 +183,12 @@ public class ConfirmDeliveryRequestActivity extends OrdersSpiceActivity {
                 queryValues.put("pickup_time", response.getData().get(index).getPickup_time());
                 queryValues.put("groupId", response.getData().get(index).getGroupId());
                 queryValues.put("deliveryStatus", response.getData().get(index).getDeliveryStatus());
-<<<<<<< Updated upstream
-=======
+
                 queryValues.put("duration", response.getData().get(index).getDuration());
->>>>>>> Stashed changes
 
                 ordersDB.insertOrders(queryValues);
             }
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
         }else{
             //  Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_LONG).show();
         }

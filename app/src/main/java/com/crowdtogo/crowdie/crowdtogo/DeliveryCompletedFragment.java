@@ -16,7 +16,7 @@ public class DeliveryCompletedFragment extends SherlockFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_delivery_completed, container, false);
+        View v = inflater.inflate(R.layout.delivery_completed, container, false);
 
         return v;
     }

@@ -27,7 +27,7 @@ public class OrdersSpiceService extends RetrofitGsonSpiceService {
         addRetrofitInterface(DeliveryStatusInterface.class);
         addRetrofitInterface(CheckOrderCodeInterface.class);
         addRetrofitInterface(OrdersConfirmation.class);
-
+        addRetrofitInterface(UserProfileInterface.class);
     }
 
     @Override
@@ -36,13 +36,13 @@ public class OrdersSpiceService extends RetrofitGsonSpiceService {
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        //access token add to header here
+                        //access token added to header
                         request.addHeader("Authorization",getDefaults("access_token",OrdersSpiceService.this) );
                     }
                 })
                 .setEndpoint(BASE_URL)
                 .setConverter(new GsonConverter(new GsonBuilder()
-                        .excludeFieldsWithoutExposeAnnotation().create()))
+                .excludeFieldsWithoutExposeAnnotation().create()))
                 .setClient(new OkClient())
                 .setLogLevel(RestAdapter.LogLevel.FULL);
     }
@@ -56,7 +56,5 @@ public class OrdersSpiceService extends RetrofitGsonSpiceService {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(accessToken, null);
     }
-
-
 
 }

@@ -69,7 +69,11 @@ public class OngoingDeliveryRequestFragment extends SherlockFragment {
 
         };
 
+<<<<<<< Updated upstream:app/src/main/java/com/crowdtogo/crowdie/crowdtogo/OngoingDeliveryRequestFragment.java
         Cursor cursor = db.query("ORDERS", columns, "deliveryStatus='1'",null,null, null, null, null);
+=======
+        Cursor cursor = db.query("ORDERS", columns, "deliveryStatus=1",null,null, null, null, null);
+>>>>>>> Stashed changes:app/src/main/java/com/crowdtogo/crowdie/crowdtogo/OngoingDeliveryRequestFragment.java
 
         int orderId = cursor.getColumnIndex("orderId");
 //        int firstname = cursor.getColumnIndex("firstname");

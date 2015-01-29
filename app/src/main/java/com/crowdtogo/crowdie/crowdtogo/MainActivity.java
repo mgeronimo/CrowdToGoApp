@@ -197,16 +197,36 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                             public void run ()
                             {
                                 Log.w("Timer","ID: " +getCrowdieId("userId", MainActivity.this) +" Lat " + latitude + "Long  " + longitude );
+<<<<<<< Updated upstream
                                 //Log.w("Timer","verna is love");
                                 //set location request using userId
                                  getAvailabilitySpiceManager().execute(new LocationRequest(latitude,longitude,getCrowdieId("userId", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
+=======
+                                Log.w("Timer","verna is love");
+                                //set location request using userId
+                                 //getAvailabilitySpiceManager().execute(new LocationRequest(latitude,longitude,getCrowdieId("userId", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
+                               //Alj
+                                getAvailabilitySpiceManager().execute(new LocationRequest(34.7177634,-92.3763751,getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
+                                //Edu
+                                //getAvailabilitySpiceManager().execute(new LocationRequest(34.713754,-92.368592,getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
+                                //May
+                                //getAvailabilitySpiceManager().execute(new LocationRequest(34.7165329,-92.3563493,getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
 
-                                //Toast.makeText(LoginActivity.this, "A", Toast.LENGTH_LONG).show();
+>>>>>>> Stashed changes
+
                             }
                         };
                         timer.schedule (hourlyTask, 0l, 300000); // 30000 = 5 minutes
+<<<<<<< Updated upstream
                         getAvailabilitySpiceManager().execute(new AvailabilityRequest(latitude,longitude,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
                         //getAvailabilitySpiceManager().execute(new AvailabilityRequest(47.616452301,-122.156219501,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+=======
+                        //getAvailabilitySpiceManager().execute(new AvailabilityRequest(latitude,longitude,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+                        getAvailabilitySpiceManager().execute(new AvailabilityRequest(34.7177634,-92.3763751,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+                        //getAvailabilitySpiceManager().execute(new AvailabilityRequest(34.713754,-92.368592,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+                        //getAvailabilitySpiceManager().execute(new AvailabilityRequest(34.7165329,-92.3563493,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+
+>>>>>>> Stashed changes
 
 
                     }

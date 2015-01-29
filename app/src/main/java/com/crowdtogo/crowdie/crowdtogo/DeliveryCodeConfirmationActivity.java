@@ -60,7 +60,11 @@ public class DeliveryCodeConfirmationActivity extends OrdersSpiceActivity {
             public void onClick(View view) {
 
                 if(code.equals(" ")){
+<<<<<<< Updated upstream
                     Toast.makeText(getApplicationContext(),"Please enter the valid unique code",Toast.LENGTH_LONG).show();
+=======
+                    Toast.makeText(getApplicationContext(),"Please enter the valid code",Toast.LENGTH_LONG).show();
+>>>>>>> Stashed changes
                 }else{
                     Toast.makeText(getApplicationContext(),code.getText().toString() +"  "+orderId,Toast.LENGTH_LONG).show();
                     //CheckOrderCode request
@@ -106,9 +110,15 @@ public class DeliveryCodeConfirmationActivity extends OrdersSpiceActivity {
             if(successResponse!=null){
                 Log.w("DeliveryCodeConfirmationActivity", successResponse.getMessage());
 
+<<<<<<< Updated upstream
                 //--execute request for START--//
                 DeliveryStatusSpiceManager().execute(new DeliveryStatusRequest("DONE",orderId) , "DeliveryStatusRequest", DurationInMillis.ALWAYS_EXPIRED, new DeliveryStatusRequestListener());
                 //--execute request for START--//
+=======
+                //--execute request for DONE--//
+                DeliveryStatusSpiceManager().execute(new DeliveryStatusRequest("DONE",orderId) , "CheckOrderCodeRequestListener", DurationInMillis.ALWAYS_EXPIRED, new DeliveryStatusRequestListener());
+                //--execute request for DONE--//
+>>>>>>> Stashed changes
             }
         }
 
@@ -137,6 +147,7 @@ public class DeliveryCodeConfirmationActivity extends OrdersSpiceActivity {
         @Override
         public void onRequestSuccess(SuccessResponse successResponse) {
             if(successResponse!=null){
+<<<<<<< Updated upstream
                 ///---sqlite: Set the status value to 2(DONE)--///
                 DBHelper ordersDB = new DBHelper(context);
                 ordersDB.UpdateDeliveryStatus(orderId,"2");
@@ -144,6 +155,17 @@ public class DeliveryCodeConfirmationActivity extends OrdersSpiceActivity {
                 context.startActivity(refresh);
                 ///---sqlite --///
                 Log.w("DeliveryRequestListViewAdapter", successResponse.getMessage());
+=======
+
+                ///---sqlite: Set the status value to 2(DONE)--///
+                DBHelper ordersDB = new DBHelper(DeliveryCodeConfirmationActivity.this);
+                ordersDB.UpdateDeliveryStatus(orderId,"2");
+                Intent refresh = new Intent(DeliveryCodeConfirmationActivity.this,DeliveryCompletedActivity.class);
+                DeliveryCodeConfirmationActivity.this.startActivity(refresh);
+                Toast.makeText(getApplicationContext(), successResponse.getMessage(), Toast.LENGTH_LONG).show();
+                ///---sqlite --///
+
+>>>>>>> Stashed changes
             }
         }
     };

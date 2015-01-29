@@ -12,5 +12,8 @@ public interface UserProfileInterface {
     //@Multipart
     @GET("/api/v1/crowdie/{id}")
     UserProfileResponse getUserSummaryInfo(@Path("id") String crowdieId );
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 }

@@ -69,7 +69,7 @@
         android:id="@+id/reject"
         android:layout_width="169dp"
         android:layout_height="wrap_content"
-        android:text="REJECT"
+        android:text="DECLINE"
         android:textColor="@color/white"
         android:background="@drawable/bg_btn_danger"
         android:focusable="false"

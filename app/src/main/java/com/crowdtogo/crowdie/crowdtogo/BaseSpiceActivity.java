@@ -13,7 +13,6 @@ public  class BaseSpiceActivity extends SherlockFragmentActivity {
 
 
     private SpiceManager accessTokenSpiceManager = new SpiceManager(UsersInterfaceSpiceService.class);
-    //private SpiceManager ordersSpiceManager = new SpiceManager(OrdersSpiceService.class);
 
     @Override
     protected void onStart() {

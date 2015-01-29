@@ -32,11 +32,22 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import java.lang.reflect.Field;
+<<<<<<< Updated upstream
 
 import javax.net.ssl.HostnameVerifier;
 
 import retrofit.RetrofitError;
+=======
 
+import javax.net.ssl.HostnameVerifier;
+>>>>>>> Stashed changes
+
+import retrofit.RetrofitError;
+
+public class DeliveryRequestListViewAdapter extends BaseAdapter  {
+    // Declare Variables
+    Context context;
+    String status;
 
 public class DeliveryRequestListViewAdapter extends BaseAdapter  {
     // Declare Variables
@@ -53,6 +64,11 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter  {
     private RelativeLayout mDrawerList;
 
     //DBHelper ordersDB = new DBHelper(context);
+<<<<<<< Updated upstream
+=======
+    OrdersSpiceActivity ordersSpiceActivity = new OrdersSpiceActivity();
+
+>>>>>>> Stashed changes
 
     OrdersSpiceActivity ordersSpiceActivity = new OrdersSpiceActivity();
     public DeliveryRequestListViewAdapter(Context context, String[] name, String[] date,
@@ -89,6 +105,7 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter  {
         TextView txtdelivery;
         ImageView imgprofile;
 
+
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -118,8 +135,20 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter  {
         start.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
+<<<<<<< Updated upstream
                 //--execute request for START--//
                 ordersSpiceActivity.DeliveryStatusSpiceManager().execute(new DeliveryStatusRequest("START",date[position]) , "DeliveryStatusRequest", DurationInMillis.ALWAYS_EXPIRED, new DeliveryStatusRequestListener());
+=======
+
+                //--execute request for START--//
+                MainActivity mainActivity = new MainActivity();
+                //mainActivity.DeliveryStatusSpiceManager().start(context);
+                if( ! mainActivity.getOrdersSpiceManager().isStarted() ){
+                    mainActivity.DeliveryStatusSpiceManager().start(context);
+                }
+                //ordersSpiceActivity.getOrdersSpiceManager().start(parent.getContext());
+                mainActivity.DeliveryStatusSpiceManager().execute(new DeliveryStatusRequest("STARTED",date[position]) , "DeliveryStatusRequest", DurationInMillis.ALWAYS_EXPIRED, new DeliveryStatusRequestListener());
+>>>>>>> Stashed changes
                 //--execute request for START--//
 
                 ///---Test for sqlite: Set the status to value 1(START)--///
@@ -162,6 +191,10 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter  {
         public void onRequestSuccess(SuccessResponse successResponse) {
             if(successResponse!=null){
                 ///---sqlite: Set the status to value 1(START)--///
+<<<<<<< Updated upstream
+=======
+                status = date[0].toString();
+>>>>>>> Stashed changes
                 DBHelper ordersDB = new DBHelper(context);
                 ordersDB.UpdateDeliveryStatus(status,"1");
                 Intent refresh = new Intent(context,MainActivity.class);

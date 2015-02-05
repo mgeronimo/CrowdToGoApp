@@ -64,7 +64,7 @@ public class DeliveryCodeConfirmationActivity extends OrdersSpiceActivity {
                 }else{
                     Toast.makeText(getApplicationContext(),code.getText().toString() +"  "+orderId,Toast.LENGTH_LONG).show();
                     //CheckOrderCode request
-                    getCheckOrderCodeSpiceManager().execute(new CheckOrderCodeRequest(code.getText().toString(),orderId), "CheckOrderCodeRequest", DurationInMillis.ALWAYS_EXPIRED, new  CheckOrderCodeRequestListener());
+                    getRoboSpiceManager().execute(new CheckOrderCodeRequest(code.getText().toString(),orderId), "CheckOrderCodeRequest", DurationInMillis.ALWAYS_EXPIRED, new  CheckOrderCodeRequestListener());
 
                     ///---TEST for sqlite: Set the status value to 0--///
 //                    DBHelper ordersDB = new DBHelper(getApplicationContext());
@@ -108,7 +108,7 @@ public class DeliveryCodeConfirmationActivity extends OrdersSpiceActivity {
 
 
                 //--execute request for DONE--//
-                DeliveryStatusSpiceManager().execute(new DeliveryStatusRequest("DONE",orderId) , "CheckOrderCodeRequestListener", DurationInMillis.ALWAYS_EXPIRED, new DeliveryStatusRequestListener());
+                getRoboSpiceManager().execute(new DeliveryStatusRequest("DONE",orderId) , "CheckOrderCodeRequestListener", DurationInMillis.ALWAYS_EXPIRED, new DeliveryStatusRequestListener());
                 //--execute request for DONE--//
             }
         }

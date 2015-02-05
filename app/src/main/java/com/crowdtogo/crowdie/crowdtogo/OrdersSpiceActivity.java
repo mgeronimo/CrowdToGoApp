@@ -15,65 +15,26 @@ import com.octo.android.robospice.SpiceManager;
  */
 public class OrdersSpiceActivity extends SherlockFragmentActivity {
 
-    private SpiceManager ordersSpiceManager = new SpiceManager(OrdersSpiceService.class);
-    private SpiceManager availabilitySpiceManager = new SpiceManager(OrdersSpiceService.class);
-    private SpiceManager locationSpiceManager = new SpiceManager(OrdersSpiceService.class);
-    private SpiceManager confirmationSpiceManager = new SpiceManager(OrdersSpiceService.class);
-    private SpiceManager DeliveryStatusSpiceManager = new SpiceManager(OrdersSpiceService.class);
-    private SpiceManager CheckOrderCodeSpiceManager = new SpiceManager(OrdersSpiceService.class);
+
+    private SpiceManager RoboSpiceManager = new SpiceManager(OrdersSpiceService.class);
 
     @Override
     protected void onStart() {
-        ordersSpiceManager.start(this);
-        availabilitySpiceManager.start(this);
-        locationSpiceManager.start(this);
-        confirmationSpiceManager.start(this);
-        DeliveryStatusSpiceManager.start(this);
-        CheckOrderCodeSpiceManager.start(this);
+
+        RoboSpiceManager.start(this);
         super.onStart();
     }
 
     @Override
     protected void onStop() {
-        ordersSpiceManager.shouldStop();
-        availabilitySpiceManager.shouldStop();
-        locationSpiceManager.shouldStop();
-        confirmationSpiceManager.shouldStop();
-        DeliveryStatusSpiceManager.shouldStop();
-        CheckOrderCodeSpiceManager.shouldStop();
+
+        RoboSpiceManager.shouldStop();
         super.onStop();
     }
 
-    protected SpiceManager getOrdersSpiceManager(){
-        return ordersSpiceManager;
-    }
-
-    protected SpiceManager getAvailabilitySpiceManager()
+    protected SpiceManager getRoboSpiceManager()
     {
-        return availabilitySpiceManager;
+        return RoboSpiceManager;
     }
-
-    protected SpiceManager getLocationSpiceManager()
-    {
-        return locationSpiceManager;
-    }
-
-    protected SpiceManager confirmationSpiceManager()
-    {
-        return confirmationSpiceManager;
-    }
-
-    protected SpiceManager DeliveryStatusSpiceManager()
-    {
-        return DeliveryStatusSpiceManager;
-    }
-
-    protected SpiceManager getCheckOrderCodeSpiceManager()
-    {
-        return CheckOrderCodeSpiceManager;
-    }
-
-
-
 
 }

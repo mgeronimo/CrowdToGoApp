@@ -76,6 +76,8 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
     RelativeLayout rlSettings;
     RelativeLayout rlHelp;
     RelativeLayout rlAbout;
+    RelativeLayout rlCallSupport;
+    RelativeLayout rlCallHistory;
     RelativeLayout rlLogout;
 
     TextView tvName;
@@ -198,11 +200,11 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                             {
                                 Log.w("Timer","ID: " +getCrowdieId("userId", MainActivity.this) +" Lat " + latitude + "Long  " + longitude );
 
-                                Log.w("Timer","verna is love");
+                               // Log.w("Timer","verna is love");
                                 //set location request using userId
                                  //getAvailabilitySpiceManager().execute(new LocationRequest(latitude,longitude,getCrowdieId("userId", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
                                //Alj
-                                getAvailabilitySpiceManager().execute(new LocationRequest(34.7177634,-92.3763751,getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
+                                getRoboSpiceManager().execute(new LocationRequest(34.7177634,-92.3763751,getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
                                 //Edu
                                 //getAvailabilitySpiceManager().execute(new LocationRequest(34.713754,-92.368592,getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new LocationRequestListener());
                                 //May
@@ -214,7 +216,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                         timer.schedule (hourlyTask, 0l, 300000); // 30000 = 5 minutes
 
                         //getAvailabilitySpiceManager().execute(new AvailabilityRequest(latitude,longitude,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
-                        getAvailabilitySpiceManager().execute(new AvailabilityRequest(34.7177634,-92.3763751,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+                        getRoboSpiceManager().execute(new AvailabilityRequest(34.7177634,-92.3763751,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
                         //getAvailabilitySpiceManager().execute(new AvailabilityRequest(34.713754,-92.368592,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
                         //getAvailabilitySpiceManager().execute(new AvailabilityRequest(34.7165329,-92.3563493,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
 
@@ -227,7 +229,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                 else
                 {
                     Log.w("switch","Off");
-                    getAvailabilitySpiceManager().execute(new AvailabilityRequest(0.0,0.0,"0",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+                    getRoboSpiceManager().execute(new AvailabilityRequest(0.0,0.0,"0",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
                     timer.cancel();
                     timer.purge();
                     timer = null;
@@ -252,6 +254,8 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         rlSettings = (RelativeLayout) findViewById(R.id.rlSettings);
         rlHelp = (RelativeLayout) findViewById(R.id.rlHelp);
         rlAbout = (RelativeLayout) findViewById(R.id.rlAbout);
+        rlCallSupport = (RelativeLayout) findViewById(R.id.rlCallSupport);
+        rlCallHistory = (RelativeLayout) findViewById(R.id.rlCallHistory);
         rlLogout = (RelativeLayout) findViewById(R.id.rlLogout);
 
         rlProfile.setOnClickListener(this);
@@ -261,6 +265,8 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         rlSettings.setOnClickListener(this);
         rlHelp.setOnClickListener(this);
         rlAbout.setOnClickListener(this);
+        rlCallSupport.setOnClickListener(this);
+        rlCallHistory.setOnClickListener(this);
         rlLogout.setOnClickListener(this);
     }
 
@@ -326,6 +332,16 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
             newContent = new AboutFragment();
             setTitle("About");
             setSelected(rlAbout);
+        }else if (v.getId() == R.id.rlCallSupport) {
+        // Call Support
+        newContent = new CallSupportFragment();
+        setTitle("Call Support");
+        setSelected(rlCallSupport);
+        } else if (v.getId() == R.id.rlCallHistory) {
+            // Call Support
+            newContent = new CallHistoryFragment();
+            setTitle("Call History");
+            setSelected(rlCallHistory);
         }
         else if (v.getId() == R.id.rlLogout) {
             // LOGOUT

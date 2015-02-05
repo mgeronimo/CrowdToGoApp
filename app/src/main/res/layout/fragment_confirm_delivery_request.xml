@@ -54,7 +54,7 @@
 
 
     <Button
-        android:id="@+id/accept"
+        android:id="@+id/btn_call"
         android:layout_width="169dp"
         android:layout_height="wrap_content"
         android:text="ACCEPT"
@@ -77,6 +77,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/accept" />
+        android:layout_toRightOf="@+id/btn_call" />
     </RelativeLayout>
 </FrameLayout>

@@ -118,11 +118,11 @@ public class DeliveryRequestListViewAdapter extends BaseAdapter  {
                 //--execute request for START--//
                 MainActivity mainActivity = new MainActivity();
                 //mainActivity.DeliveryStatusSpiceManager().start(context);
-                if( ! mainActivity.getOrdersSpiceManager().isStarted() ){
-                    mainActivity.DeliveryStatusSpiceManager().start(context);
+                if( ! mainActivity.getRoboSpiceManager().isStarted() ){
+                    mainActivity.getRoboSpiceManager().start(context);
                 }
                 //ordersSpiceActivity.getOrdersSpiceManager().start(parent.getContext());
-                mainActivity.DeliveryStatusSpiceManager().execute(new DeliveryStatusRequest("STARTED",date[position]) , "DeliveryStatusRequest", DurationInMillis.ALWAYS_EXPIRED, new DeliveryStatusRequestListener());
+                mainActivity.getRoboSpiceManager().execute(new DeliveryStatusRequest("STARTED",date[position]) , "DeliveryStatusRequest", DurationInMillis.ALWAYS_EXPIRED, new DeliveryStatusRequestListener());
 
                 //--execute request for START--//
 

@@ -101,7 +101,6 @@ public class LoginActivity extends BaseSpiceActivity {
                     Token token = new Token();
                     token.setUsername(emailAddress.getText().toString());
                     token.setPassword(password.getText().toString());
-
                     token.setClient_secret(secret);//"h9Q40"
                     token.setClient_id(emailAddress.getText().toString());
                     token.setGrant_type("password");

@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.crowdtogo.crowdie.crowdtogo.SMSActivity">
+
+    <TextView
+    android:id="@+id/phoneNum"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Phone Number : "
+    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+
+    <EditText
+    android:id="@+id/editPhoneNum"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:inputType="phone"
+        android:layout_below="@+id/phoneNum"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+</EditText>
+
+<TextView
+    android:id="@+id/SMSLabel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="SMS Message : "
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:layout_below="@+id/editPhoneNum"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true" />
+
+<EditText
+    android:id="@+id/editSMS"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:inputType="textMultiLine"
+    android:lines="5"
+
+    android:gravity="top"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
+    android:layout_below="@+id/SMSLabel"
+    android:layout_above="@+id/btn_call" />
+
+
+    <Button
+        android:id="@+id/btn_call"
+        android:layout_width="169dp"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_btn"
+        android:focusable="false"
+        android:layout_gravity="left|bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        />
+
+</RelativeLayout>

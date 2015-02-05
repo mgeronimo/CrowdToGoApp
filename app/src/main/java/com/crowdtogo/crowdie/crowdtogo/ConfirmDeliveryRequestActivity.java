@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +15,6 @@ import com.crowdtogo.crowdie.model.ErrorMessage;
 import com.crowdtogo.crowdie.model.OrdersResponse;
 import com.crowdtogo.crowdie.model.SuccessResponse;
 import com.crowdtogo.crowdie.network.requests.ConfirmationRequest;
-import com.crowdtogo.crowdie.network.requests.DeliveryStatusRequest;
 import com.crowdtogo.crowdie.network.requests.OrdersRequest;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -53,33 +50,35 @@ public class ConfirmDeliveryRequestActivity extends OrdersSpiceActivity {
         DBHelper ordersDB = new DBHelper(this);
         //Order Request
 
-        getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id",ConfirmDeliveryRequestActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
+        getRoboSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id",ConfirmDeliveryRequestActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
         Log.e("crowdie id",getCrowdieId("crowdie_id",ConfirmDeliveryRequestActivity.this));
 
-//        Intent i = getIntent();
-//        // Get the result of country
-//        orderId = i.getStringExtra("date");
-        accept = (Button)findViewById(R.id.accept);
+
+        accept = (Button)findViewById(R.id.btn_call);
         reject = (Button)findViewById(R.id.reject);
 
         //Onclick event for ACCEPT
         accept.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Toast.makeText(ConfirmDeliveryRequestActivity.this, "ACCEPT " + getGroupId("groupId",ConfirmDeliveryRequestActivity.this) , Toast.LENGTH_SHORT).show();
-                //confirmationSpiceManager().execute(new ConfirmationRequest("ACCEPT",getGroupId("groupId",ConfirmDeliveryRequestActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
+                Toast.makeText(ConfirmDeliveryRequestActivity.this, "ACCEPTED " + getGroupId("groupId",ConfirmDeliveryRequestActivity.this) , Toast.LENGTH_SHORT).show();
+                getRoboSpiceManager().execute(new ConfirmationRequest("ACCEPT",getGroupId("groupId",ConfirmDeliveryRequestActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
 
                 //---TEST
-                Intent mainIntent = new Intent(ConfirmDeliveryRequestActivity.this, MainActivity.class);
-                startActivity(mainIntent);
+                //Intent mainIntent = new Intent(ConfirmDeliveryRequestActivity.this, MainActivity.class);
+                //startActivity(mainIntent);
                 //---TEST
+
             }
         });
         //Onclick event for REJECT
         reject.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Toast.makeText(ConfirmDeliveryRequestActivity.this, "REJECT", Toast.LENGTH_SHORT).show();
-                confirmationSpiceManager().execute(new ConfirmationRequest("REJECT",getGroupId("groupId",ConfirmDeliveryRequestActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
-
+                //Toast.makeText(ConfirmDeliveryRequestActivity.this, "REJECTED", Toast.LENGTH_SHORT).show();
+                //getRoboSpiceManager().execute(new ConfirmationRequest("REJECT",getGroupId("groupId",ConfirmDeliveryRequestActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
+                //---TEST
+                Intent mainIntent = new Intent(ConfirmDeliveryRequestActivity.this, SMSActivity.class);
+                startActivity(mainIntent);
+                //---TEST
             }
         });
     }
@@ -116,8 +115,6 @@ public class ConfirmDeliveryRequestActivity extends OrdersSpiceActivity {
         //Success Request
         @Override
         public void onRequestSuccess(SuccessResponse successResponse) {
-            //Toast.makeText(DeliveryDetailsActivity.this, "Success" ,Toast.LENGTH_LONG).show();
-
             if(successResponse!=null){
 
                 Intent mainIntent = new Intent(ConfirmDeliveryRequestActivity.this, MainActivity.class);
@@ -128,7 +125,6 @@ public class ConfirmDeliveryRequestActivity extends OrdersSpiceActivity {
     };
 
     //-----ConfirmationRequestListener----///
-
 
 
     ///---OrdersRequestListener----///
@@ -183,7 +179,6 @@ public class ConfirmDeliveryRequestActivity extends OrdersSpiceActivity {
                 queryValues.put("pickup_time", response.getData().get(index).getPickup_time());
                 queryValues.put("groupId", response.getData().get(index).getGroupId());
                 queryValues.put("deliveryStatus", response.getData().get(index).getDeliveryStatus());
-
                 queryValues.put("duration", response.getData().get(index).getDuration());
 
                 ordersDB.insertOrders(queryValues);
@@ -194,7 +189,6 @@ public class ConfirmDeliveryRequestActivity extends OrdersSpiceActivity {
         }
     }
 ///---OrdersRequestListener----///
-
 
     //Save groudId
     private void saveGroudId(String key, String value, Context context) {

@@ -17,25 +17,18 @@ public  class BaseSpiceActivity extends SherlockFragmentActivity {
     @Override
     protected void onStart() {
         accessTokenSpiceManager.start(this);
-        //ordersSpiceManager.start(this);
         super.onStart();
     }
 
     @Override
     protected void onStop() {
         accessTokenSpiceManager.shouldStop();
-       // ordersSpiceManager.shouldStop();
         super.onStop();
     }
-
-
 
     protected SpiceManager getAccessTokenSpiceManager(){
         return accessTokenSpiceManager;
     }
-//    protected SpiceManager getOrdersSpiceManager(){
-//        return ordersSpiceManager;
-//    }
 
 
 }

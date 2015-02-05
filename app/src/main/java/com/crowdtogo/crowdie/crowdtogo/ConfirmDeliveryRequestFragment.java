@@ -2,7 +2,6 @@ package com.crowdtogo.crowdie.crowdtogo;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -12,7 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -49,7 +47,7 @@ public class ConfirmDeliveryRequestFragment extends SherlockFragment {
         DBHelper dbHelper = new DBHelper(getSherlockActivity());
 
 
-        v.findViewById(R.id.accept).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.btn_call).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
 
@@ -73,9 +71,10 @@ public class ConfirmDeliveryRequestFragment extends SherlockFragment {
         v.findViewById(R.id.reject).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Toast.makeText(getActivity(), "REJECT", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "REJECT", Toast.LENGTH_SHORT).show();
                 confirmationSpiceManager().execute(new ConfirmationRequest("REJECT",getGroupId("groupId",getActivity())), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
-
+               // Intent mainIntent = new Intent(getSherlockActivity(), CallActivity.class);
+                //startActivity(mainIntent);
             }
         });
         return v;
@@ -109,8 +108,6 @@ public class ConfirmDeliveryRequestFragment extends SherlockFragment {
 
                 getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", getSherlockActivity())), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
 
-//                Intent mainIntent = new Intent(ConfirmDeliveryRequestActivity.this, MainActivity.class);
-//                startActivity(mainIntent);
                 Toast.makeText(getActivity(),"ConfirmDeliveryRequestFragment",Toast.LENGTH_LONG).show();
                 Fragment frag = new HomeFragment();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();

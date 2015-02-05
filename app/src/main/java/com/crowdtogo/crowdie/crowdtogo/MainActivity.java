@@ -338,7 +338,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         setTitle("Call Support");
         setSelected(rlCallSupport);
         } else if (v.getId() == R.id.rlCallHistory) {
-            // Call Support
+            // Call History
             newContent = new CallHistoryFragment();
             setTitle("Call History");
             setSelected(rlCallHistory);
@@ -350,8 +350,8 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
             resetAccessToken(MainActivity.this);
             resetCrowdieId(MainActivity.this);
             //Back to Login page
-            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(loginIntent);
+            //Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+            //startActivity(loginIntent);
 
             //Stay the drawer open
             mDrawerLayout.openDrawer(mDrawerList);

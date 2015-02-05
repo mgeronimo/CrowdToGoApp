@@ -45,6 +45,8 @@ public class ConfirmDeliveryRequestFragment extends SherlockFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_confirm_delivery_request, container, false);
         DBHelper dbHelper = new DBHelper(getSherlockActivity());
+        getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", getSherlockActivity())), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
+
 
 
         v.findViewById(R.id.btn_call).setOnClickListener(new View.OnClickListener() {
@@ -106,7 +108,6 @@ public class ConfirmDeliveryRequestFragment extends SherlockFragment {
 
             if(successResponse!=null){
 
-                getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", getSherlockActivity())), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
 
                 Toast.makeText(getActivity(),"ConfirmDeliveryRequestFragment",Toast.LENGTH_LONG).show();
                 Fragment frag = new HomeFragment();

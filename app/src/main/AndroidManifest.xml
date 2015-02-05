@@ -79,10 +79,6 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBFCmurzLdKPgFcSpruZgIwMgM5Phqdw5Q" />
 
-        <activity
-            android:name=".ContactCustomerActivity"
-            android:label="@string/title_activity_contact" >
-        </activity>
     </application>
 
     <uses-permission android:name="android.permission.SEND_SMS" />

@@ -69,7 +69,7 @@ public class OngoingDeliveryRequestFragment extends SherlockFragment {
 
         };
 
-        Cursor cursor = db.query("ORDERS", columns, "deliveryStatus='2'",null,null, null, null, null);
+        Cursor cursor = db.query("ORDERS", columns, "deliveryStatus='1'",null,null, null, null, null);
 
         int orderId = cursor.getColumnIndex("orderId");
 //        int firstname = cursor.getColumnIndex("firstname");

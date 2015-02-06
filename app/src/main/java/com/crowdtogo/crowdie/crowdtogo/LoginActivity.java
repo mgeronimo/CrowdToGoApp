@@ -85,8 +85,8 @@ public class LoginActivity extends BaseSpiceActivity {
             oAuth.setVisibility(View.INVISIBLE);
             oAuth.setText(secret);
             //sample
-            emailAddress.setText("crowdie_1@gmail.com");
-            password.setText("crowdie");
+            emailAddress.setText("emaymarino@gmail.com");
+            password.setText("123456");
         }
 
         emailAddress.addTextChangedListener(textWatcher);
@@ -195,9 +195,9 @@ public class LoginActivity extends BaseSpiceActivity {
         btnLogin = (Button) findViewById(R.id.loginButton);
         btnForgotPass = (Button) findViewById(R.id.forgotPasswordButton);
 
-        emailAddress.setText("crowdie_2@gmail.com");
-        password.setText("crowdie");
-        oAuth.setText("SEC01");
+        emailAddress.setText("emaymarino@gmail.com");
+        password.setText("123456");
+        oAuth.setText("E3adr");
         btnLogin.setEnabled(true);
 
         //set custom font to forms
@@ -329,7 +329,11 @@ public class LoginActivity extends BaseSpiceActivity {
         @Override
         public void onRequestSuccess(UserLoginResponse userLoginResponse) {
 // May Start
-            getUserProfileSpiceManager().execute(new UserProfileRequest(userLoginResponse.getCrowdie_id()),"getUserSummaryInfo",DurationInMillis.ALWAYS_EXPIRED,new UserProfileRequestListener());
+        try{
+            getUserProfileSpiceManager().execute(new UserProfileRequest(userLoginResponse.getCrowdie_id()),"getUserSummaryInfo",DurationInMillis.ONE_MINUTE,new UserProfileRequestListener());
+        } catch (Exception exception) {
+        System.out.println("getUserSummaryInfo Error "+ exception);
+        }
 // May End
             updateScreen(userLoginResponse);
 

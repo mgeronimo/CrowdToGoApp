@@ -67,8 +67,15 @@ public class UserProfileFragment extends SherlockFragment {
 
         ivUserVehicle = (ImageView) v.findViewById(R.id.iconVehicle);
         //setUserVehicle(getUserProfileData("vehicle",getActivity()));
+
 // May Start
-        setUserVehicle(getUserProfileData("vehicle",getActivity()));
+        if(!getUserProfileData("vehicle",getActivity()).toString().equals("")){
+            setUserVehicle("Bike");
+        }else {
+            setUserVehicle(getUserProfileData("vehicle", getActivity()));
+        }
+
+
 // May End
 
         tvUserName    = (TextView) v.findViewById(R.id.userProfileName);
@@ -141,6 +148,9 @@ public class UserProfileFragment extends SherlockFragment {
             ivUserVehicle.setImageDrawable(getResources().getDrawable(R.drawable.bike));
         }else if( vehicle.equalsIgnoreCase("motorcycle") ){
             ivUserVehicle.setImageDrawable(getResources().getDrawable(R.drawable.motor));
+        }
+        else if( vehicle.equals("") ){
+        ivUserVehicle.setImageDrawable(getResources().getDrawable(R.drawable.motor));
         }
         else if( vehicle.equalsIgnoreCase("car") ){
             ivUserVehicle.setImageDrawable(getResources().getDrawable(R.drawable.car));

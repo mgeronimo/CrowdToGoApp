@@ -53,15 +53,25 @@ public class DBHelper extends SQLiteOpenHelper {
                 "deliveryStatus TEXT,"+
                 "duration TEXT,"+
                 "PRIMARY KEY(orderId))";
+        String calllogs;
+        calllogs = "CREATE TABLE CALL_LOGS (" +
+                "Id TEXT,"+
+                "cnumber TEXT,"+
+                "cduration  TEXT,"+
+                "ctype TEXT,"+
+                "PRIMARY KEY(Id))";
 
         database.execSQL(query);
+        database.execSQL(calllogs);
 
     }
     @Override
     public void onUpgrade(SQLiteDatabase database, int version_old, int current_version) {
-        String query;
+        String query,calllogs;
         query = "DROP TABLE IF EXISTS ORDERS";
+        calllogs = "DROP TABLE IF EXISTS CAlL_LOGS";
         database.execSQL(query);
+        database.execSQL(calllogs);
         onCreate(database);
     }
 
@@ -110,6 +120,30 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public boolean checkCallLogDuplicate(String Id) {
+  /* The 3rd parameter is treated as SQL WHERE clause, ? are replaced by strings
+   * from the 4th parameter */
+
+        SQLiteDatabase database = this.getReadableDatabase();
+        //db = ordersDB.getReadableDatabase();
+
+       String columns[] = {"Id",
+                "cnumber",
+                "cduration",
+                "ctype"
+        };
+
+        Cursor cur = database.query("CAlL_LOGS", columns, "Id=" +Id, null, null, null, null, null);
+        if (cur != null && cur.getCount()>0) {
+
+            // duplicate found
+            database.close();
+            return true;
+        }
+        database.close();
+        return false;
+    }
+
 
     /**
          * Inserts ORDERS into SQLite DB
@@ -120,7 +154,6 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             //check for duplicate else insert the data to sqlite
             if(checkDuplicate(queryValues.get("orderId"))) {
-
                 System.out.println("Duplicate orderId: " + queryValues.get("orderId"));
             }else{
 
@@ -155,9 +188,9 @@ public class DBHelper extends SQLiteOpenHelper {
             database.close();
             }
         } catch (Exception exception) {
-            System.out.println("orderId "+queryValues.get("orderId"));
-            System.out.println("SQLite "+exception);
-        }
+        System.out.println("orderId "+queryValues.get("orderId"));
+        System.out.println("SQLite "+exception);
+    }
 
     }
 

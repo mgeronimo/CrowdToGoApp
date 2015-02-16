@@ -32,5 +32,7 @@
     <string name="ctg_copyright">COPYRIGHT © SOLUTIONS RESOURCE INC. \n 2014.ALL RIGHTS RESERVED</string>
     <string name="title_activity_call">Call</string>
     <string name="title_activity_contact">ContacCustomertActivity</string>
+    <string name="title_activity_popup_element">popup_element</string>
+    <string name="title_activity_dialog">Dialog</string>
 
 </resources>

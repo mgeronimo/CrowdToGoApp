@@ -1,6 +1,7 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -30,7 +31,7 @@ import java.util.HashMap;
 
 import retrofit.RetrofitError;
 
-public class ConfirmDeliveryRequestFragment extends SherlockFragment {
+public class ConfirmDeliveryRequestFragment extends SherlockFragment{
 
     private SpiceManager ordersSpiceManager = new SpiceManager(OrdersSpiceService.class);
     private SpiceManager confirmationSpiceManager = new SpiceManager(OrdersSpiceService.class);
@@ -49,7 +50,7 @@ public class ConfirmDeliveryRequestFragment extends SherlockFragment {
 
 
 
-        v.findViewById(R.id.btn_call).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.accept).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
 

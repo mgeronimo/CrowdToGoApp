@@ -1,9 +1,18 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -37,10 +46,12 @@ import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import de.greenrobot.event.EventBus;
 import retrofit.RetrofitError;
 
 //public class MainActivity extends OrdersSpiceActivity implements OnClickListener {
@@ -83,6 +94,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
     TextView tvName;
     String name;
 
+    ProgressDialog prgDialog;
     DBHelper ordersDB = new DBHelper(this);
     OrdersSpiceActivity orders  = new OrdersSpiceActivity();
 
@@ -161,9 +173,33 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         }
 
         //Order Request
-//        getOrdersSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", MainActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
+        getRoboSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", MainActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
 
+        // Initialize Progress Dialog properties
+        prgDialog = new ProgressDialog(this);
+        prgDialog.setMessage("Transferring Data. Please wait...");
+        prgDialog.setCancelable(false);
+//        // BroadCase Receiver Intent Object
+//        Intent alarmIntent = new Intent(MainActivity.this, BCReceiver.class);
+//        // Pending Intent Object
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        // Alarm Manager Object
+//        AlarmManager alarmManager = (AlarmManager) MainActivity.this.getSystemService(Context.ALARM_SERVICE);
+//        // Alarm Manager calls BroadCast for every Ten seconds (10 * 1000), BroadCase further calls service to check if new records are inserted in
+//        // Remote MySQL DB
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 5000, 10 * 1000, pendingIntent);
+
+
+
+        // method that will be called when someone posts an event NetworkStateChanged
+//        public void onEventMainThread(NetworkStateChanged event) {
+//        if (!event.isInternetConnected()) {
+//            Toast.makeText(this, "No Internet connection!", Toast.LENGTH_SHORT).show();
+//        }
+//    }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -508,67 +544,82 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         }
     }
 
-///---OrdersRequestListener----///
-//    private class OrdersRequestListener implements RequestListener<OrdersResponse> {
-//
-//        @Override
-//        public void onRequestFailure(SpiceException spiceException) {
-//            if (spiceException.getCause() instanceof RetrofitError) {
-//                RetrofitError error = (RetrofitError) spiceException.getCause();
-//                ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
-//                //mProgressDialog.dismiss();
-//                Toast.makeText(MainActivity.this, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
-//            }
-//        }
-//
-//        //Success Request
-//        @Override
-//        public void onRequestSuccess(OrdersResponse ordersResponse) {
-//            //Toast.makeText(DeliveryDetailsActivity.this, "Success" ,Toast.LENGTH_LONG).show();
-//            updateOrder(ordersResponse);
-//        }
-//
-//    };
-//
-//    private void updateOrder(final OrdersResponse response){
-//
-//
-//        if(response!=null){
-//           //ordersDB.DeleteOrders();
-//            for(int index = 0; index < response.getData().toArray().length; index++) {
-//
-//                HashMap<String, String> queryValues = new HashMap<String, String>();
-//
-//                queryValues.put("orderId",response.getData().get(index).getOrderId());
-//                queryValues.put("firstname", response.getData().get(index).getFirstname());
-//                queryValues.put("lastname", response.getData().get(index).getLastname());
-//                queryValues.put("destination_address", response.getData().get(index).getDestination_address());
-//                queryValues.put("contact", response.getData().get(index).getContact());
-//                queryValues.put("size", response.getData().get(index).getSize());
-//                queryValues.put("status", response.getData().get(index).getStatus());
-//                queryValues.put("destination_latitude", response.getData().get(index).getDestination_latitude());
-//                queryValues.put("destination_longitude", response.getData().get(index).getDestination_longitude());
-//                queryValues.put("merchantId", response.getData().get(index).getMerchantId());
-//                queryValues.put("store_name", response.getData().get(index).getStore_name());
-//                queryValues.put("store_contact", response.getData().get(index).getStore_contact());
-//                queryValues.put("pickup_address", response.getData().get(index).getPickup_address());
-//                queryValues.put("pickup_address_line_2", response.getData().get(index).getPickup_address_line_2());
-//                queryValues.put("pickup_latitude", response.getData().get(index).getPickup_latitude());
-//                queryValues.put("pickup_longitude", response.getData().get(index).getPickup_longitude());
-//                queryValues.put("pickup_date", response.getData().get(index).getPickup_date());
-//                queryValues.put("pickup_time", response.getData().get(index).getPickup_time());
-//                queryValues.put("groupId", response.getData().get(index).getGroupId());
-//                queryValues.put("deliveryStatus", response.getData().get(index).getDeliveryStatus());
-//
-//                ordersDB.insertOrders(queryValues);
-//            }
-//
-//
-//        }else{
-//          //  Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_LONG).show();
-//        }
-//    }
-///---OrdersRequestListener----///
+//---OrdersRequestListener----///
+    private class OrdersRequestListener implements RequestListener<OrdersResponse> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            if (spiceException.getCause() instanceof RetrofitError) {
+                RetrofitError error = (RetrofitError) spiceException.getCause();
+                ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
+                //mProgressDialog.dismiss();
+                Toast.makeText(MainActivity.this, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
+            }
+        }
+
+        //Success Request
+        @Override
+        public void onRequestSuccess(OrdersResponse ordersResponse) {
+            //Toast.makeText(DeliveryDetailsActivity.this, "Success" ,Toast.LENGTH_LONG).show();
+            // BroadCase Receiver Intent Object
+            if(!ordersResponse.getData().get(0).getStore_name().equals(null)){
+                Intent alarmIntent = new Intent(MainActivity.this, BCReceiver.class);
+                // Pending Intent Object
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                // Alarm Manager Object
+                AlarmManager alarmManager = (AlarmManager) MainActivity.this.getSystemService(Context.ALARM_SERVICE);
+                // Alarm Manager calls BroadCast for every Ten seconds (10 * 1000), BroadCase further calls service to check if new records are inserted in
+                // Remote MySQL DB
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 5000, 50 * 1000, pendingIntent);
+
+            }
+
+            updateOrder(ordersResponse);
+        }
+
+    };
+
+    private void updateOrder(final OrdersResponse response){
+
+
+        if(response.getData().get(0)!= null){
+           //ordersDB.DeleteOrders();
+            Toast.makeText(MainActivity.this, "Success" ,Toast.LENGTH_LONG).show();
+
+            for(int index = 0; index < response.getData().toArray().length; index++) {
+
+                HashMap<String, String> queryValues = new HashMap<String, String>();
+
+                queryValues.put("orderId",response.getData().get(index).getOrderId());
+                queryValues.put("firstname", response.getData().get(index).getFirstname());
+                queryValues.put("lastname", response.getData().get(index).getLastname());
+                queryValues.put("destination_address", response.getData().get(index).getDestination_address());
+                queryValues.put("contact", response.getData().get(index).getContact());
+                queryValues.put("size", response.getData().get(index).getSize());
+                queryValues.put("status", response.getData().get(index).getStatus());
+                queryValues.put("destination_latitude", response.getData().get(index).getDestination_latitude());
+                queryValues.put("destination_longitude", response.getData().get(index).getDestination_longitude());
+                queryValues.put("merchantId", response.getData().get(index).getMerchantId());
+                queryValues.put("store_name", response.getData().get(index).getStore_name());
+                queryValues.put("store_contact", response.getData().get(index).getStore_contact());
+                queryValues.put("pickup_address", response.getData().get(index).getPickup_address());
+                queryValues.put("pickup_address_line_2", response.getData().get(index).getPickup_address_line_2());
+                queryValues.put("pickup_latitude", response.getData().get(index).getPickup_latitude());
+                queryValues.put("pickup_longitude", response.getData().get(index).getPickup_longitude());
+                queryValues.put("pickup_date", response.getData().get(index).getPickup_date());
+                queryValues.put("pickup_time", response.getData().get(index).getPickup_time());
+                queryValues.put("groupId", response.getData().get(index).getGroupId());
+                queryValues.put("deliveryStatus", response.getData().get(index).getDeliveryStatus());
+
+                //ordersDB.insertOrders(queryValues);
+            }
+
+
+        }else{
+          //  Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+//---OrdersRequestListener----///
 
 
     //get stored crowdie_id
@@ -583,6 +634,39 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         return preferences.getString(key, null);
     }
 
-
-
 }
+
+//
+//    public class NetworkStateReceiver extends BroadcastReceiver {
+//
+//        // post event if there is no Internet connection
+//        public void onReceive(Context context, Intent intent) {
+//            //super.onReceive(context, intent);
+//            if (intent.getExtras() != null) {
+//                NetworkInfo ni = (NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
+//                if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED) {
+//                    // there is Internet connection
+//                } else if (intent
+//                        .getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
+//                    // no Internet connection, send network state changed
+//                    EventBus.getDefault().post(new NetworkStateChanged(false));
+//                }
+//            }
+//        }
+//// event
+//            public class NetworkStateChanged {
+//
+//                private mIsInternetConnected;
+//
+//                public NetworkStateChanged(boolean isInternetConnected) {
+//                    this.mIsInternetConnected = isInternetConnected;
+//                }
+//
+//                public boolean isInternetConnected() {
+//                    return this.mIsInternetConnected;
+//                }
+//            }
+
+
+
+

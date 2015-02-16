@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +41,11 @@ public class ConfirmDeliveryRequestActivity extends OrdersSpiceActivity {
     DBHelper ordersDB = new DBHelper(this);
     Button accept;
     Button reject;
+    private CountDownTimer countDownTimer;
+    private boolean timerHasStarted = false;
+    public TextView tvcountDown;
+    private final long startTime = 30 * 1000;
+    private final long interval = 1 * 1000;
     TextView code;
 
     @Override
@@ -50,17 +56,38 @@ public class ConfirmDeliveryRequestActivity extends OrdersSpiceActivity {
         DBHelper ordersDB = new DBHelper(this);
         //Order Request
 
-        getRoboSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id",ConfirmDeliveryRequestActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
-        Log.e("crowdie id",getCrowdieId("crowdie_id",ConfirmDeliveryRequestActivity.this));
-
-
-        accept = (Button)findViewById(R.id.btn_call);
+        accept = (Button)findViewById(R.id.accept);
         reject = (Button)findViewById(R.id.reject);
+        tvcountDown = (TextView)findViewById(R.id.tvcountDown);
 
+        //getRoboSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", context)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
+
+        countDownTimer = new MyCountDownTimer(startTime, interval);
+        tvcountDown.setText(tvcountDown.getText() + String.valueOf(startTime / 1000));
+        if (!timerHasStarted) {
+            countDownTimer.start();
+            timerHasStarted = true;
+        }
+
+        for(;;){
+          if(Integer.parseInt(tvcountDown.getText().toString()) != 0){
+
+          }else{
+              try{
+                  getRoboSpiceManager().execute(new ConfirmationRequest("REJECT",getGroupId("groupId",ConfirmDeliveryRequestActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
+                  break;
+              }catch (Exception e){
+
+              }
+          }
+
+        }
         //Onclick event for ACCEPT
         accept.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Toast.makeText(ConfirmDeliveryRequestActivity.this, "ACCEPTED " + getGroupId("groupId",ConfirmDeliveryRequestActivity.this) , Toast.LENGTH_SHORT).show();
+                countDownTimer.cancel();
+                timerHasStarted = false;
+                //Toast.makeText(ConfirmDeliveryRequestActivity.this, "ACCEPTED " + getGroupId("groupId",ConfirmDeliveryRequestActivity.this) , Toast.LENGTH_SHORT).show();
                 getRoboSpiceManager().execute(new ConfirmationRequest("ACCEPT",getGroupId("groupId",ConfirmDeliveryRequestActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
 
                 //---TEST
@@ -73,14 +100,43 @@ public class ConfirmDeliveryRequestActivity extends OrdersSpiceActivity {
         //Onclick event for REJECT
         reject.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                countDownTimer.cancel();
+                timerHasStarted = false;
                 //Toast.makeText(ConfirmDeliveryRequestActivity.this, "REJECTED", Toast.LENGTH_SHORT).show();
-                //getRoboSpiceManager().execute(new ConfirmationRequest("REJECT",getGroupId("groupId",ConfirmDeliveryRequestActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
+                 getRoboSpiceManager().execute(new ConfirmationRequest("REJECT",getGroupId("groupId",ConfirmDeliveryRequestActivity.this)), "ConfirmationRequest", DurationInMillis.ALWAYS_EXPIRED, new ConfirmationRequestListener());
+
                 //---TEST
-                Intent mainIntent = new Intent(ConfirmDeliveryRequestActivity.this, SMSActivity.class);
-                startActivity(mainIntent);
+//                Intent mainIntent = new Intent(ConfirmDeliveryRequestActivity.this, SMSActivity.class);
+//                startActivity(mainIntent);
                 //---TEST
             }
         });
+
+    }
+
+    public class MyCountDownTimer extends CountDownTimer {
+
+        public MyCountDownTimer(long startTime, long interval) {
+
+            super(startTime, interval);
+
+        }
+
+        @Override
+        public void onFinish() {
+
+            tvcountDown.setText("Time's up!");
+
+        }
+
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+            tvcountDown.setText("" + millisUntilFinished / 1000);
+
+        }
+
     }
 
     @Override

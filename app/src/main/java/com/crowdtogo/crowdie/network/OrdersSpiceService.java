@@ -28,6 +28,8 @@ public class OrdersSpiceService extends RetrofitGsonSpiceService {
         addRetrofitInterface(CheckOrderCodeInterface.class);
         addRetrofitInterface(OrdersConfirmation.class);
         addRetrofitInterface(UserProfileInterface.class);
+        addRetrofitInterface(UsersInterface.class);
+
     }
 
     @Override

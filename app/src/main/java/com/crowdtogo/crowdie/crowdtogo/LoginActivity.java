@@ -8,6 +8,8 @@ import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -98,6 +100,7 @@ public class LoginActivity extends BaseSpiceActivity {
             public void onClick(View arg0) {
                     // Start NewActivity.class
                 if(secret!= null){
+                    if(isNetworkAvailable() == true){
                     Token token = new Token();
                     token.setUsername(emailAddress.getText().toString());
                     token.setPassword(password.getText().toString());
@@ -115,9 +118,16 @@ public class LoginActivity extends BaseSpiceActivity {
                     mProgressDialog.show();
 
                     //perform login by providing valid parameters to get access token
-                    getAccessTokenSpiceManager().execute(new AccessTokenRequest(token), "getAccessToken", DurationInMillis.ALWAYS_EXPIRED, new AccessRequestListener());
+
+                        getAccessTokenSpiceManager().execute(new AccessTokenRequest(token), "getAccessToken", DurationInMillis.ALWAYS_EXPIRED, new AccessRequestListener());
+                    }else{
+                        mProgressDialog.dismiss();
+                        Toast.makeText(LoginActivity.this, "No internet connection!" ,Toast.LENGTH_SHORT).show();
+                    }
 
                 }else {
+
+                    if(isNetworkAvailable() == true){
 
                     Token token = new Token();
                     token.setUsername(emailAddress.getText().toString());
@@ -137,8 +147,13 @@ public class LoginActivity extends BaseSpiceActivity {
                     mProgressDialog.show();
 
                     //perform login by providing valid parameters to get access token
-                    getAccessTokenSpiceManager().execute(new AccessTokenRequest(token), "getAccessToken", DurationInMillis.ALWAYS_EXPIRED, new AccessRequestListener());
 
+                        getAccessTokenSpiceManager().execute(new AccessTokenRequest(token), "getAccessToken", DurationInMillis.ALWAYS_EXPIRED, new AccessRequestListener());
+
+                    }else{
+                        mProgressDialog.dismiss();
+                        Toast.makeText(LoginActivity.this, "No internet connection!" ,Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }
@@ -310,12 +325,11 @@ public class LoginActivity extends BaseSpiceActivity {
         @Override
         public void onRequestFailure(SpiceException spiceException) {
 
-                RetrofitError error = (RetrofitError) spiceException.getCause();
-            if (spiceException.getCause() instanceof RetrofitError && error.getBody() != null) {
                // RetrofitError error = (RetrofitError) spiceException.getCause();
-                ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
+            if (!spiceException.getCause().getMessage().equals(null)) {
+               // RetrofitError error = (RetrofitError) spiceException.getCause();
+               // ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
                 mProgressDialog.dismiss();
-
                 Toast.makeText(LoginActivity.this, "Error: "+spiceException.getMessage(), Toast.LENGTH_LONG).show();
 
             }else{
@@ -378,7 +392,8 @@ public class LoginActivity extends BaseSpiceActivity {
             saveCrowdieID("userId", response.getUserId(), LoginActivity.this);
             saveName("name", response.getName(), LoginActivity.this);
             //Toast.makeText(LoginActivity.this, "Access Token: "+ response.getAccess_token(), Toast.LENGTH_LONG).show();
-            Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+            //Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent mainIntent = new Intent(LoginActivity.this, GoOnlineActivity.class);
             startActivity(mainIntent);
             mProgressDialog.dismiss();
 
@@ -441,4 +456,11 @@ public class LoginActivity extends BaseSpiceActivity {
         editor.commit();
     }
 // May End
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 }

@@ -18,6 +18,10 @@ public class OrdersSpiceActivity extends SherlockFragmentActivity {
 
     private SpiceManager RoboSpiceManager = new SpiceManager(OrdersSpiceService.class);
 
+    public  OrdersSpiceActivity(){
+
+    }
+
     @Override
     protected void onStart() {
 

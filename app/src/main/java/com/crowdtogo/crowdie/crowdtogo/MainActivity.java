@@ -5,11 +5,13 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -77,6 +79,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    TimerTask hourlyTask;
 
     // SLIDING MENU OPTIONS
     RelativeLayout rlNewDelivery;
@@ -93,6 +96,8 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
 
     TextView tvName;
     String name;
+    Timer tmr = new Timer ();
+    boolean checkStatus;
 
     ProgressDialog prgDialog;
     DBHelper ordersDB = new DBHelper(this);
@@ -172,31 +177,29 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
             //mDrawerLayout.openDrawer(mDrawerList); // Keep drawer open everytime the application starts
         }
 
-        //Order Request
-        getRoboSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", MainActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
+//         //Order Request
+        hourlyTask = new TimerTask ()
+        {
+            @Override
+            public void run ()
+            {
+                Log.w("getOrders tmr","Send Request");
+
+                if(isNetworkAvailable() == true){
+                    getRoboSpiceManager().execute(new OrdersRequest(getCrowdieId("crowdie_id", MainActivity.this)), "getOrders", DurationInMillis.ALWAYS_EXPIRED, new OrdersRequestListener());
+                }else{
+                    Toast.makeText(MainActivity.this, "No internet connection!" ,Toast.LENGTH_SHORT).show();
+                }
+               }
+        };
+        tmr.schedule (hourlyTask, 0l, 5 * 1000); // 30000 = 5 minutes
 
         // Initialize Progress Dialog properties
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Transferring Data. Please wait...");
         prgDialog.setCancelable(false);
-//        // BroadCase Receiver Intent Object
-//        Intent alarmIntent = new Intent(MainActivity.this, BCReceiver.class);
-//        // Pending Intent Object
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        // Alarm Manager Object
-//        AlarmManager alarmManager = (AlarmManager) MainActivity.this.getSystemService(Context.ALARM_SERVICE);
-//        // Alarm Manager calls BroadCast for every Ten seconds (10 * 1000), BroadCase further calls service to check if new records are inserted in
-//        // Remote MySQL DB
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 5000, 10 * 1000, pendingIntent);
 
 
-
-        // method that will be called when someone posts an event NetworkStateChanged
-//        public void onEventMainThread(NetworkStateChanged event) {
-//        if (!event.isInternetConnected()) {
-//            Toast.makeText(this, "No Internet connection!", Toast.LENGTH_SHORT).show();
-//        }
-//    }
     }
 
 
@@ -207,6 +210,9 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         inflater.inflate(R.menu.home, menu);
 
         Switch swi = (Switch) menu.findItem(R.id.mySwitch).getActionView().findViewById(R.id.availability);
+        if(getloginStatus("loginStatus", MainActivity.this).equals("true")){
+            swi.setChecked(true);
+        }
 
         Log.w("switch","Initialize");
 
@@ -270,6 +276,9 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                     timer.purge();
                     timer = null;
                     Log.w("Timer","Stop Sending location Information");
+                    saveLogInStatus("loginStatus", "false", MainActivity.this);
+                    Intent mainIntent = new Intent(MainActivity.this, GoOnlineActivity.class);
+                    startActivity(mainIntent);
                 }
             }
         });
@@ -560,21 +569,21 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         //Success Request
         @Override
         public void onRequestSuccess(OrdersResponse ordersResponse) {
-            //Toast.makeText(DeliveryDetailsActivity.this, "Success" ,Toast.LENGTH_LONG).show();
-            // BroadCase Receiver Intent Object
-            if(!ordersResponse.getData().get(0).getStore_name().equals(null)){
-                Intent alarmIntent = new Intent(MainActivity.this, BCReceiver.class);
-                // Pending Intent Object
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                // Alarm Manager Object
-                AlarmManager alarmManager = (AlarmManager) MainActivity.this.getSystemService(Context.ALARM_SERVICE);
-                // Alarm Manager calls BroadCast for every Ten seconds (10 * 1000), BroadCase further calls service to check if new records are inserted in
-                // Remote MySQL DB
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 5000, 50 * 1000, pendingIntent);
 
+            if(ordersResponse.getData().get(0).getStatus().equalsIgnoreCase("ACCEPTED")){
+                Log.w("myMessage", "Order(s) already accepted");
+            }else{
+                //Toast.makeText(MainActivity.this, ordersResponse.getData().get(0).getStore_name() ,Toast.LENGTH_SHORT).show();
+                hourlyTask.cancel();
+                Intent trIntent = new Intent("android.intent.action.LAUNCHER");
+                trIntent.setClass(MainActivity.this, com.crowdtogo.crowdie.crowdtogo.Dialog.class);
+                trIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(trIntent);
             }
 
-            updateOrder(ordersResponse);
+            saveGroudId("groupId",ordersResponse.getData().get(0).getGroupId(),MainActivity.this);
+
+            //updateOrder(ordersResponse);
         }
 
     };
@@ -585,6 +594,8 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         if(response.getData().get(0)!= null){
            //ordersDB.DeleteOrders();
             Toast.makeText(MainActivity.this, "Success" ,Toast.LENGTH_LONG).show();
+            saveGroudId("groupId",response.getData().get(0).getGroupId(),MainActivity.this);
+
 
             for(int index = 0; index < response.getData().toArray().length; index++) {
 
@@ -634,39 +645,36 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         return preferences.getString(key, null);
     }
 
+    //Save groudId
+    public void saveGroudId(String key, String value, Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+
+    public static String getloginStatus(String key, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(key, null);
+    }
+    public void saveLogInStatus(String key, String value, Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 }
-
-//
-//    public class NetworkStateReceiver extends BroadcastReceiver {
-//
-//        // post event if there is no Internet connection
-//        public void onReceive(Context context, Intent intent) {
-//            //super.onReceive(context, intent);
-//            if (intent.getExtras() != null) {
-//                NetworkInfo ni = (NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
-//                if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED) {
-//                    // there is Internet connection
-//                } else if (intent
-//                        .getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
-//                    // no Internet connection, send network state changed
-//                    EventBus.getDefault().post(new NetworkStateChanged(false));
-//                }
-//            }
-//        }
-//// event
-//            public class NetworkStateChanged {
-//
-//                private mIsInternetConnected;
-//
-//                public NetworkStateChanged(boolean isInternetConnected) {
-//                    this.mIsInternetConnected = isInternetConnected;
-//                }
-//
-//                public boolean isInternetConnected() {
-//                    return this.mIsInternetConnected;
-//                }
-//            }
-
 
 
 

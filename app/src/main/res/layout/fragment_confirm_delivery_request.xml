@@ -3,7 +3,7 @@
     android:id="@+id/fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.crowdtogo.crowdie.crowdtogo.ConfirmDeliveryRequestActivity">
+    >
 
     <!-- TODO: Update blank fragment layout-->
     <!--<TextView
@@ -15,48 +15,11 @@
         android:gravity="center"
         android:layout_gravity="center" />-->
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center_horizontal">
 
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/job_awaits_image"
-            android:layout_marginTop="0dp"
-            android:id="@+id/imageView" />
-
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/job_awaits_text2"
-            android:layout_marginTop="250dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="30"
-            android:textSize="50dp"
-            android:id="@+id/tvcountDown"
-            android:layout_marginTop="113dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
-
-    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="62dp"
+        android:layout_height="492dp"
         android:orientation="vertical"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
@@ -65,9 +28,53 @@
         android:layout_gravity="center_horizontal|bottom">
 
 
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/relativeLayout">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/job_awaits_image"
+                android:id="@+id/imageView"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="30"
+                android:textSize="50dp"
+                android:id="@+id/tvcountDown"
+
+                android:layout_above="@+id/imageView2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="93dp" />
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/job_awaits_text2"
+                android:id="@+id/imageView2"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="59dp" />
+
+        </RelativeLayout>
+
+
     <Button
-        android:id="@+id/accept"
-        android:layout_width="169dp"
+        android:id="@+id/goOnline"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="ACCEPT"
         android:textColor="@color/white"
@@ -75,20 +82,19 @@
         android:focusable="false"
         android:layout_gravity="left|bottom"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="10dp"/>
+       />
 
     <Button
         android:id="@+id/reject"
-        android:layout_width="169dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="DECLINE"
         android:textColor="@color/white"
         android:background="@drawable/bg_btn_danger"
         android:focusable="false"
         android:layout_gravity="right|bottom"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/btn_call" />
+        android:layout_alignTop="@+id/goOnline"
+        android:layout_alignRight="@+id/relativeLayout"
+        android:layout_alignEnd="@+id/relativeLayout" />
     </RelativeLayout>
 </FrameLayout>

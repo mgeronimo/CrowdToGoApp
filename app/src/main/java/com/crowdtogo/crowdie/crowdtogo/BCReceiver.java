@@ -4,11 +4,15 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
@@ -21,6 +25,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.crowdtogo.crowdie.model.ErrorMessage;
 import com.crowdtogo.crowdie.model.OrdersResponse;
 import com.crowdtogo.crowdie.network.OrdersSpiceService;
 import com.crowdtogo.crowdie.network.UsersInterfaceSpiceService;
@@ -33,6 +38,7 @@ import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 import retrofit.RetrofitError;
@@ -42,6 +48,8 @@ import retrofit.RetrofitError;
 public class BCReceiver extends BroadcastReceiver {
     static int noOfTimes = 0;
 
+    Context ctx;
+    MainActivity mainActivity = new MainActivity();
     @Override
     public void onReceive(final Context context, Intent intent) {
 //        // TODO Auto-generated method stub
@@ -51,16 +59,30 @@ public class BCReceiver extends BroadcastReceiver {
 
         try {
 
-            Intent trIntent = new Intent("android.intent.action.MAIN");
+//            Intent trIntent = new Intent("android.intent.action.MAIN");
+//            trIntent.setClass(context, com.crowdtogo.crowdie.crowdtogo.Dialog.class);
+//            trIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            context.startActivity(trIntent);
+
+//            Intent Int = new Intent(context, NotificationService.class);
+//            context.startService(Int);
+
+            Intent trIntent = new Intent("android.intent.action.LAUNCHER");
             trIntent.setClass(context, com.crowdtogo.crowdie.crowdtogo.Dialog.class);
             trIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(trIntent);
+
+
+
 
     } catch(Exception exception)
     {
         System.out.println("getSpiceManager Error " + exception + ": ");
     }
+
 }
+
+
 }
 
 

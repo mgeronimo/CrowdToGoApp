@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,7 +15,6 @@ import com.crowdtogo.crowdie.model.ErrorMessage;
 import com.crowdtogo.crowdie.model.OrdersResponse;
 import com.crowdtogo.crowdie.model.SuccessResponse;
 import com.crowdtogo.crowdie.network.requests.ConfirmationRequest;
-import com.crowdtogo.crowdie.network.requests.OrdersRequest;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -56,7 +54,7 @@ public class ConfirmDeliveryRequestActivity extends OrdersSpiceActivity {
         DBHelper ordersDB = new DBHelper(this);
         //Order Request
 
-        accept = (Button)findViewById(R.id.accept);
+        accept = (Button)findViewById(R.id.goOnline);
         reject = (Button)findViewById(R.id.reject);
         tvcountDown = (TextView)findViewById(R.id.tvcountDown);
 

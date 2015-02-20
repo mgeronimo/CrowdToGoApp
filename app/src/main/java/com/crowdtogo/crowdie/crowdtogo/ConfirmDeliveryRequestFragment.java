@@ -1,7 +1,6 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -50,7 +49,7 @@ public class ConfirmDeliveryRequestFragment extends SherlockFragment{
 
 
 
-        v.findViewById(R.id.accept).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.goOnline).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
 

@@ -322,6 +322,7 @@ public class LoginActivity extends BaseSpiceActivity {
 // May End
     //Request listener
     private class AccessRequestListener implements RequestListener<UserLoginResponse> {
+
         @Override
         public void onRequestFailure(SpiceException spiceException) {
             mProgressDialog.dismiss();
@@ -336,7 +337,6 @@ public class LoginActivity extends BaseSpiceActivity {
                 mProgressDialog.dismiss();
                 Toast.makeText(LoginActivity.this, "Connection Error: \nPlease check your connection then try again", Toast.LENGTH_LONG).show();
             }
-
 
         }
         @Override

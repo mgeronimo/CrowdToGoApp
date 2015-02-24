@@ -154,30 +154,8 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        if (savedInstanceState == null) {
-
-            //Default
-//            switchFragment(new ConfirmDeliveryRequestFragment());
-//            setTitle("New Delivery");
-//            setSelected(rlHome);
-
-            switchFragment(new HomeFragment());
-            setTitle("Home");
-            setSelected(rlHome);
-
-
-            ///------Notifications Fragment---///
-//            switchFragment(new ConfirmDeliveryRequestFragment());
-//            setTitle("Notifications");
-//            setSelected(rlNotifs);
-            ///------Notifications Fragment---///
-
-            //mDrawerLayout.openDrawer(mDrawerList); // Keep drawer open everytime the application starts
-        }
-
-//         //Order Request
+        //         //Order Request
         hourlyTask = new TimerTask ()
         {
             @Override
@@ -190,9 +168,22 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                 }else{
                     Toast.makeText(MainActivity.this, "No internet connection!" ,Toast.LENGTH_SHORT).show();
                 }
-               }
+            }
         };
         tmr.schedule (hourlyTask, 0l, 5 * 1000); // 30000 = 5 minutes
+
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        if (savedInstanceState == null ) {
+
+            switchFragment(new LandingPageFragment());
+            setTitle("No Delivery Request");
+            //setSelected(rlHome);
+
+            //mDrawerLayout.openDrawer(mDrawerList); // Keep drawer open everytime the application starts
+        }
+
 
         // Initialize Progress Dialog properties
         prgDialog = new ProgressDialog(this);
@@ -584,9 +575,13 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         @Override
         public void onRequestSuccess(OrdersResponse ordersResponse) {
 
-            if(ordersResponse.getData().get(0).getStatus().equalsIgnoreCase("ACCEPTED")){
-                Log.w("myMessage", "Order(s) already accepted");
-            }else{
+            if(ordersResponse.getData().size()!= 0){
+                Log.w("myMessage", ordersResponse.getData().toString());
+            }
+//            else if(ordersResponse.getData().get(0).getStatus().equalsIgnoreCase("ACCEPTED1")){
+//                Log.w("myMessage", "Order(s) already accepted");
+//            }
+               else{
                 //Toast.makeText(MainActivity.this, ordersResponse.getData().get(0).getStore_name() ,Toast.LENGTH_SHORT).show();
                 hourlyTask.cancel();
                 Intent trIntent = new Intent("android.intent.action.LAUNCHER");
@@ -595,9 +590,8 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                 startActivity(trIntent);
             }
 
-            saveGroudId("groupId",ordersResponse.getData().get(0).getGroupId(),MainActivity.this);
 
-            //updateOrder(ordersResponse);
+            updateOrder(ordersResponse);
         }
 
     };
@@ -605,7 +599,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
     private void updateOrder(final OrdersResponse response){
 
 
-        if(response.getData().get(0)!= null){
+        if(response.getData().size()!= 0){
            //ordersDB.DeleteOrders();
             Toast.makeText(MainActivity.this, "Success" ,Toast.LENGTH_LONG).show();
             saveGroudId("groupId",response.getData().get(0).getGroupId(),MainActivity.this);

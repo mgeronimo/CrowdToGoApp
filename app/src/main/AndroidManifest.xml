@@ -89,10 +89,10 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBFCmurzLdKPgFcSpruZgIwMgM5Phqdw5Q" />
+            android:value="AIzaSyBlcsJj4s9ciDXmz0ArqtLOZtllFFWgVOU" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBFCmurzLdKPgFcSpruZgIwMgM5Phqdw5Q" />
+            android:value="AIzaSyBlcsJj4s9ciDXmz0ArqtLOZtllFFWgVOU" />
 
         <receiver android:name="com.crowdtogo.crowdie.util.NetworkChangeReceiver" android:label="NetworkChangeReceiver">
             <intent-filter>

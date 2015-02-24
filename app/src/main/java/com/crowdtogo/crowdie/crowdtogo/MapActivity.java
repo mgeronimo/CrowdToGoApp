@@ -23,7 +23,7 @@ import java.util.TimerTask;
 /**
  * Created by Edu on 1/15/2015.
  */
-public class MapActivity extends FragmentActivity{
+public class MapActivity extends SherlockFragmentActivity{
 
     private SupportMapFragment mapFragment;
     private GoogleMap googleMap;
@@ -32,12 +32,11 @@ public class MapActivity extends FragmentActivity{
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         setContentView(R.layout.fragment_about);
+        GPSTracker gps = new GPSTracker(MapActivity.this);
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         googleMap = mapFragment.getMap();
         //googleMap.setMyLocationEnabled(true); // This will add a blue dot showing your location
-
-        GPSTracker gps = new GPSTracker(MapActivity.this);
 
         if(gps.canGetLocation())
         {
@@ -55,5 +54,7 @@ public class MapActivity extends FragmentActivity{
         {
             gps.showSettingsAlert();
         }
+
+
     }
 }

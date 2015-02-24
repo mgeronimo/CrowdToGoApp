@@ -199,7 +199,6 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         prgDialog.setMessage("Transferring Data. Please wait...");
         prgDialog.setCancelable(false);
 
-
     }
 
 
@@ -279,6 +278,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                     saveLogInStatus("loginStatus", "false", MainActivity.this);
                     Intent mainIntent = new Intent(MainActivity.this, GoOnlineActivity.class);
                     startActivity(mainIntent);
+                    finish();
                 }
             }
         });
@@ -394,14 +394,23 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
             setSelected(rlLogout);
             resetAccessToken(MainActivity.this);
             resetCrowdieId(MainActivity.this);
+
             //Back to Login page
-            //Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-            //startActivity(loginIntent);
+            new AlertDialog.Builder(this)
+                    .setTitle("CrowdToGo")
+                    .setMessage("Are you sure you want to exit?")
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                            loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(loginIntent);
+                            finish();
+                        }
+            }).create().show();
 
             //Stay the drawer open
             mDrawerLayout.openDrawer(mDrawerList);
-
-            finish();
         }
         if (newContent != null) {
             newContent.setArguments(bundle);
@@ -478,6 +487,11 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
+
+        Intent loginIntent = new Intent(MainActivity.this, GoOnlineActivity.class);
+        loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(loginIntent);
+
     }
 
     @Override

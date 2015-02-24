@@ -324,12 +324,11 @@ public class LoginActivity extends BaseSpiceActivity {
     private class AccessRequestListener implements RequestListener<UserLoginResponse> {
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-
+            mProgressDialog.dismiss();
                // RetrofitError error = (RetrofitError) spiceException.getCause();
             if (!spiceException.getCause().getMessage().equals(null)) {
                // RetrofitError error = (RetrofitError) spiceException.getCause();
                // ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
-                mProgressDialog.dismiss();
                 Toast.makeText(LoginActivity.this, "Error: "+spiceException.getMessage(), Toast.LENGTH_LONG).show();
 
             }else{
@@ -342,14 +341,22 @@ public class LoginActivity extends BaseSpiceActivity {
         }
         @Override
         public void onRequestSuccess(UserLoginResponse userLoginResponse) {
-// May Start
+
         try{
             getUserProfileSpiceManager().execute(new UserProfileRequest(userLoginResponse.getCrowdie_id()),"getUserSummaryInfo",DurationInMillis.ONE_MINUTE,new UserProfileRequestListener());
         } catch (Exception exception) {
         System.out.println("getUserSummaryInfo Error "+ exception);
         }
-// May End
-            updateScreen(userLoginResponse);
+            if(userLoginResponse!=null){
+                saveAccessToken("access_token", userLoginResponse.getAccess_token(), LoginActivity.this);
+                saveCrowdieID("crowdie_id", userLoginResponse.getCrowdie_id(), LoginActivity.this);
+                saveCrowdieID("userId", userLoginResponse.getUserId(), LoginActivity.this);
+                saveName("name", userLoginResponse.getName(), LoginActivity.this);
+               //Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent mainIntent = new Intent(LoginActivity.this, GoOnlineActivity.class);
+                startActivity(mainIntent);
+                mProgressDialog.dismiss();
+            }
 
         }
     }
@@ -383,25 +390,8 @@ public class LoginActivity extends BaseSpiceActivity {
         }
 
     }
+
 // May End
-    private void updateScreen(final UserLoginResponse response){
-        if(response!=null){
-
-            saveAccessToken("access_token", response.getAccess_token(), LoginActivity.this);
-            saveCrowdieID("crowdie_id", response.getCrowdie_id(), LoginActivity.this);
-            saveCrowdieID("userId", response.getUserId(), LoginActivity.this);
-            saveName("name", response.getName(), LoginActivity.this);
-            //Toast.makeText(LoginActivity.this, "Access Token: "+ response.getAccess_token(), Toast.LENGTH_LONG).show();
-            //Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-            Intent mainIntent = new Intent(LoginActivity.this, GoOnlineActivity.class);
-            startActivity(mainIntent);
-            mProgressDialog.dismiss();
-
-        }
-
-
-    }
-
     //Save Access Token
     private void saveAccessToken(String key, String value, Context context) {
         SharedPreferences sharedPreferences = PreferenceManager

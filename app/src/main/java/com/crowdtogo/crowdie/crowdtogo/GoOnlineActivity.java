@@ -1,6 +1,8 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -84,6 +86,22 @@ public class GoOnlineActivity extends SherlockFragmentActivity {
     public static String getUserProfileData(String key, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(key, null);
+    }
+
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("CrowdToGo")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Intent loginIntent = new Intent(GoOnlineActivity.this, LoginActivity.class);
+                        loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(loginIntent);
+                        finish();
+                    }
+                }).create().show();
     }
 
   }

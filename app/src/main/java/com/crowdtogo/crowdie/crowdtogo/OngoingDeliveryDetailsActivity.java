@@ -18,6 +18,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.HashMap;
 
 public class OngoingDeliveryDetailsActivity extends OrdersSpiceActivity {
@@ -40,6 +47,9 @@ public class OngoingDeliveryDetailsActivity extends OrdersSpiceActivity {
     TextView dateTxt;
     TextView pickupTxt;
     TextView deliveryTxt;
+    private SupportMapFragment mapFragment;
+    private GoogleMap googleMap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +59,30 @@ public class OngoingDeliveryDetailsActivity extends OrdersSpiceActivity {
 
         actionBar.setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_ongoing_delivery_detail);
+
+        GPSTracker gps = new GPSTracker(OngoingDeliveryDetailsActivity.this);
+
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        googleMap = mapFragment.getMap();
+        //googleMap.setMyLocationEnabled(true); // This will add a blue dot showing your location
+
+        if(gps.canGetLocation())
+        {
+            final double latitude = gps.getLatitude();
+            final double longitude = gps.getLongitude();
+
+            LatLng PERTH = new LatLng(latitude, longitude);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(PERTH, 19));
+            Marker perth = googleMap.addMarker(new MarkerOptions()
+                    .position(PERTH)
+                    .title("You are Here")
+                    .draggable(true));
+        }
+        else
+        {
+            gps.showSettingsAlert();
+        }
+
 
         Intent i = getIntent();
         // Get the result of rank

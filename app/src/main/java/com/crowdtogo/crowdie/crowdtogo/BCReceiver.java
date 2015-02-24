@@ -58,22 +58,10 @@ public class BCReceiver extends BroadcastReceiver {
         Toast.makeText(context, "New Delivery Request " + noOfTimes + " times", Toast.LENGTH_SHORT).show();
 
         try {
-
-//            Intent trIntent = new Intent("android.intent.action.MAIN");
-//            trIntent.setClass(context, com.crowdtogo.crowdie.crowdtogo.Dialog.class);
-//            trIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            context.startActivity(trIntent);
-
-//            Intent Int = new Intent(context, NotificationService.class);
-//            context.startService(Int);
-
             Intent trIntent = new Intent("android.intent.action.LAUNCHER");
             trIntent.setClass(context, com.crowdtogo.crowdie.crowdtogo.Dialog.class);
             trIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(trIntent);
-
-
-
 
     } catch(Exception exception)
     {

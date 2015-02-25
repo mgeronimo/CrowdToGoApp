@@ -1,6 +1,7 @@
 package com.crowdtogo.crowdie.crowdtogo;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,17 +23,24 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.crowdtogo.crowdie.model.SuccessResponse;
+import com.crowdtogo.crowdie.network.requests.AvailabilityRequest;
 import com.crowdtogo.crowdie.network.requests.ConfirmationRequest;
+import com.crowdtogo.crowdie.network.requests.LocationRequest;
 import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 
-public class GoOnlineActivity extends SherlockFragmentActivity {
+import retrofit.RetrofitError;
+
+public class GoOnlineActivity extends OrdersSpiceActivity {
 
 	RelativeLayout rlCover;
 	ImageView ivUserImage;
 
 	RoundedImage roundedImage;
     TextView tvUserName;
-
+    ProgressDialog mProgressDialog;
     TextView txtuserCurrentLocation;
 
 
@@ -58,6 +67,14 @@ public class GoOnlineActivity extends SherlockFragmentActivity {
         }
         txtuserCurrentLocation.setText(address);
 
+        mProgressDialog = new ProgressDialog(GoOnlineActivity.this);
+        // Set progressdialog title
+        mProgressDialog.setTitle("CrowdToGo");
+        // Set progressdialog message
+        mProgressDialog.setMessage("Loading...");
+        mProgressDialog.setIndeterminate(false);
+        // Show progressdialog
+
 
         Button reject = (Button) findViewById(R.id.goOnline);
         reject.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +83,9 @@ public class GoOnlineActivity extends SherlockFragmentActivity {
                 saveLogInStatus("loginStatus", "true", getApplicationContext());
                 Intent mainIntent = new Intent(GoOnlineActivity.this, MainActivity.class);
                 startActivity(mainIntent);
+
+                getRoboSpiceManager().execute(new AvailabilityRequest(34.7177634,-92.3763751,"1",getCrowdieId("crowdie_id", GoOnlineActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
+                mProgressDialog.show();
 
             }
         });
@@ -103,5 +123,51 @@ public class GoOnlineActivity extends SherlockFragmentActivity {
                     }
                 }).create().show();
     }
+    //get stored crowdie_id
+    public static String getCrowdieId(String accessToken, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(accessToken, null);
+    }
+    private class AvailabilityRequestListener implements RequestListener<SuccessResponse>
+    {
+        @Override
+        public void onRequestFailure(SpiceException spiceException)
+        {
+            try
+            {
+                Log.w("myMessage", "Request Failed 1");
+                mProgressDialog.dismiss();
 
-  }
+            } catch (RetrofitError e)
+            {
+                mProgressDialog.dismiss();
+                Log.w("myMessage", "Request Failed 2");
+            }
+
+        }
+        @Override
+        public void onRequestSuccess(SuccessResponse successResponse)
+        {
+            Log.w("myMessage", "Request Has Succeed");
+            mProgressDialog.dismiss();
+            updateScreen2(successResponse);
+        }
+    }
+
+    private void updateScreen(SuccessResponse successResponse)
+    {
+        if(successResponse != null )
+        {
+            Log.w("myMessage", successResponse.getMessage());
+        }
+    }
+
+    private void updateScreen2(SuccessResponse successResponse2)
+    {
+        if(successResponse2 != null )
+        {
+            Log.w("myMessage", successResponse2.getMessage());
+        }
+    }
+
+}

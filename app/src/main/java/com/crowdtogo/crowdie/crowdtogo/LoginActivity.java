@@ -81,6 +81,13 @@ public class LoginActivity extends BaseSpiceActivity {
 
         changeFonts();//change ui fonts
 
+        mProgressDialog = new ProgressDialog(LoginActivity.this);
+        // Set progressdialog title
+        mProgressDialog.setTitle("CrowdToGo");
+        // Set progressdialog message
+        mProgressDialog.setMessage("Loading...");
+        mProgressDialog.setIndeterminate(false);
+        // Show progressdialog
 
         secret = getSecret("secret",LoginActivity.this);
         if(secret != null){
@@ -108,13 +115,7 @@ public class LoginActivity extends BaseSpiceActivity {
                     token.setClient_id(emailAddress.getText().toString());
                     token.setGrant_type("password");
                     token.setScope("Crowdie");
-                    mProgressDialog = new ProgressDialog(LoginActivity.this);
-                    // Set progressdialog title
-                    mProgressDialog.setTitle("CrowdToGo");
-                    // Set progressdialog message
-                    mProgressDialog.setMessage("Loading...");
-                    mProgressDialog.setIndeterminate(false);
-                    // Show progressdialog
+
                     mProgressDialog.show();
 
                     //perform login by providing valid parameters to get access token
@@ -137,14 +138,6 @@ public class LoginActivity extends BaseSpiceActivity {
                     token.setClient_id(emailAddress.getText().toString());
                     token.setGrant_type("password");
                     token.setScope("Crowdie");
-                    mProgressDialog = new ProgressDialog(LoginActivity.this);
-                    // Set progressdialog title
-                    mProgressDialog.setTitle("CrowdToGo");
-                    // Set progressdialog message
-                    mProgressDialog.setMessage("Loading...");
-                    mProgressDialog.setIndeterminate(false);
-                    // Show progressdialog
-                    mProgressDialog.show();
 
                     //perform login by providing valid parameters to get access token
 

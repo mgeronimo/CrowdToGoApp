@@ -97,7 +97,9 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
     TextView tvName;
     String name;
     Timer tmr = new Timer ();
+    Timer timer = new Timer ();
     boolean checkStatus;
+    ProgressDialog mProgressDialog;
 
     ProgressDialog prgDialog;
     DBHelper ordersDB = new DBHelper(this);
@@ -114,6 +116,13 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         DBHelper ordersDB = new DBHelper(this);
 
         setContentView(R.layout.activity_main);
+        mProgressDialog = new ProgressDialog(MainActivity.this);
+        // Set progressdialog title
+        mProgressDialog.setTitle("CrowdToGo");
+        // Set progressdialog message
+        mProgressDialog.setMessage("Loading...");
+        mProgressDialog.setIndeterminate(false);
+        // Show progressdialog
 
         initMenu();
 
@@ -210,8 +219,8 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
-                Timer timer = new Timer ();
 
+                TimerTask hourlyTsk;
                 if (isChecked)
                 {
                     Log.w("switch","On");
@@ -223,9 +232,9 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                         final double latitude = gps.getLatitude();
                         final double longitude = gps.getLongitude();
 
-                        // Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
 
-                        TimerTask hourlyTask = new TimerTask ()
+
+                        hourlyTsk = new TimerTask ()
                         {
                             @Override
                             public void run ()
@@ -245,7 +254,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
 
                             }
                         };
-                        timer.schedule (hourlyTask, 0l, 300000); // 30000 = 5 minutes
+                        timer.schedule (hourlyTsk, 01, 5 * 1000); // 30000 = 5 minutes
 
                         //getAvailabilitySpiceManager().execute(new AvailabilityRequest(latitude,longitude,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
                         getRoboSpiceManager().execute(new AvailabilityRequest(34.7177634,-92.3763751,"1",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
@@ -260,16 +269,15 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
                 }
                 else
                 {
-                    Log.w("switch","Off");
-                    getRoboSpiceManager().execute(new AvailabilityRequest(0.0,0.0,"0",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
-                    timer.cancel();
+                    mProgressDialog.show();
                     timer.purge();
-                    timer = null;
+                    timer.cancel();
+                    Log.w("switch","Off");
+                    getRoboSpiceManager().execute(new AvailabilityRequest(34.7177634,-92.3763751,"0",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListener());
                     Log.w("Timer","Stop Sending location Information");
                     saveLogInStatus("loginStatus", "false", MainActivity.this);
-                    Intent mainIntent = new Intent(MainActivity.this, GoOnlineActivity.class);
-                    startActivity(mainIntent);
-                    finish();
+
+                    //finish();
                 }
             }
         });
@@ -337,9 +345,12 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
             setSelected(rlProfile);
         } else if (v.getId() == R.id.rlHome) {
             // HOME
-            newContent = new HomeFragment();
-            setTitle("Home");
-            setSelected(rlHome);
+            switchFragment(new LandingPageFragment());
+            setTitle("No Delivery Request");
+            //setSelected(rlHome);
+//            newContent = new HomeFragment();
+//            setTitle("Home");
+//            setSelected(rlHome);
         } else if (v.getId() == R.id.rlMessages) {
             // MESSAGES
             newContent = new MessageFragment();
@@ -381,24 +392,23 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         }
         else if (v.getId() == R.id.rlLogout) {
             // LOGOUT
-            Toast.makeText(getApplicationContext(), "LOGOUT", Toast.LENGTH_LONG).show();
-            setSelected(rlLogout);
-            resetAccessToken(MainActivity.this);
-            resetCrowdieId(MainActivity.this);
 
-            //Back to Login page
             new AlertDialog.Builder(this)
                     .setTitle("CrowdToGo")
                     .setMessage("Are you sure you want to exit?")
                     .setNegativeButton(android.R.string.no, null)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
-                            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                            loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(loginIntent);
-                            finish();
+                            mProgressDialog.show();
+                            tmr.cancel();
+                            getRoboSpiceManager().execute(new AvailabilityRequest(34.7177634,-92.3763751,"0",getCrowdieId("crowdie_id", MainActivity.this)), "setAvailability", DurationInMillis.ALWAYS_EXPIRED, new AvailabilityRequestListenerLogout());
+
                         }
             }).create().show();
+
+            setSelected(rlLogout);
+
+
 
             //Stay the drawer open
             mDrawerLayout.openDrawer(mDrawerList);
@@ -455,6 +465,8 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         rlHelp.setSelected(false);
         rlAbout.setSelected(false);
         rlLogout.setSelected(false);
+        rlCallHistory.setSelected(false);
+        rlCallSupport.setSelected(false);
 
         rl.setSelected(true); // set current selection
     }
@@ -518,6 +530,41 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         }
     }
 
+
+    private class AvailabilityRequestListenerLogout implements RequestListener<SuccessResponse>
+    {
+        @Override
+        public void onRequestFailure(SpiceException spiceException)
+        {
+            try
+            {
+                Log.w("myMessage", "Request Failed 1");
+
+            } catch (RetrofitError e)
+            {
+
+                Log.w("myMessage", "Request Failed 2");
+            }
+
+        }
+        @Override
+        public void onRequestSuccess(SuccessResponse successResponse)
+        {
+            Log.w("myMessage", "Request Has Succeed");
+            if(successResponse != null )
+            {
+                mProgressDialog.dismiss();
+                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(loginIntent);
+                resetAccessToken(MainActivity.this);
+                resetCrowdieId(MainActivity.this);
+                finish();
+
+            }
+        }
+    }
+
     private class AvailabilityRequestListener implements RequestListener<SuccessResponse>
     {
         @Override
@@ -538,25 +585,26 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         public void onRequestSuccess(SuccessResponse successResponse)
         {
             Log.w("myMessage", "Request Has Succeed");
-            updateScreen2(successResponse);
+            if(successResponse != null )
+            {
+                mProgressDialog.dismiss();
+                Log.w("myMessage", successResponse.getMessage());
+                Intent mainIntent = new Intent(MainActivity.this, GoOnlineActivity.class);
+                startActivity(mainIntent);
+
+            }
         }
     }
 
     private void updateScreen(SuccessResponse successResponse)
     {
-        if(successResponse != null )
+        if(successResponse.getMessage() != null )
         {
             Log.w("myMessage", successResponse.getMessage());
+
         }
     }
 
-    private void updateScreen2(SuccessResponse successResponse2)
-    {
-        if(successResponse2 != null )
-        {
-            Log.w("myMessage", successResponse2.getMessage());
-        }
-    }
 
 //---OrdersRequestListener----///
     private class OrdersRequestListener implements RequestListener<OrdersResponse> {
@@ -565,9 +613,11 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
         public void onRequestFailure(SpiceException spiceException) {
             if (spiceException.getCause() instanceof RetrofitError) {
                 RetrofitError error = (RetrofitError) spiceException.getCause();
-                ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
+//                ErrorMessage body = (ErrorMessage) error.getBodyAs(ErrorMessage.class);
                 //mProgressDialog.dismiss();
-                Toast.makeText(MainActivity.this, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Error: " + spiceException.getMessage().toString() , Toast.LENGTH_LONG).show();
+
+                //Toast.makeText(MainActivity.this, "Error: " + body.getError() + "\n" + "Description: " + body.getError_description(), Toast.LENGTH_LONG).show();
             }
         }
 
@@ -577,68 +627,18 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
 
             if(ordersResponse.getData().size()!= 0){
                 Log.w("myMessage", ordersResponse.getData().toString());
-            }
-//            else if(ordersResponse.getData().get(0).getStatus().equalsIgnoreCase("ACCEPTED1")){
-//                Log.w("myMessage", "Order(s) already accepted");
-//            }
-               else{
-                //Toast.makeText(MainActivity.this, ordersResponse.getData().get(0).getStore_name() ,Toast.LENGTH_SHORT).show();
+                //saveGroupId("groupId",ordersResponse.getData().get(0).getGroupId(),MainActivity.this);
                 hourlyTask.cancel();
                 Intent trIntent = new Intent("android.intent.action.LAUNCHER");
                 trIntent.setClass(MainActivity.this, com.crowdtogo.crowdie.crowdtogo.Dialog.class);
                 trIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(trIntent);
+            } else{
+                Log.w("else myMessage", ordersResponse.getData().toString());
             }
-
-
-            updateOrder(ordersResponse);
         }
 
     };
-
-    private void updateOrder(final OrdersResponse response){
-
-
-        if(response.getData().size()!= 0){
-           //ordersDB.DeleteOrders();
-            Toast.makeText(MainActivity.this, "Success" ,Toast.LENGTH_LONG).show();
-            saveGroudId("groupId",response.getData().get(0).getGroupId(),MainActivity.this);
-
-
-            for(int index = 0; index < response.getData().toArray().length; index++) {
-
-                HashMap<String, String> queryValues = new HashMap<String, String>();
-
-                queryValues.put("orderId",response.getData().get(index).getOrderId());
-                queryValues.put("firstname", response.getData().get(index).getFirstname());
-                queryValues.put("lastname", response.getData().get(index).getLastname());
-                queryValues.put("destination_address", response.getData().get(index).getDestination_address());
-                queryValues.put("contact", response.getData().get(index).getContact());
-                queryValues.put("size", response.getData().get(index).getSize());
-                queryValues.put("status", response.getData().get(index).getStatus());
-                queryValues.put("destination_latitude", response.getData().get(index).getDestination_latitude());
-                queryValues.put("destination_longitude", response.getData().get(index).getDestination_longitude());
-                queryValues.put("merchantId", response.getData().get(index).getMerchantId());
-                queryValues.put("store_name", response.getData().get(index).getStore_name());
-                queryValues.put("store_contact", response.getData().get(index).getStore_contact());
-                queryValues.put("pickup_address", response.getData().get(index).getPickup_address());
-                queryValues.put("pickup_address_line_2", response.getData().get(index).getPickup_address_line_2());
-                queryValues.put("pickup_latitude", response.getData().get(index).getPickup_latitude());
-                queryValues.put("pickup_longitude", response.getData().get(index).getPickup_longitude());
-                queryValues.put("pickup_date", response.getData().get(index).getPickup_date());
-                queryValues.put("pickup_time", response.getData().get(index).getPickup_time());
-                queryValues.put("groupId", response.getData().get(index).getGroupId());
-                queryValues.put("deliveryStatus", response.getData().get(index).getDeliveryStatus());
-
-                //ordersDB.insertOrders(queryValues);
-            }
-
-
-        }else{
-          //  Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_LONG).show();
-        }
-    }
-//---OrdersRequestListener----///
 
 
     //get stored crowdie_id
@@ -654,7 +654,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
     }
 
     //Save groudId
-    public void saveGroudId(String key, String value, Context context) {
+    public void saveGroupId(String key, String value, Context context) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();

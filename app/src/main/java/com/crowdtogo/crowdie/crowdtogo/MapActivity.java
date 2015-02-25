@@ -30,31 +30,31 @@ public class MapActivity extends SherlockFragmentActivity{
 
     @Override
     protected void onCreate(Bundle arg0) {
-        super.onCreate(arg0);
-        setContentView(R.layout.fragment_about);
-        GPSTracker gps = new GPSTracker(MapActivity.this);
+    super.onCreate(arg0);
+    setContentView(R.layout.fragment_about);
+    GPSTracker gps = new GPSTracker(MapActivity.this);
 
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        googleMap = mapFragment.getMap();
-        //googleMap.setMyLocationEnabled(true); // This will add a blue dot showing your location
+    mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+    googleMap = mapFragment.getMap();
+    //googleMap.setMyLocationEnabled(true); // This will add a blue dot showing your location
 
-        if(gps.canGetLocation())
-        {
-            final double latitude = gps.getLatitude();
-            final double longitude = gps.getLongitude();
+    if(gps.canGetLocation())
+    {
+        final double latitude = gps.getLatitude();
+        final double longitude = gps.getLongitude();
 
-            LatLng PERTH = new LatLng(latitude, longitude);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(PERTH, 19));
-            Marker perth = googleMap.addMarker(new MarkerOptions()
-                    .position(PERTH)
-                    .title("You are Here")
-                    .draggable(true));
-        }
-        else
-        {
-            gps.showSettingsAlert();
-        }
-
-
+        LatLng PERTH = new LatLng(latitude, longitude);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(PERTH, 19));
+        Marker perth = googleMap.addMarker(new MarkerOptions()
+                .position(PERTH)
+                .title("You are Here")
+                .draggable(true));
     }
+    else
+    {
+        gps.showSettingsAlert();
+    }
+
+
+}
 }

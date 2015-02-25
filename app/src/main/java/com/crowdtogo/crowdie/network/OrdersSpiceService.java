@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 
 import com.google.gson.GsonBuilder;
 import com.octo.android.robospice.retrofit.RetrofitGsonSpiceService;
+import com.squareup.okhttp.OkHttpClient;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -45,7 +46,7 @@ public class OrdersSpiceService extends RetrofitGsonSpiceService {
                 .setEndpoint(BASE_URL)
                 .setConverter(new GsonConverter(new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation().create()))
-                .setClient(new OkClient())
+                .setClient(new OkClient(new OkHttpClient()))
                 .setLogLevel(RestAdapter.LogLevel.FULL);
     }
 

@@ -28,13 +28,6 @@ public class SplashActivity extends Activity {
         changeFonts();
 
 
-//        try {
-//             myDbHelper.onCreate();
-//            myDbHelper.onCreate(this);
-//            } catch (IOException ioe) {
-//                  throw new Error("Unable to create database");
-//            }
-
 
         IntentLauncher launcher =new IntentLauncher();
         launcher.start();
@@ -43,6 +36,9 @@ public class SplashActivity extends Activity {
         ImageView logo = (ImageView) findViewById(R.id.splashImage);
         logo.setVisibility(View.VISIBLE);
         logo.startAnimation(animFade);
+//        ImageView gifLogo = (ImageView) findViewById(R.id.splashGIF);
+//        gifLogo.setVisibility(View.VISIBLE);
+//        gifLogo.startAnimation(animFade);
 
         TextView txtCopy = (TextView) findViewById(R.id.txtCopyright);
         txtCopy.setVisibility(View.VISIBLE);
@@ -53,7 +49,7 @@ public class SplashActivity extends Activity {
     private class IntentLauncher extends Thread {
         public void run(){
             try {
-                Thread.sleep(SLEEP_TIME * 500);
+                Thread.sleep(SLEEP_TIME * 1000);
             }catch (Exception e) {
 
             }

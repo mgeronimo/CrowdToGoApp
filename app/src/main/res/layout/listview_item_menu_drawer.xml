@@ -212,11 +212,11 @@ s
                         android:shadowDy="-1"
                         android:shadowRadius="0.5"
                         android:singleLine="true"
-                        android:text="Notifications"
+                        android:text="Schedule"
                         android:textColor="@color/white"
                         android:textSize="13sp" />
 
-                    <TextView
+                    <!--<TextView
                         android:id="@+id/txtNotifCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -228,7 +228,7 @@ s
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
                         android:layout_marginRight="15dp"
-                        android:padding="2dp"/>
+                        android:padding="2dp"/>-->
                 </RelativeLayout>
 
                 <View

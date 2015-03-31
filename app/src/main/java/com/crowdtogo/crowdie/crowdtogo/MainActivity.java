@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.crowdtogo.crowdie.schedule.*;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -361,9 +362,9 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
 //            newContent = new NotificationFragment();
 //            setTitle("Notifications");
 //            setSelected(rlNotifs);
-            newContent = new ConfirmDeliveryRequestFragment();
-            setTitle("Notifications");
-            setSelected(rlNotifs);
+            Intent mainIntent = new Intent(MainActivity.this, MonthView.class);
+            startActivity(mainIntent);
+
         } else if (v.getId() == R.id.rlSettings) {
             // SETTINGS
             newContent = new SettingsFragment();
@@ -379,6 +380,7 @@ public class MainActivity extends OrdersSpiceActivity  implements OnClickListene
             newContent = new AboutFragment();
             setTitle("About");
             setSelected(rlAbout);
+
         }else if (v.getId() == R.id.rlCallSupport) {
         // Call Support
         newContent = new CallSupportFragment();

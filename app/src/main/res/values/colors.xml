@@ -26,4 +26,12 @@
     <color name="ctg_green">#1de551</color>
     <color name="ctg_dark_green">#00c03b</color>
 
+
+    <color name="red">#FF0000</color>
+    <color name="orange">#FF9A40</color>
+    <color name="symptom_color_selected">#003366</color>
+    <color name="reaction_color_selected">#003366</color>
+    <color name="highlight_text_color">#FF6C00</color>
+    <color name="journal_entry_listitem_text_color">#003366</color>
+    <color name="note_text_disabled">#333333</color>
 </resources>
